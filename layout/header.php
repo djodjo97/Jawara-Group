@@ -59,7 +59,9 @@ if ($_SESSION['login'] != "yes") {
             $role = $_SESSION['role'];
 
             $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
-            $menuAgen = '<a class="collapse-item" href="data_agen.php">Data Agen</a>';
+            $menuMitra = '<a class="collapse-item" href="data_agen.php">Data Mitra</a>';
+            $menuGenMitra = '<a class="collapse-item" href=".php">Data Generasi Mitra</a>';
+            $menuRole = '<a class="collapse-item" href=".php">Data Role</a>';
 
 
             if ($role == 1) {
@@ -72,7 +74,9 @@ if ($_SESSION['login'] != "yes") {
                             <div id="datamaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                                 <div class="bg-white py-2 collapse-inner rounded">
                                     ' . $menuUser . '
-                                    ' . $menuAgen . '
+                                    ' . $menuMitra . '
+                                    ' . $menuGenMitra . '
+                                    ' . $menuRole . '
                                 </div>
                             </div>
                         </li>';
