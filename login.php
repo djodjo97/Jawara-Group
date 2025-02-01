@@ -80,7 +80,7 @@
         .logo {
             display: block;
             margin: 0 auto 1rem;
-            width: 100px;
+            width: 200px;
             height: auto;
         }
 
@@ -99,8 +99,11 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <img src="img/logo_login.png" alt="Jawara Group Logo" class="logo">
+
+    <div class="login-container nav-link">
+    <a href="index.html">
+         <img src="img/logo_login.png" alt="Jawara Group Logo" class="logo">
+    </a>
         <h2>Login</h2>
         <form action="functions/login_check.php" method="POST" class="user">
             <div class="form-group">

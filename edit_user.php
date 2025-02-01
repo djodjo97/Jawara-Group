@@ -20,6 +20,11 @@ require 'functions/function_user.php';
                 ?>
                 <?php foreach ($get as $data) { ?>
                     <div class="row">
+                    <div class="col-md-3">
+                            <label for="formGroupExampleInput" class="form-label">Kode User</label>
+                            <input name="code_user" type="text" class="form-control form-control-sm" value="<?= $data['code_user'] ?>">
+                            <input type="hidden" name="code_user" value="<?= $data['code_user'] ?>">
+                        </div>
                         <div class="col-md-3">
                             <label for="formGroupExampleInput" class="form-label">Nama</label>
                             <input name="name" type="text" class="form-control form-control-sm" value="<?= $data['name'] ?>">

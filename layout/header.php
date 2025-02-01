@@ -16,8 +16,8 @@ if ($_SESSION['login'] != "yes") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>JAWARA GROUP SYSTEM</title>
-    <link rel="icon" href="img/logo_title.jpg" sizes="32x32">
+    <title>Dashboard - Jawara Group</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon1.png" />     
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,6 +29,7 @@ if ($_SESSION['login'] != "yes") {
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/style-admin.css">
 
 </head>
 
@@ -38,7 +39,7 @@ if ($_SESSION['login'] != "yes") {
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class= "custom-bg-primary navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" >
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="super_index.php">
@@ -59,7 +60,7 @@ if ($_SESSION['login'] != "yes") {
             $role = $_SESSION['role'];
 
             $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
-            $menuMitra = '<a class="collapse-item" href="data_agen.php">Data Mitra</a>';
+            $menuMitra = '<a class="collapse-item" href="data_mitra.php">Data Mitra</a>';
             $menuGenMitra = '<a class="collapse-item" href=".php">Data Generasi Mitra</a>';
             $menuRole = '<a class="collapse-item" href=".php">Data Role</a>';
 
@@ -87,11 +88,11 @@ if ($_SESSION['login'] != "yes") {
                 echo    '<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#datamaster" aria-expanded="true" aria-controls="datauser">
                     <i class="fas fa-fw fa-database"></i>
-                        <span>Data Agen</span>
+                        <span>Data Mitra</span>
                 </a>
                 <div id="datamaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        ' . $menuAgen . '
+                        ' . $menuMitra . '
                     </div>
                 </div>
             </li>';

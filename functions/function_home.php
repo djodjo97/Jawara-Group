@@ -2,10 +2,10 @@
 require_once 'koneksi.php';
 
 
-function getTotalAgents()
+function getTotalMitra()
 {
     global $conn;
-    $sql = "SELECT COUNT(*) AS total FROM agents";
+    $sql = "SELECT COUNT(*) AS total FROM tb_mitra";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->get_result();

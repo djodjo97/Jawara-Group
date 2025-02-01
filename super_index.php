@@ -15,10 +15,10 @@ require 'functions/function_home.php';
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-uppercase mb-1">
-								Total Agen 2025</div>
+								Total Mitra 2025</div>
 							<div class="h5 mb-0 font-weight-bold text-primary">
-								<?php $totalAgents = getTotalAgents();
-								echo  $totalAgents;
+								<?php $totalMitra = getTotalMitra();
+								echo  $totalMitra;
 								?>
 							</div>
 						</div>
