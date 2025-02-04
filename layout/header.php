@@ -61,7 +61,7 @@ if ($_SESSION['login'] != "yes") {
 
             $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
             $menuMitra = '<a class="collapse-item" href="data_mitra.php">Data Mitra</a>';
-            $menuGenMitra = '<a class="collapse-item" href=".php">Data Generasi Mitra</a>';
+            $menuGenMitra = '<a class="collapse-item" href="data_generation.php">Data Generasi Mitra</a>';
             $menuRole = '<a class="collapse-item" href=".php">Data Role</a>';
 
 

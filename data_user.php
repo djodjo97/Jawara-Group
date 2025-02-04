@@ -24,7 +24,7 @@ require 'functions/function_user.php';
                             </div>
                             <div class="modal-body">
                                 <form action="functions/function_user.php" method="POST">
-                                <div class="row mb-3">
+                                    <div class="row mb-3">
                                         <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Pilih Kode User</label>
                                         <div class="col-sm-2">
                                             <select name="code_user" class="form-control form-control-sm" aria-label=".form-select-sm example">

@@ -27,7 +27,7 @@ require 'functions/function_mitra.php';
                         </div>
                         <div class="col-md-3">
                             <label for="formGroupExampleInput" class="form-label">ID Mitra</label>
-                            <input disabled ="id_mitra" type="text" class="form-control form-control-sm" value="<?= $data['id_mitra'] ?>">
+                            <input disabled="id_mitra" type="text" class="form-control form-control-sm" value="<?= $data['id_mitra'] ?>">
                             <input type="hidden" name="id_mitra" value="<?= $data['id_mitra'] ?>">
                         </div>
                         <div class="col-md-3">
@@ -74,12 +74,13 @@ require 'functions/function_mitra.php';
                         </div>
                         <div class="col-md-3">
                             <label for="formGroupExampleInput" class="form-label">Bonus</label>
-                            <input disabled ="bonus_i" type="text" class="form-control form-control-sm">
+                            <input disabled="bonus_i" type="text" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-3">
                             <label for="formGroupExampleInput" class="form-label">Bonus II</label>
                             <input disabled name="bonus_ii" type="text" class="form-control form-control-sm">
-                        </div><div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
                             <label for="formGroupExampleInput" class="form-label">Bonus III</label>
                             <input disabled name="bonus_iii" type="text" class="form-control form-control-sm">
                         </div>

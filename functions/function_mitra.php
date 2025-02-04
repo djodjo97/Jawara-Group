@@ -32,7 +32,7 @@ function showData($id_mitra)
     mysqli_close($conn);
 }
 
-function editData($registration_number, $id_mitra, $gen_id, $ktp, $sim, $name, $email, $phone, $address, $leader_id, $upper_i, $upper_ii, $upper_iii, $bonus_i, $bonus_ii, $bonus_iii, )
+function editData($registration_number, $id_mitra, $gen_id, $ktp, $sim, $name, $email, $phone, $address, $leader_id, $upper_i, $upper_ii, $upper_iii, $bonus_i, $bonus_ii, $bonus_iii,)
 {
     global $conn;
     $fixid     = mysqli_real_escape_string($conn, $id_mitra);
@@ -69,7 +69,7 @@ if (isset($_POST['add'])) {
     $bonus_i                        = mysqli_real_escape_string($conn, $_POST['bonus_i']);
     $bonus_ii                       = mysqli_real_escape_string($conn, $_POST['bonus_ii']);
     $bonus_iii                      = mysqli_real_escape_string($conn, $_POST['bonus_iii']);
-    $add                            = addData($registration_number, $id_mitra,$gen_id, $sim, $ktp, $name, $email, $phone, $address, $leader_id, $upper_i, $upper_ii, $upper_iii, $bonus_i, $bonus_ii, $bonus_iii);
+    $add                            = addData($registration_number, $id_mitra, $gen_id, $sim, $ktp, $name, $email, $phone, $address, $leader_id, $upper_i, $upper_ii, $upper_iii, $bonus_i, $bonus_ii, $bonus_iii);
     session_start();
     unset($_SESSION["message"]);
     if ($add) {
