@@ -43,7 +43,9 @@ if ($_SESSION['login'] != "yes") {
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="super_index.php">
-                <div class="sidebar-brand-text mx-3">Jawara Group <span style="font-size: 8px;">v1.1.0</span></div>
+                <div class= "sidebar-brand-text mx-3" >
+                    Jawara Group <span style="font-size: 8px;">v1.1.0</span>
+                </div>
             </a>
 
             <!-- Divider -->
@@ -62,7 +64,7 @@ if ($_SESSION['login'] != "yes") {
             $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
             $menuMitra = '<a class="collapse-item" href="data_mitra.php">Data Mitra</a>';
             $menuGenMitra = '<a class="collapse-item" href=".php">Data Generasi Mitra</a>';
-            $menuRole = '<a class="collapse-item" href=".php">Data Role</a>';
+            $menuPackage = '<a class="nav-link" href="data_package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
 
 
             if ($role == 1) {
@@ -77,10 +79,17 @@ if ($_SESSION['login'] != "yes") {
                                     ' . $menuUser . '
                                     ' . $menuMitra . '
                                     ' . $menuGenMitra . '
-                                    ' . $menuRole . '
                                 </div>
                             </div>
                         </li>';
+                // Heading
+                echo    '<div class="sidebar-heading">INPUT</div>';
+
+                // Nav Item - Output Summary
+                echo    '<li class="nav-item">
+                            ' . $menuPackage . '
+                        </li>';
+
             }
 
             if ($role == 2) {

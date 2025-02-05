@@ -21,7 +21,7 @@ require 'functions/function_mitra.php';
                 <?php foreach ($get as $data) { ?>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="formGroupExampleInput" class="form-label">No KTP</label>
+                            <label for="formGroupExampleInput" class="form-label">No Registrasi</label>
                             <input name="registration_number" type="text" class="form-control form-control-sm" value="<?= $data['registration_number'] ?>">
                             <input type="hidden" name="id_mitra" value="<?= $data['id_mitra'] ?>">
                         </div>
