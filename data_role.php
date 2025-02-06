@@ -174,6 +174,7 @@ require 'functions/frole.php';
             myModal.show();
             $('#btnSave').text('Edit');
             $('#inputAction').prop('name', 'edit');
+            console.log(res)
 
             res = JSON.parse(res);
             let data = res.data;
