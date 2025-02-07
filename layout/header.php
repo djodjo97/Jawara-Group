@@ -17,7 +17,7 @@ if ($_SESSION['login'] != "yes") {
     <meta name="author" content="">
 
     <title>Dashboard - Jawara Group</title>
-    <link rel="icon" type="image/x-icon" href="img/favicon1.png" />     
+    <link rel="icon" type="image/x-icon" href="img/favicon1.png" />
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -39,7 +39,7 @@ if ($_SESSION['login'] != "yes") {
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class= "custom-bg-primary navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" >
+        <ul class="custom-bg-primary navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="super_index.php">
@@ -63,8 +63,9 @@ if ($_SESSION['login'] != "yes") {
 
             $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
             $menuMitra = '<a class="collapse-item" href="data_mitra.php">Data Mitra</a>';
-            $menuGenMitra = '<a class="collapse-item" href=".php">Data Generasi Mitra</a>';
+            $menuGenMitra = '<a class="collapse-item" href="data_generation.php">Data Generasi Mitra</a>';
             $menuPackage = '<a class="nav-link" href="data_package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
+            $menuRole = '<a class="collapse-item" href="data_role.php">Data Role</a>';
 
 
             if ($role == 1) {
@@ -79,6 +80,7 @@ if ($_SESSION['login'] != "yes") {
                                     ' . $menuUser . '
                                     ' . $menuMitra . '
                                     ' . $menuGenMitra . '
+                                    ' . $menuRole . '
                                 </div>
                             </div>
                         </li>';
