@@ -67,8 +67,16 @@
             <script src="js/demo/datatables-demo.js"></script>
             <script src="js/bootstrap.bundle.min.js"></script>
             <script src="js/toast.js"></script>
+            <?php
+            if (isset($_SESSION['message'])) {
+                echo $_SESSION['message'];
+                unset($_SESSION["message"]);
+            }
+            ?>
             <script src="js/bootstrap-select.js"></script>
             <script src="js/select2.js"></script>
+
+            <script src="vendor/sweetalert2/sweetalert2.min.js"></script>
 
             </body>
 
