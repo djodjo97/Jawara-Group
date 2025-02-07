@@ -104,6 +104,9 @@ require 'functions/function_generation.php';
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     if (window.jQuery) {
+      $('.form-control[name="idgen"]').data('col', 'id_generation');
+      $('.form-control[name="seq"]').data('col', 'seq');
+      $('.form-control[name="description"]').data('col', 'description');
 
       $('#btnSave').on('click', function(e) {
         e.preventDefault(); // Mencegah aksi default tombol
@@ -114,7 +117,7 @@ require 'functions/function_generation.php';
           const data = new Object();
           let attr;
           $('.row-change').each(function() {
-            attr = $(this).attr('name');
+            attr = $(this).data('col');
             data[attr] = $(this).val();
           });
           const dataId = $('.form-control[name="idgen"]').val();
@@ -132,8 +135,14 @@ require 'functions/function_generation.php';
               return response.text();
             })
             .then(res => {
-              alert('Data berhasil diubah!');
-              document.location.reload();
+              Swal.fire({
+                icon: "success",
+                title: "The data has been saved successfully!",
+                showConfirmButton: false,
+                timer: 1500
+              }).then(() => {
+                window.location.reload();
+              });
             })
             .catch(error => {
               console.error("Terjadi kesalahan:", error);

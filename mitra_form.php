@@ -20,63 +20,63 @@ $data = getData($id);
         <div class="form-group row">
           <label for="id" class="col-sm-2 col-form-label">ID</label>
           <div class="col-sm-10">
-            <input id="id" name="id" type="text" class="form-control" value="<?= $data['id_mitra'] ?? ''; ?>" required>
+            <input name="idmitra" type="text" class="form-control" value="<?= $data['id_mitra'] ?? ''; ?>" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="regnum" class="col-sm-2 col-form-label">No. Registrasi</label>
           <div class="col-sm-10">
-            <input id="regnum" name="regnum" type="text" class="form-control" value="<?= $data['registration_number'] ?? ''; ?>" required>
+            <input name="regnum" type="text" class="form-control" value="<?= $data['registration_number'] ?? ''; ?>" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="name" class="col-sm-2 col-form-label">Nama</label>
           <div class="col-sm-10">
-            <input id="name" name="name" type="text" class="form-control" value="<?= $data['name'] ?? ''; ?>" required>
+            <input name="name" type="text" class="form-control" value="<?= $data['name'] ?? ''; ?>" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="email" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input id="email" name="email" type="email" class="form-control" value="<?= $data['email'] ?? ''; ?>" required>
+            <input name="email" type="email" class="form-control" value="<?= $data['email'] ?? ''; ?>" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="phone" class="col-sm-2 col-form-label">No. Telp</label>
           <div class="col-sm-10">
-            <input id="phone" name="phone" type="number" class="form-control" value="<?= $data['phone'] ?? ''; ?>" required>
+            <input name="phone" type="number" class="form-control" value="<?= $data['phone'] ?? ''; ?>" required>
           </div>
         </div>
         <div class="form-group row">
           <label for="address" class="col-sm-2 col-form-label">Address</label>
           <div class="col-sm-10">
-            <textarea id="address" name="address" class="form-control"><?= $data['address'] ?? ''; ?></textarea>
+            <textarea name="address" class="form-control"><?= $data['address'] ?? ''; ?></textarea>
           </div>
         </div>
 
         <div class="form-group row">
           <label for="genid" class="col-sm-2 col-form-label">Generasi</label>
           <div class="col-sm-10">
-            <input id="generation" name="gen" type="text" class="form-control" value="<?= $data['gen_id'] ?? ''; ?>">
+            <input name="gen" type="text" class="form-control" value="<?= $data['gen_id'] ?? ''; ?>">
           </div>
         </div>
         <div class="form-group row">
           <label for="ktp" class="col-sm-2 col-form-label">No. KTP</label>
           <div class="col-sm-10">
-            <input id="ktp" name="ktp" type="text" class="form-control" value="<?= $data['ktp'] ?? ''; ?>">
+            <input name="ktp" type="text" class="form-control" value="<?= $data['ktp'] ?? ''; ?>">
           </div>
         </div>
         <div class="form-group row">
           <label for="sim" class="col-sm-2 col-form-label">No. SIM</label>
           <div class="col-sm-10">
-            <input id="sim" name="sim" type="text" class="form-control" value="<?= $data['sim'] ?? ''; ?>">
+            <input name="sim" type="text" class="form-control" value="<?= $data['sim'] ?? ''; ?>">
           </div>
         </div>
 
         <div class="mb-3 row">
           <label for="leader" class="col-sm-2 col-form-label">Leader</label>
           <div class="col-sm-10">
-            <input id="leader" name="leader" type="text" class="form-control" value="<?= $data['leader_id'] ?? ''; ?>">
+            <input name="leader" type="text" class="form-control" value="<?= $data['leader_id'] ?? ''; ?>">
           </div>
         </div>
 
@@ -84,29 +84,29 @@ $data = getData($id);
           <div class="col-sm-6">
             <div class="mb-3">
               <label for="up_i" class="form-label">Upper I</label>
-              <input id="up_i" name="up_i" type="text" class="form-control" value="<?= $data['upper_i'] ?? ''; ?>">
+              <input name="up_i" type="text" class="form-control" value="<?= $data['upper_i'] ?? ''; ?>">
             </div>
             <div class="mb-3">
               <label for="up_ii" class="form-label">Upper II</label>
-              <input id="up_ii" name="up_ii" type="text" class="form-control" value="<?= $data['upper_ii'] ?? ''; ?>">
+              <input name="up_ii" type="text" class="form-control" value="<?= $data['upper_ii'] ?? ''; ?>">
             </div>
             <div class="mb-3">
               <label for="up_iii" class="form-label">Upper III</label>
-              <input id="up_iii" name="up_iii" type="text" class="form-control" value="<?= $data['upper_iii'] ?? ''; ?>">
+              <input name="up_iii" type="text" class="form-control" value="<?= $data['upper_iii'] ?? ''; ?>">
             </div>
           </div>
           <div class="col-sm-6">
             <div class="mb-3">
               <label for="bonus_i" class="form-label">Bonus I</label>
-              <input id="bonus_i" name="bonus_i" type="text" class="form-control" value="<?= $data['bonus_i'] ?? ''; ?>">
+              <input name="bonus_i" type="text" class="form-control" value="<?= $data['bonus_i'] ?? ''; ?>">
             </div>
             <div class="mb-3">
               <label for="bonus_ii" class="form-label">Bonus II</label>
-              <input id="bonus_ii" name="bonus_ii" type="text" class="form-control" value="<?= $data['bonus_ii'] ?? ''; ?>">
+              <input name="bonus_ii" type="text" class="form-control" value="<?= $data['bonus_ii'] ?? ''; ?>">
             </div>
             <div class="mb-3">
               <label for="bonus_iii" class="form-label">Bonus III</label>
-              <input id="bonus_iii" name="bonus_iii" type="text" class="form-control" value="<?= $data['bonus_iii'] ?? ''; ?>">
+              <input name="bonus_iii" type="text" class="form-control" value="<?= $data['bonus_iii'] ?? ''; ?>">
             </div>
           </div>
         </div>
@@ -124,17 +124,34 @@ $data = getData($id);
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     if (window.jQuery) {
+      $('.form-control[name="idmitra"]').data('col', 'id_mitra');
+      $('.form-control[name="regnum"]').data('col', 'registration_number');
+      $('.form-control[name="name"]').data('col', 'name');
+      $('.form-control[name="email"]').data('col', 'email');
+      $('.form-control[name="phone"]').data('col', 'phone');
+      $('.form-control[name="address"]').data('col', 'address');
+      $('.form-control[name="gen"]').data('col', 'gen_id');
+      $('.form-control[name="ktp"]').data('col', 'ktp');
+      $('.form-control[name="sim"]').data('col', 'sim');
+      $('.form-control[name="leader"]').data('col', 'leader_id');
+      $('.form-control[name="up_i"]').data('col', 'upper_i');
+      $('.form-control[name="up_ii"]').data('col', 'upper_ii');
+      $('.form-control[name="up_iii"]').data('col', 'upper_iii');
+      $('.form-control[name="bonus_i"]').data('col', 'bonus_i');
+      $('.form-control[name="bonus_ii"]').data('col', 'bonus_ii');
+      $('.form-control[name="bonus_iii"]').data('col', 'bonus_iii');
+
       const params = new URLSearchParams(window.location.search);
       if (params.get('id')) {
         $('#formAction').data('action', 'edit');
         $('#inputAction').prop('name', 'edit');
         $('#btnSave').text('Ubah');
-        $('#id').prop('readonly', true);
+        $('.form-control[name="idmitra"').prop('readonly', true);
       } else {
         $('#formAction').data('action', 'add');
         $('#inputAction').prop('name', 'add');
         $('#btnSave').text('Simpan');
-        $('#id').prop('readonly', false);
+        $('.form-control[name="idmitra"').prop('readonly', false);
       }
 
       $('#formAction').on('change', '.form-control', function() {
@@ -154,10 +171,10 @@ $data = getData($id);
           const data = new Object();
           let attr;
           $('.row-change').each(function() {
-            attr = $(this).attr('name');
+            attr = $(this).data('col');
             data[attr] = $(this).val();
           });
-          const dataId = $('.form-control[name="id"]').val();
+          const dataId = $('.form-control[name="idmitra"]').val();
           fetch('endpoint/api_mitra.php?id=' + dataId, {
               method: 'PATCH',
               headers: {
@@ -172,15 +189,6 @@ $data = getData($id);
               return response.text();
             })
             .then(res => {
-              console.log(res);
-              // $.toast({
-              //   heading: "Proses Berhasil!",
-              //   text: "Data Berhasil Diupdate",
-              //   position: "top-right",
-              //   hideAfter: 3500,
-              //   textAlign: "center",
-              //   icon: "success"
-              // });
               Swal.fire({
                 icon: "success",
                 title: "The data has been saved successfully!",
