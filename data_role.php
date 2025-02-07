@@ -97,7 +97,16 @@ require 'functions/frole.php';
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    // menangani Blocked aria-hidden
+    // document.addEventListener('hide.bs.modal', function(event) {
+    //   if (document.activeElement) {
+    //     document.activeElement.blur();
+    //   }
+    // });
     if (window.jQuery) {
+      $('.form-control[name="idrole"]').data('col', 'role_id');
+      $('.form-control[name="name"]').data('col', 'rolename');
+      $('.form-control[name="description"]').data('col', 'description');
 
       $('#btnSave').on('click', function(e) {
         e.preventDefault(); // Mencegah aksi default tombol
@@ -108,7 +117,7 @@ require 'functions/frole.php';
           const data = new Object();
           let attr;
           $('.row-change').each(function() {
-            attr = $(this).attr('name');
+            attr = $(this).data('col');
             data[attr] = $(this).val();
           });
           const dataId = $('.form-control[name="idrole"]').val();
@@ -126,8 +135,14 @@ require 'functions/frole.php';
               return response.text();
             })
             .then(res => {
-              alert('Data berhasil diubah!');
-              document.location.reload();
+              Swal.fire({
+                icon: "success",
+                title: "The data has been saved successfully!",
+                showConfirmButton: false,
+                timer: 1500
+              }).then(() => {
+                window.location.reload();
+              });
             })
             .catch(error => {
               console.error("Terjadi kesalahan:", error);
@@ -170,11 +185,10 @@ require 'functions/frole.php';
             return response.text();
           })
           .then(res => {
-            var myModal = new bootstrap.Modal($('#modalRoles'), true);
+            var myModal = new bootstrap.Modal($('#modalRoles'));
             myModal.show();
             $('#btnSave').text('Edit');
             $('#inputAction').prop('name', 'edit');
-            console.log(res)
 
             res = JSON.parse(res);
             let data = res.data;
