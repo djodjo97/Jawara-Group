@@ -113,7 +113,7 @@ $data = getData($id);
         <div>
           <input type="hidden" id="inputAction" name="add">
           <button id="btnSave" class="btn btn-primary">Simpan</button>
-          <a class="btn btn-secondary" href="data_mitra.php">Batal</a>
+          <a class="btn btn-secondary" href="mitra.php">Batal</a>
         </div>
       </form>
     </div>

@@ -51,7 +51,7 @@ if ($_SESSION['login'] != "yes") {
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="super_index.php">
+        <a class="nav-link" href="dashboard.php">
           <i class="fas fa-fw fa-home"></i>
           <span>Home</span></a>
       </li>
@@ -59,11 +59,11 @@ if ($_SESSION['login'] != "yes") {
 
       $role = $_SESSION['role'];
 
-      $menuUser = '<a class="collapse-item" href="data_user.php">Data User</a>';
-      $menuMitra = '<a class="collapse-item" href="data_mitra.php">Data Mitra</a>';
-      $menuGenMitra = '<a class="collapse-item" href="data_generation.php">Data Generasi Mitra</a>';
-      $menuPackage = '<a class="nav-link" href="data_package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
-      $menuRole = '<a class="collapse-item" href="data_role.php">Data Role</a>';
+      $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
+      $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
+      $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
+      $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
 
 
       if ($role == 1) {

@@ -16,7 +16,7 @@ if (isset($_POST['add'])) {
   } else {
     $_SESSION['message'] = $failed;
   }
-  header("location:../data_role.php");
+  header("location:../role.php");
 } elseif (isset($_GET['remove'])) {
   $id_mitra = $_GET['remove'];
   $remove = removeData($id_mitra);
@@ -28,7 +28,7 @@ if (isset($_POST['add'])) {
   } else {
     $_SESSION['message'] = $failed;
   }
-  header("location:../data_role.php");
+  header("location:../role.php");
 }
 
 
@@ -64,6 +64,5 @@ function removeData($id)
   $result = $stmt->execute();
   $stmt->close();
   $conn->close();
-
   return $result;
 }
