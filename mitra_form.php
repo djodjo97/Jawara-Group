@@ -7,26 +7,24 @@ $data = getData($id);
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Data Mitra</h1>
-  </div>
-
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Mitra Detail</h6>
+      <h6 id="title" class="m-0 font-weight-bold text-primary">Form Data</h6>
     </div>
     <div class="card-body">
       <form action="functions/function_mitra.php" method="POST" enctype="multipart/form-data" id="formAction">
-        <div class="form-group row">
-          <label for="id" class="col-sm-2 col-form-label">ID</label>
-          <div class="col-sm-10">
+        <div class="row">
+          <div class="form-group col-sm-4">
+            <label for="id" class="form-label">ID</label>
             <input name="idmitra" type="text" class="form-control" value="<?= $data['id_mitra'] ?? ''; ?>" required>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="regnum" class="col-sm-2 col-form-label">No. Registrasi</label>
-          <div class="col-sm-10">
-            <input name="regnum" type="text" class="form-control" value="<?= $data['registration_number'] ?? ''; ?>" required>
+          <div class="form-group col-sm-4">
+            <label for="leader" class="form-label">Leader</label>
+            <input name="leader" type="text" class="form-control" value="<?= $data['leader_id'] ?? ''; ?>" required>
+          </div>
+          <div class="form-group col-sm-4">
+            <label for="regnum" class="form-label">No. Registrasi</label>
+            <input name="regnum" type="text" class="form-control" value="<?= $data['registration_number'] ?? ''; ?>" required readonly>
           </div>
         </div>
         <div class="form-group row">
@@ -42,7 +40,7 @@ $data = getData($id);
           </div>
         </div>
         <div class="form-group row">
-          <label for="phone" class="col-sm-2 col-form-label">No. Telp</label>
+          <label for="phone" class="col-sm-2 col-form-label">No. WhatsApp</label>
           <div class="col-sm-10">
             <input name="phone" type="number" class="form-control" value="<?= $data['phone'] ?? ''; ?>" required>
           </div>
@@ -53,32 +51,45 @@ $data = getData($id);
             <textarea name="address" class="form-control"><?= $data['address'] ?? ''; ?></textarea>
           </div>
         </div>
-
         <div class="form-group row">
           <label for="genid" class="col-sm-2 col-form-label">Generasi</label>
           <div class="col-sm-10">
-            <input name="gen" type="text" class="form-control" value="<?= $data['gen_id'] ?? ''; ?>">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="ktp" class="col-sm-2 col-form-label">No. KTP</label>
-          <div class="col-sm-10">
-            <input name="ktp" type="text" class="form-control" value="<?= $data['ktp'] ?? ''; ?>">
-          </div>
-        </div>
-        <div class="form-group row">
-          <label for="sim" class="col-sm-2 col-form-label">No. SIM</label>
-          <div class="col-sm-10">
-            <input name="sim" type="text" class="form-control" value="<?= $data['sim'] ?? ''; ?>">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button class="btn btn-primary" type="button"><i class="fas fa-caret-down"></i></button>
+              </div>
+              <input name="gen" type="text" class="form-control small" value="<?= $data['gen_id'] ?? ''; ?>" aria-describedby="button-addon" readonly>
+            </div>
           </div>
         </div>
 
-        <div class="mb-3 row">
-          <label for="leader" class="col-sm-2 col-form-label">Leader</label>
-          <div class="col-sm-10">
-            <input name="leader" type="text" class="form-control" value="<?= $data['leader_id'] ?? ''; ?>">
+        <div class="form-group row">
+          <label for="idType" class="col-sm-2 col-form-label">Jenis ID</label>
+          <div id="idCard" class="input-group col-sm-10">
+            <select id="idType" class="form-control col-sm-1">
+              <option selected value="ktp">KTP</option>
+              <option value="sim">SIM</option>
+            </select>
+            <input name="ktp" type="text" class="form-control" placeholder="No. KTP" value="<?= $data['ktp'] ?? ''; ?>">
+            <input name="sim" type="text" class="form-control" placeholder="No. SIM" value="<?= $data['sim'] ?? ''; ?>" hidden>
           </div>
         </div>
+
+        <!-- <div class="form-group row">
+          <label for="idType" class="col-sm-2 col-form-label">Jenis ID</label>
+          <div class="col-md-10 row">
+            <div class="form-group col-4">
+              <select id="idType" class="form-control">
+                <option selected value="ktp">KTP</option>
+                <option value="sim">SIM</option>
+              </select>
+            </div>
+            <div id="idCard" class="form-group col-8">
+              <input name="ktp" type="text" class="form-control" placeholder="No. KTP" value="<?= $data['ktp'] ?? ''; ?>">
+              <input name="sim" type="text" class="form-control" placeholder="No. SIM" value="<?= $data['sim'] ?? ''; ?>" hidden>
+            </div>
+          </div>
+        </div> -->
 
         <div class="row">
           <div class="col-sm-6">
@@ -143,16 +154,29 @@ $data = getData($id);
 
       const params = new URLSearchParams(window.location.search);
       if (params.get('id')) {
+        $('#title').text('Data Mitra');
         $('#formAction').data('action', 'edit');
         $('#inputAction').prop('name', 'edit');
         $('#btnSave').text('Ubah');
         $('.form-control[name="idmitra"').prop('readonly', true);
       } else {
+        $('#title').text('Pendaftaran Mitra');
         $('#formAction').data('action', 'add');
         $('#inputAction').prop('name', 'add');
         $('#btnSave').text('Simpan');
         $('.form-control[name="idmitra"').prop('readonly', false);
       }
+
+      $('#idType').on('change', function() {
+        const idType = $(this).val();
+        if (idType == "ktp") {
+          $('#idCard input[name="ktp"]').prop('hidden', false);
+          $('#idCard input[name="sim"]').prop('hidden', true);
+        } else if (idType == "sim") {
+          $('#idCard input[name="ktp"]').prop('hidden', true);
+          $('#idCard input[name="sim"]').prop('hidden', false);
+        }
+      });
 
       $('#formAction').on('change', '.form-control', function() {
         $(this).addClass('row-change');
