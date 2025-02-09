@@ -82,14 +82,17 @@ if ($_SESSION['login'] != "yes") {
                                 </div>
                             </div>
                         </li>';
-        // Heading
-        echo    '<div class="sidebar-heading">INPUT</div>';
+                         // Divider
+                echo    '<hr class="sidebar-divider">';
 
-        // Nav Item - Output Summary
-        echo    '<li class="nav-item">
+                // Heading
+                echo    '<div class="sidebar-heading">INPUT PRODUK</div>';
+
+                // Nav Item - Output Produk
+                echo    '<li class="nav-item">
                             ' . $menuPackage . '
                         </li>';
-      }
+            }
 
       if ($role == 2) {
         //Nav Item - Data Master
