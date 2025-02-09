@@ -19,7 +19,7 @@ require 'functions/function_mitra.php';
       </div>
       <br>
       <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="dataTableMitra" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th style="text-align: center;">No Registrasi</th>
@@ -56,6 +56,23 @@ require 'functions/function_mitra.php';
   </div>
 </div>
 <!-- /.container-fluid -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.jQuery) {
+      $(document).ready(function() {
+        $('#dataTableMitra').DataTable({
+          "order": [
+            [1, "asc"]
+          ]
+        });
+      });
+    } else {
+      console.error("jQuery belum tersedia!");
+    }
+
+  });
+</script>
 
 <?php
 include_once 'layout/footer.php';

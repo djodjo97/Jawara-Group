@@ -13,7 +13,7 @@ function getData()
     mysqli_close($conn);
 }
 
-            function addData($code_user, $name, $username, $password, $role)
+function addData($code_user, $name, $username, $password, $role)
 {
     global $conn;
     $sql     = "INSERT INTO tb_user (code_user, name, username, password, role) 
@@ -37,7 +37,7 @@ function editData($id_user, $code_user, $name, $username, $password, $role)
 {
     global $conn;
     $fixid     = mysqli_real_escape_string($conn, $id_user);
-    $sql     = "UPDATE tb_user SET code_user='$code_user, name='$name',  username='$username', password='$password', role='$role'
+    $sql     = "UPDATE tb_user SET code_user='$code_user', name='$name',  username='$username', password='$password', role='$role'
                     WHERE id_user='$fixid'";
     $result    = mysqli_query($conn, $sql);
     return ($result) ? true : false;
@@ -67,7 +67,7 @@ if (isset($_POST['add'])) {
     } else {
         $_SESSION['message'] = $failed;
     }
-    header("location:../data_user.php");
+    header("location:../user.php");
 } elseif (isset($_POST['edit'])) {
     $code_user       = mysqli_real_escape_string($conn, $_POST['code_user']);
     $id_user         = mysqli_real_escape_string($conn, $_POST['id_user']);
@@ -83,7 +83,7 @@ if (isset($_POST['add'])) {
     } else {
         $_SESSION['message'] = $failed;
     }
-    header("location:../data_user.php");
+    header("location:../user.php");
 } elseif (isset($_GET['hapus'])) {
     $id_user    = mysqli_real_escape_string($conn, $_GET['hapus']);
     $delete = deleteData($id_user);
@@ -94,5 +94,5 @@ if (isset($_POST['add'])) {
     } else {
         $_SESSION['message'] = $failed;
     }
-    header("location:../data_user.php");
+    header("location:../user.php");
 }

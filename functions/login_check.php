@@ -24,11 +24,11 @@ if ($result->num_rows > 0) {
 
     // Arahkan berdasarkan peran
     if ($user['role'] === '1') {
-        header("Location: ../super_index.php");
+        header("Location: ../dashboard.php");
     } elseif ($user['role'] === '2') {
-        header("Location: ../user_index.php");
+        header("Location: ../dashboard.php");
     } else {
-        header("Location: ../user_index.php");
+        header("Location: ../dashboard.php");
     }
     exit();
 } else {

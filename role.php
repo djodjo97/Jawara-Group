@@ -1,6 +1,6 @@
 <?php
 include_once 'layout/header.php';
-require 'functions/frole.php';
+require 'functions/function_role.php';
 ?>
 
 <!-- Begin Page Content -->
@@ -42,7 +42,7 @@ require 'functions/frole.php';
                         <i class="fas fa-pen"></i>
                       </button>
                       &nbsp;
-                      <a href="<?= 'functions/frole.php?remove=' . $data['role_id']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm">
+                      <a href="<?= 'functions/function_role.php?remove=' . $data['role_id']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm">
                         <i class="fas fa-trash"></i>
                       </a>
                     </td>
@@ -65,7 +65,7 @@ require 'functions/frole.php';
           <h5 class="modal-title" id="modalRolesLabel">Tambah Role</h5>
         </div>
         <div class="modal-body">
-          <form action="functions/frole.php" method="POST" id="formAction">
+          <form action="functions/function_role.php" method="POST" id="formAction">
             <div id="inputIdData">
               <input type="text" name="idrole" class="form-control form-control-sm" hidden required>
             </div>
