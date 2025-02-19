@@ -59,21 +59,21 @@ function addData($dataInput)
   }
 }
 
-function showData($package_code)
+function showData($category_product)
 {
   global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $package_code);
-  $sql     = "SELECT * FROM packages WHERE package_code='$fixid'";
+  $fixid     = mysqli_real_escape_string($conn, $category_product);
+  $sql     = "SELECT * FROM packages WHERE category_product='$fixid'";
   $result    = mysqli_query($conn, $sql);
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
   mysqli_close($conn);
 }
 
-function editData($package_code, $package_name, $category_code, $smell_type, $gender, $price, $commission, $ship_code, $description)
+function editData($category_product, $category_code, $category_name, $smell_type, $gender, $price, $commission, $ship_code, $description)
 {
   global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $package_code);
-  $sql     = "UPDATE packages SET package_code='$package_code', package_name='$package_name', category_code='$category_code',  smell_type='$smell_type', gender='$gender', price='$price', commission='$commission', ship_code='$ship_code', description='$description'
+  $fixid     = mysqli_real_escape_string($conn, $category_product);
+  $sql     = "UPDATE packages SET category_product='$category_product', category_code='$category_code', category_name='$category_name',  smell_type='$smell_type', gender='$gender', price='$price', commission='$commission', ship_code='$ship_code', description='$description'
                     WHERE package_code='$fixid'";
   $result    = mysqli_query($conn, $sql);
   mysqli_close($conn);
@@ -83,7 +83,7 @@ function editData($package_code, $package_name, $category_code, $smell_type, $ge
 function deleteData($package_code)
 {
   global $conn;
-  $sql     = "DELETE FROM packages WHERE package_code='$package_code'";
+  $sql     = "DELETE FROM packages WHERE category_product='$package_code'";
   $result    = mysqli_query($conn, $sql);
   return ($result) ? true : false;
   mysqli_close($conn);
@@ -91,9 +91,9 @@ function deleteData($package_code)
 
 if (isset($_POST['add'])) {
   $dataInput = [
-    'package_code'                          => $_POST['package_code'],
-    'package_name'                          => $_POST['package_name'],
+    'category_product'                      => $_POST['category_product'],
     'category_code'                         => $_POST['category_code'],
+    'category_name'                         => $_POST['category_name'],
     'smell_type'                            => $_POST['smell_type'],
     'gender'                                => $_POST['gender'],
     'price'                                 => $_POST['price'],
@@ -113,9 +113,9 @@ if (isset($_POST['add'])) {
   }
   header("location:../package.php");
 } elseif (isset($_POST['edit'])) {
-  $package_code                   = mysqli_real_escape_string($conn, $_POST['package_code']);
-  $package_name                   = mysqli_real_escape_string($conn, $_POST['package_name']);
+  $category_product               = mysqli_real_escape_string($conn, $_POST['category_product']);
   $category_code                  = mysqli_real_escape_string($conn, $_POST['category_code']);
+  $caregory_name                  = mysqli_real_escape_string($conn, $_POST['category_name']);
   $smell_type                     = mysqli_real_escape_string($conn, $_POST['smell_type']);
   $gender                         = mysqli_real_escape_string($conn, $_POST['gender']);
   $price                          = mysqli_real_escape_string($conn, $_POST['price']);
@@ -123,7 +123,7 @@ if (isset($_POST['add'])) {
   $ship_code                      = mysqli_real_escape_string($conn, ($_POST['ship_code']));
   $description                    = mysqli_real_escape_string($conn, $_POST['description']);
 
-  $edit                           = editData($package_code, $package_name, $category_code, $smell_type,  $gender, $price, $commission, $ship_code, $description);
+  $edit                           = editData($category_product, $category_code, $category_name, $smell_type,  $gender, $price, $commission, $ship_code, $description);
   session_start();
   unset($_SESSION["message"]);
   if ($edit) {

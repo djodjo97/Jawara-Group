@@ -63,6 +63,7 @@ if ($_SESSION['login'] != "yes") {
       $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
+      $menuCategory = '<a class="nav-link" href="category.php"><i class="fas fa-fw fa-upload"></i><span>Data Kategori Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
 
 
@@ -91,6 +92,7 @@ if ($_SESSION['login'] != "yes") {
                 // Nav Item - Output Produk
                 echo    '<li class="nav-item">
                             ' . $menuPackage . '
+                            ' . $menuCategory . '
                         </li>';
             }
 

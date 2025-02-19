@@ -37,22 +37,22 @@ require 'functions/function_package.php';
               </div>
               <div class="modal-body">
                 <form action="functions/function_package.php" method="POST">
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kode Paket</label>
+                 <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kategori Produk</label>
                     <div class="col-sm-10">
-                      <input type="text" name="package_code" class="form-control form-control-sm" id="inputEmail3" require>
+                      <input type="text" name="category_product" class="form-control form-control-sm" id="inputEmail3" require>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kode Produk</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="category_code" class="form-control form-control-sm" id="inputEmail3" require>
                     </div>
                   </div>
                   <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Nama Paket</label>
                     <div class="col-sm-10">
-                      <input type="text" name="package_name" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kategori Produk</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="category_code" class="form-control form-control-sm" id="inputEmail3" require>
+                      <input type="text" name="category_name" class="form-control form-control-sm" id="inputEmail3" require>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -107,9 +107,9 @@ require 'functions/function_package.php';
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th style="text-align: center;">Kode Paket</th>
+              <th style="text-align: center;">Kategori Produk</th>
+              <th style="text-align: center;">Kode Produk</th>
               <th style="text-align: center;">Nama Paket</th>
-              <th style="text-align: center;">Kategori Paket</th>
               <th style="text-align: center;">Jenis</th>
               <th style="text-align: center;">Jenis Kelamin</th>
               <th style="text-align: center;">Harga</th>
@@ -124,14 +124,15 @@ require 'functions/function_package.php';
             <?php foreach ($all as $data) { ?>
               <tr>
                 <td style="text-align: center;"><?= $no++; ?></td>
-                <td style="text-align: center;"><?= $data['package_name'] ?></td>
+                <td style="text-align: center;"><?= $data['category_product'] ?></td>
                 <td style="text-align: center;"><?= $data['category_code'] ?></td>
+                <td style="text-align: center;"><?= $data['category_name'] ?></td>
                 <td style="text-align: center;"><?= $data['smell_type'] ?></td>
                 <td style="text-align: center;"><?= $data['gender'] ?></td>
                 <td style="text-align: center;"><?= $data['price'] ?></td>
                 <td style="text-align: center;"><?= $data['commission'] ?></td>
                 <td style="text-align: center;"><?= $data['ship_code'] ?></td>
-                <td style="text-align: center;"><a href="<?= 'package_form.php?package_code=' . $data['package_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
+                <td style="text-align: center;"><a href="<?= 'package_form.php?category_product=' . $data['category_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
                   &nbsp;<a href="<?= 'functions/function_package.php?hapus=' . $data['package_code']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
               </tr>
             <?php } ?>
