@@ -7,7 +7,7 @@ function getData($id = null)
 {
   global $conn;
   if ($id) {
-    $stmt = $conn->prepare("SELECT * FROM tb_mitra WHERE id_mitra = ?");
+    $stmt = $conn->prepare("SELECT tm.*, mg.description AS gen_name, lm.name AS leader_name FROM tb_mitra AS tm LEFT JOIN mitra_generation AS mg ON mg.id_generation = tm.gen_id LEFT JOIN tb_mitra AS lm ON lm.id_mitra = tm.leader_id WHERE tm.id_mitra = ?");
     $stmt->bind_param("s", $id);
   } else {
     $stmt = $conn->prepare("SELECT * FROM tb_mitra");
@@ -39,7 +39,7 @@ function addData($dataInput)
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sisssssssssssiii";
+    $typeString = "sssssssssssssiii";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];

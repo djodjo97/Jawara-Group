@@ -1,18 +1,27 @@
 .custom-bg-primary {
   background-color: #f4623a;
 }
+
 .c-btn-primary {
   color: #fff;
   background-color: #f4623a;
   border-color: #f4623a;
 }
+
 .c-btn-primary:hover {
   color: #fff;
   background-color: #d34720;
   border-color: #d34720;
 }
+
 .sidebar-logo {
   display: block;
-  margin: 20px auto; /* Pusatkan logo */
-  width: 40%; /* Sesuaikan ukuran */
+  margin: 20px auto;
+  /* Pusatkan logo */
+  width: 40%;
+  /* Sesuaikan ukuran */
+}
+
+.no-data {
+  height: 100px;
 }

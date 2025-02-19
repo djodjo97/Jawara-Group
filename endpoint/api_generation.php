@@ -28,12 +28,17 @@ function getGeneration()
   global $conn;
   //$input = json_decode(file_get_contents('php://input'), true);
   $dataId = $_GET["id"] ?? null;
+  $orderby = $_GET["order"] ?? null;
 
   if ($dataId) {
     $stmt = $conn->prepare("SELECT * FROM mitra_generation WHERE id_generation = ?");
     $stmt->bind_param("s", $dataId);
   } else {
-    $stmt = $conn->prepare("SELECT * FROM mitra_generation");
+    $query = "SELECT * FROM mitra_generation";
+    if ($orderby) {
+      $query .= " ORDER BY $orderby";
+    }
+    $stmt = $conn->prepare($query);
   }
 
   if ($stmt) {

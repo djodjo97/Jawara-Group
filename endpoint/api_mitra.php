@@ -7,7 +7,7 @@ $method = $_SERVER["REQUEST_METHOD"];
 
 switch ($method) {
   case "GET":
-    getGeneration();
+    getMitra();
     break;
   case "PATCH":
     updateData();
@@ -21,6 +21,74 @@ function response($status, $message, $data = null)
   http_response_code($status);
   echo json_encode(["status" => $status, "message" => $message, "data" => $data]);
   exit();
+}
+
+function getMitra()
+{
+  global $conn;
+  //$input = json_decode(file_get_contents('php://input'), true);
+  $dataId = $_GET["id"] ?? null;
+  $orderby = $_GET["order"] ?? null;
+  $purpose = $_GET["p"] ?? null;
+
+  if ($purpose) {
+    if ($purpose == "data-code") {
+      $genId = $_GET["genid"] ?? null;
+      if (array_key_exists('up_id', $_GET)) {
+        $upId = $_GET["up_id"] ?? null;
+        $stmt = $conn->prepare("SELECT seq FROM mitra_generation WHERE id_generation = ?");
+        $stmt->bind_param("s", $genId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $genData = $result->fetch_assoc();
+        $genIdParam = $genData['seq'] - $upId;
+        if ($genIdParam < 0) {
+          response(200, "Success", []);
+        } else {
+          $stmt = $conn->prepare("SELECT id_mitra, name FROM tb_mitra where gen_id = (SELECT id_generation FROM mitra_generation WHERE seq = ?)");
+          $stmt->bind_param("s", $genIdParam);
+        }
+      } else {
+        if ($genId === 'G1') {
+          $genIdParam = 'FDR';
+        } else {
+          $genIdParam = 'G1';
+        }
+        $stmt = $conn->prepare("SELECT id_mitra, name FROM tb_mitra where gen_id = ?");
+        $stmt->bind_param("s", $genIdParam);
+      }
+    }
+  } else {
+    if ($dataId) {
+      $stmt = $conn->prepare("SELECT * FROM tb_mitra WHERE id_mitra = ?");
+      $stmt->bind_param("s", $dataId);
+    } else {
+      $query = "SELECT * FROM mitra_generation";
+      if ($orderby) {
+        $query .= " ORDER BY $orderby";
+      }
+      $stmt = $conn->prepare($query);
+    }
+  }
+
+  if ($stmt) {
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result) {
+      if ($dataId) $data = $result->fetch_assoc();
+      else $data = $result->fetch_all(MYSQLI_ASSOC);
+
+      response(200, "Success", $data);
+    } else {
+      response(500, "Gagal mengambil data!");
+    }
+  } else {
+    response(500, "Gagal menyiapkan query!");
+  }
+
+  $stmt->close();
+  $conn->close();
 }
 
 function updateData()
