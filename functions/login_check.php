@@ -2,6 +2,8 @@
 session_start();
 require_once 'koneksi.php';
 
+unset($_SESSION['message']);
+
 if ($_POST) {
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -13,9 +15,8 @@ if ($_POST) {
     $stmt->bind_param("ss", $username, $encrypted);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result->num_rows > 0) {
-        var_dump('true');
-        die;
         // User ditemukan
         $user = $result->fetch_assoc();
 
@@ -34,8 +35,6 @@ if ($_POST) {
         }
         exit();
     } else {
-        var_dump('falsse');
-        die;
         // Login gagal
         $_SESSION['message'] = "<script>
                     $.toast({
