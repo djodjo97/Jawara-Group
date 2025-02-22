@@ -6,7 +6,6 @@ include_once 'helper.php';
 
 if (isset($_POST['add'])) {
     $dataInput = [
-        'category_product' => trim(htmlspecialchars($_POST['category_product'])),
         'category_code'    => trim(htmlspecialchars($_POST['category_code'])),
         'category_name'    => trim(htmlspecialchars($_POST['category_name'])),
     ];
@@ -44,13 +43,13 @@ function getAllData()
 function addData($data)
 {
     global $conn;
-    $stmt = $conn->prepare("INSERT INTO package_category (category_product, category_code, category_name) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO package_category (category_code, category_name) VALUES (?, ?)");
 
     if (!$stmt) {
         die("Query Error: " . $conn->error);
     }
 
-    $stmt->bind_param("sss", $data['category_product'], $data['category_code'], $data['category_name']);
+    $stmt->bind_param("ss", $data['category_code'], $data['category_name']);
     $res = $stmt->execute();
 
     if (!$res) {
@@ -84,7 +83,7 @@ function removeData($id)
 function getCategoryProducts()
 {
     global $conn;
-    $stmt = $conn->query("SELECT DISTINCT category_product FROM package_category");
+    $stmt = $conn->query("SELECT DISTINCT category_name FROM package_category");
 
     if (!$stmt) {
         die("Query Error: " . $conn->error);

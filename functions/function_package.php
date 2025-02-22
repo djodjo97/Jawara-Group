@@ -32,7 +32,7 @@ function addData($dataInput)
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sssisddss";
+    $typeString = "sssssddssi";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];
@@ -59,21 +59,21 @@ function addData($dataInput)
   }
 }
 
-function showData($category_product)
+function showData($package_code)
 {
   global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $category_product);
-  $sql     = "SELECT * FROM packages WHERE category_product='$fixid'";
+  $fixid     = mysqli_real_escape_string($conn, $package_code);
+  $sql     = "SELECT * FROM packages WHERE package_code='$fixid'";
   $result    = mysqli_query($conn, $sql);
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
   mysqli_close($conn);
 }
 
-function editData($category_product, $category_code, $category_name, $smell_type, $gender, $price, $commission, $ship_code, $description)
+function editData($package_code, $category_code, $package_name, $smell_type, $gender, $price, $commission, $ship_code, $description, $regist_number)
 {
   global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $category_product);
-  $sql     = "UPDATE packages SET category_product='$category_product', category_code='$category_code', category_name='$category_name',  smell_type='$smell_type', gender='$gender', price='$price', commission='$commission', ship_code='$ship_code', description='$description'
+  $fixid     = mysqli_real_escape_string($conn, $package_code);
+  $sql     = "UPDATE packages SET package_code='$package_code', category_code='$category_code', package_name='$package_name',  smell_type='$smell_type', gender='$gender', price='$price', commission='$commission', ship_code='$ship_code', description='$description', regist_number='$regist_number'
                     WHERE package_code='$fixid'";
   $result    = mysqli_query($conn, $sql);
   mysqli_close($conn);
@@ -83,7 +83,7 @@ function editData($category_product, $category_code, $category_name, $smell_type
 function deleteData($package_code)
 {
   global $conn;
-  $sql     = "DELETE FROM packages WHERE category_product='$package_code'";
+  $sql     = "DELETE FROM packages WHERE package_code='$package_code'";
   $result    = mysqli_query($conn, $sql);
   return ($result) ? true : false;
   mysqli_close($conn);
@@ -91,19 +91,19 @@ function deleteData($package_code)
 
 if (isset($_POST['add'])) {
   $dataInput = [
-    'category_product'                      => $_POST['category_product'],
+    'package_code'                         => $_POST['package_code'],
     'category_code'                         => $_POST['category_code'],
-    'category_name'                         => $_POST['category_name'],
+    'package_name'                         => $_POST['package_name'],
     'smell_type'                            => $_POST['smell_type'],
     'gender'                                => $_POST['gender'],
     'price'                                 => $_POST['price'],
     'commission'                            => $_POST['commission'],
     'ship_code'                             => $_POST['ship_code'],
-    'description'                           => $_POST['description']
+    'description'                           => $_POST['description'],
+    'regist_number'                           => $_POST['regist_number']
   ];
+  
   $add = addData($dataInput);
-  var_dump($add);
-  die;
   session_start();
   unset($_SESSION["message"]);
   if ($add) {
@@ -113,17 +113,18 @@ if (isset($_POST['add'])) {
   }
   header("location:../package.php");
 } elseif (isset($_POST['edit'])) {
-  $category_product               = mysqli_real_escape_string($conn, $_POST['category_product']);
+  $package_code                   = mysqli_real_escape_string($conn, $_POST['package_code']);
   $category_code                  = mysqli_real_escape_string($conn, $_POST['category_code']);
-  $caregory_name                  = mysqli_real_escape_string($conn, $_POST['category_name']);
+  $package_name                   = mysqli_real_escape_string($conn, $_POST['package_name']);
   $smell_type                     = mysqli_real_escape_string($conn, $_POST['smell_type']);
   $gender                         = mysqli_real_escape_string($conn, $_POST['gender']);
   $price                          = mysqli_real_escape_string($conn, $_POST['price']);
   $commission                     = mysqli_real_escape_string($conn, $_POST['commission']);
   $ship_code                      = mysqli_real_escape_string($conn, ($_POST['ship_code']));
   $description                    = mysqli_real_escape_string($conn, $_POST['description']);
+  $regist_number                  = mysqli_real_escape_string($conn, $_POST['regist_number']);
 
-  $edit                           = editData($category_product, $category_code, $category_name, $smell_type,  $gender, $price, $commission, $ship_code, $description);
+  $edit                           = editData($package_code, $category_code, $package_name, $smell_type,  $gender, $price, $commission, $ship_code, $description, $regist_number);
   session_start();
   unset($_SESSION["message"]);
   if ($edit) {
@@ -143,4 +144,17 @@ if (isset($_POST['add'])) {
     $_SESSION['message'] = $failed;
   }
   header("location:../package.php");
+}
+function getCategoryProducts()
+{
+    global $conn;
+    $stmt = $conn->query("SELECT * FROM package_category");
+
+    if (!$stmt) {
+        die("Query Error: " . $conn->error);
+    }
+
+    $res = $stmt->fetch_all(MYSQLI_ASSOC);
+    $stmt->free_result();
+    return $res;
 }

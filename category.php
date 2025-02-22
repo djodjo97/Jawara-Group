@@ -22,9 +22,8 @@ require 'functions/function_category.php';
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th style="text-align: center; width:20%">Kategori Produk</th>
-                  <th style="text-align: center; width:15%">Kode Produk</th>
-                  <th style="text-align: center;">Nama Paket</th>
+                  <th style="text-align: center; width:20%">Kategori Kode</th>
+                  <th style="text-align: center;">Kategori</th>
                   <th style="text-align: center;">Aksi</th>
                 </tr>
               </thead>
@@ -32,15 +31,14 @@ require 'functions/function_category.php';
                 <?php $all = getAllData(); ?>
                 <?php foreach ($all as $data) { ?>
                   <tr>
-                    <td style="text-align: center;"><?= htmlspecialchars($data['category_product']) ?></td>
                     <td style="text-align: center;"><?= htmlspecialchars($data['category_code']) ?></td>
                     <td style="text-align: center;"><?= htmlspecialchars($data['category_name']) ?></td>
                     <td style="text-align: center;">
-                      <button data-id="<?= $data['category_product']; ?>" class="btn btn-info btn-circle btn-sm edit-gen">
+                      <button data-id="<?= $data['category_code']; ?>" class="btn btn-info btn-circle btn-sm edit-gen">
                         <i class="fas fa-pen"></i>
                       </button>
                       &nbsp;
-                      <a href="functions/function_category.php?remove=<?= $data['category_product']; ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-circle btn-sm">
+                      <a href="functions/function_category.php?remove=<?= $data['category_code']; ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-circle btn-sm">
                         <i class="fas fa-trash"></i>
                       </a>
                     </td>
@@ -63,15 +61,11 @@ require 'functions/function_category.php';
         <div class="modal-body">
           <form action="functions/function_category.php" method="POST" id="formAction">
             <div class="mb-3">
-              <label class="form-label">Kategori Produk</label>
-              <input type="text" name="category_product" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Kode Produk</label>
+              <label class="form-label">Kategori Kode</label>
               <input type="text" name="category_code" class="form-control" required>
             </div>
             <div class="mb-3">
-              <label class="form-label">Nama Paket</label>
+              <label class="form-label">Kategori</label>
               <textarea class="form-control" name="category_name" required></textarea>
             </div>
             <div class="modal-footer">
@@ -101,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function() {
       fetch('endpoint/api_category.php?id=' + dataId)
         .then(response => response.json())
         .then(data => {
-          document.querySelector("input[name='category_product']").value = data.category_product;
           document.querySelector("input[name='category_code']").value = data.category_code;
           document.querySelector("textarea[name='category_name']").value = data.category_name;
           

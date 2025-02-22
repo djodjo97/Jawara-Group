@@ -1,0 +1,182 @@
+[1mdiff --git a/category.php b/category.php[m
+[1mdeleted file mode 100644[m
+[1mindex 7c29894..0000000[m
+[1m--- a/category.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,121 +0,0 @@[m
+[31m-<?php[m
+[31m-include_once 'layout/header.php';[m
+[31m-require 'functions/function_category.php';[m
+[31m-?>[m
+[31m-[m
+[31m-<!-- Begin Page Content -->[m
+[31m-<div class="container-fluid">[m
+[31m-[m
+[31m-  <!-- DataTales Example -->[m
+[31m-  <div class="row">[m
+[31m-    <div class="col-6">[m
+[31m-      <div class="card shadow mb-4">[m
+[31m-        <div class="card-header py-3">[m
+[31m-          <h6 style="font-size: 18px;" class="m-0 font-weight-bold text-dark">Kategori Produk</h6>[m
+[31m-        </div>[m
+[31m-        <div class="card-body">[m
+[31m-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">[m
+[31m-            <button type="button" id="btnAdd" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalCategory">Tambah Kategori Produk</button>[m
+[31m-          </div>[m
+[31m-          <br />[m
+[31m-          <div class="table-responsive">[m
+[31m-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">[m
+[31m-              <thead>[m
+[31m-                <tr>[m
+[31m-                  <th style="text-align: center; width:20%">Kategori Produk</th>[m
+[31m-                  <th style="text-align: center; width:15%">Kode Produk</th>[m
+[31m-                  <th style="text-align: center;">Nama Paket</th>[m
+[31m-                  <th style="text-align: center;">Aksi</th>[m
+[31m-                </tr>[m
+[31m-              </thead>[m
+[31m-              <tbody>[m
+[31m-                <?php $all = getAllData(); ?>[m
+[31m-                <?php foreach ($all as $data) { ?>[m
+[31m-                  <tr>[m
+[31m-                    <td style="text-align: center;"><?= htmlspecialchars($data['category_product']) ?></td>[m
+[31m-                    <td style="text-align: center;"><?= htmlspecialchars($data['category_code']) ?></td>[m
+[31m-                    <td style="text-align: center;"><?= htmlspecialchars($data['category_name']) ?></td>[m
+[31m-                    <td style="text-align: center;">[m
+[31m-                      <button data-id="<?= $data['category_product']; ?>" class="btn btn-info btn-circle btn-sm edit-gen">[m
+[31m-                        <i class="fas fa-pen"></i>[m
+[31m-                      </button>[m
+[31m-                      &nbsp;[m
+[31m-                      <a href="functions/function_category.php?remove=<?= $data['category_product']; ?>" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-circle btn-sm">[m
+[31m-                        <i class="fas fa-trash"></i>[m
+[31m-                      </a>[m
+[31m-                    </td>[m
+[31m-                  </tr>[m
+[31m-                <?php } ?>[m
+[31m-              </tbody>[m
+[31m-            </table>[m
+[31m-          </div>[m
+[31m-        </div>[m
+[31m-      </div>[m
+[31m-    </div>[m
+[31m-  </div>[m
+[31m-[m
+[31m-  <div class="modal fade" id="modalCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">[m
+[31m-    <div class="modal-dialog">[m
+[31m-      <div class="modal-content">[m
+[31m-        <div class="modal-header">[m
+[31m-          <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>[m
+[31m-        </div>[m
+[31m-        <div class="modal-body">[m
+[31m-          <form action="functions/function_category.php" method="POST" id="formAction">[m
+[31m-            <div class="mb-3">[m
+[31m-              <label class="form-label">Kategori Produk</label>[m
+[31m-              <input type="text" name="category_product" class="form-control" required>[m
+[31m-            </div>[m
+[31m-            <div class="mb-3">[m
+[31m-              <label class="form-label">Kode Produk</label>[m
+[31m-              <input type="text" name="category_code" class="form-control" required>[m
+[31m-            </div>[m
+[31m-            <div class="mb-3">[m
+[31m-              <label class="form-label">Nama Paket</label>[m
+[31m-              <textarea class="form-control" name="category_name" required></textarea>[m
+[31m-            </div>[m
+[31m-            <div class="modal-footer">[m
+[31m-              <input type="hidden" id="inputAction" name="add">[m
+[31m-              <button type="submit" class="btn btn-primary btn-sm" id="btnSave">Simpan</button>[m
+[31m-              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>[m
+[31m-            </div>[m
+[31m-          </form>[m
+[31m-        </div>[m
+[31m-      </div>[m
+[31m-    </div>[m
+[31m-  </div>[m
+[31m-[m
+[31m-</div>[m
+[31m-[m
+[31m-<script>[m
+[31m-document.addEventListener("DOMContentLoaded", function() {[m
+[31m-  document.getElementById("btnAdd").addEventListener("click", function() {[m
+[31m-    document.querySelector("#formAction").reset();[m
+[31m-    document.getElementById("btnSave").textContent = "Tambah";[m
+[31m-    document.getElementById("inputAction").name = "add";[m
+[31m-  });[m
+[31m-[m
+[31m-  document.querySelectorAll(".edit-gen").forEach(button => {[m
+[31m-    button.addEventListener("click", function() {[m
+[31m-      let dataId = this.getAttribute("data-id");[m
+[31m-      fetch('endpoint/api_category.php?id=' + dataId)[m
+[31m-        .then(response => response.json())[m
+[31m-        .then(data => {[m
+[31m-          document.querySelector("input[name='category_product']").value = data.category_product;[m
+[31m-          document.querySelector("input[name='category_code']").value = data.category_code;[m
+[31m-          document.querySelector("textarea[name='category_name']").value = data.category_name;[m
+[31m-          [m
+[31m-          let modal = new bootstrap.Modal(document.getElementById("modalCategory"));[m
+[31m-          modal.show();[m
+[31m-          document.getElementById("btnSave").textContent = "Edit";[m
+[31m-          document.getElementById("inputAction").name = "edit";[m
+[31m-        })[m
+[31m-        .catch(error => console.error("Terjadi kesalahan:", error));[m
+[31m-    });[m
+[31m-  });[m
+[31m-});[m
+[31m-</script>[m
+[31m-[m
+[31m-<?php[m
+[31m-include_once 'layout/footer.php';[m
+[31m-?>[m
+[1mdiff --git a/endpoint/api_category.php b/endpoint/api_category.php[m
+[1mdeleted file mode 100644[m
+[1mindex 17fd382..0000000[m
+[1m--- a/endpoint/api_category.php[m
+[1m+++ /dev/null[m
+[36m@@ -1,112 +0,0 @@[m
+[31m-<?php[m
+[31m-header('Content-Type: application/json');[m
+[31m-[m
+[31m-require_once '../functions/koneksi.php';[m
+[31m-[m
+[31m-$method = $_SERVER["REQUEST_METHOD"];[m
+[31m-[m
+[31m-switch ($method) {[m
+[31m-  case "GET":[m
+[31m-    getCategory();[m
+[31m-    break;[m
+[31m-  case "PATCH":[m
+[31m-    updateCategory();[m
+[31m-    break;[m
+[31m-  default:[m
+[31m-    response(405, "Method Not Allowed");[m
+[31m-}[m
+[31m-[m
+[31m-function response($status, $message, $data = null)[m
+[31m-{[m
+[31m-  http_response_code($status);[m
+[31m-  echo json_encode(["status" => $status, "message" => $message, "data" => $data]);[m
+[31m-  exit();[m
+[31m-}[m
+[31m-[m
+[31m-function getCategory()[m
+[31m-{[m
+[31m-  global $conn;[m
+[31m-  //$input = json_decode(file_get_contents('php://input'), true);[m
+[31m-  $dataId = $_GET["id"] ?? null;[m
+[31m-[m
+[31m-  if ($dataId) {[m
+[31m-    $stmt = $conn->prepare("SELECT * FROM  package_category WHERE category_product = ?");[m
+[31m-    $stmt->bind_param("s", $dataId);[m
+[31m-  } else {[m
+[31m-    $stmt = $conn->prepare("SELECT * FROM package_category");[m
+[31m-  }[m
+[31m-[m
+[31m-  if ($stmt) {[m
+[31m-    $stmt->execute();[m
+[31m-    $result = $stmt->get_result();[m
+[31m-[m
+[31m-    if ($result) {[m
+[31m-      if ($dataId) $data = $result->fetch_assoc();[m
+[31m-      else $data = $result->fetch_all(MYSQLI_ASSOC);[m
+[31m-[m
+[31m-      response(200, "Success", $data);[m
+[31m-    } else {[m
+[31m-      response(500, "Gagal mengambil 
