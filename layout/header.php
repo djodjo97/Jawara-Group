@@ -65,6 +65,7 @@ if ($_SESSION['login'] != "yes") {
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
       $menuCategory = '<a class="nav-link" href="category.php"><i class="fas fa-fw fa-upload"></i><span>Data Kategori Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
+      $menuKurir = '<a class="collapse-item" href="kurir.php">Data Ekspedisi</a>';
 
 
       if ($role == 1) {
@@ -80,6 +81,7 @@ if ($_SESSION['login'] != "yes") {
                                     ' . $menuGenMitra . '
                                     ' . $menuUser . '
                                     ' . $menuRole . '
+                                    ' . $menuKurir . '
                                 </div>
                             </div>
                         </li>';

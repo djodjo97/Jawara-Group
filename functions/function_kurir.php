@@ -1,0 +1,83 @@
+<?php
+
+require_once 'koneksi.php';
+include_once 'helper.php';
+
+
+if (isset($_POST['add'])) {
+    $dataInput = [
+        'ship_code'    => trim(htmlspecialchars($_POST['ship_code'])),
+        'ship_name'    => trim(htmlspecialchars($_POST['ship_name'])),
+    ];
+
+    $add = addData($dataInput);
+
+    $_SESSION['message'] = $add ? "Data berhasil ditambahkan!" : "Gagal menambahkan data.";
+    header("location:../kurir.php");
+    exit;
+}
+
+if (isset($_GET['remove'])) {
+    $id_mitra = trim(htmlspecialchars($_GET['remove']));
+    $remove = removeData($id_mitra);
+
+    $_SESSION['message'] = $remove ? "Data berhasil dihapus!" : "Gagal menghapus data.";
+    header("location:../kurir.php");
+    exit;
+}
+
+function getAllData()
+{
+    global $conn;
+    $stmt = $conn->query("SELECT * FROM shipping_services");
+
+    if (!$stmt) {
+        die("Query Error: " . $conn->error);
+    }
+
+    $res = $stmt->fetch_all(MYSQLI_ASSOC);
+    $stmt->free_result();
+    return $res;
+}
+
+function addData($data)
+{
+    global $conn;
+    $stmt = $conn->prepare("INSERT INTO shipping_services (ship_code, ship_name) VALUES (?, ?)");
+
+    if (!$stmt) {
+        die("Query Error: " . $conn->error);
+    }
+
+    $stmt->bind_param("ss", $data['ship_code'], $data['ship_name']);
+    $res = $stmt->execute();
+
+    if (!$res) {
+        error_log("Insert Error: " . $stmt->error);
+    }
+
+    $stmt->close();
+    return $res;
+}
+
+function removeData($id)
+{
+    global $conn;
+    $stmt = $conn->prepare("DELETE FROM shipping_services  WHERE ship_code = ?");
+
+    if (!$stmt) {
+        die("Query Error: " . $conn->error);
+    }
+
+    $stmt->bind_param("s", $id);
+    $result = $stmt->execute();
+
+    if (!$result) {
+        error_log("Delete Error: " . $stmt->error);
+    }
+
+    $stmt->close();
+    return $result;
+}
+
+
