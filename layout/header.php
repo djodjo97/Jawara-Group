@@ -62,7 +62,7 @@ if ($_SESSION['login'] != "yes") {
       $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
       $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
-      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
 
 
@@ -82,17 +82,17 @@ if ($_SESSION['login'] != "yes") {
                                 </div>
                             </div>
                         </li>';
-                         // Divider
-                echo    '<hr class="sidebar-divider">';
+        // Divider
+        echo    '<hr class="sidebar-divider">';
 
-                // Heading
-                echo    '<div class="sidebar-heading">INPUT PRODUK</div>';
+        // Heading
+        echo    '<div class="sidebar-heading">INPUT PRODUK</div>';
 
-                // Nav Item - Output Produk
-                echo    '<li class="nav-item">
+        // Nav Item - Output Produk
+        echo    '<li class="nav-item">
                             ' . $menuPackage . '
                         </li>';
-            }
+      }
 
       if ($role == 2) {
         //Nav Item - Data Master

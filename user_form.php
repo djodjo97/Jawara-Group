@@ -41,8 +41,12 @@ require 'functions/function_user.php';
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="form-label">Role</label>
               <select name="role" class="form-control form-control-sm" aria-label=".form-select-sm example">
-                <option value="1">Admin</option>
-                <option value="2">User</option>
+                <?php
+                $rolesData = getRoles();
+                foreach ($rolesData as $role):
+                ?>
+                  <option value="<?php echo $role['role_id']; ?>"><?php echo $role['rolename']; ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>

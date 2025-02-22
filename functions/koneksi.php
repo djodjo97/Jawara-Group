@@ -1,4 +1,20 @@
 <?php
+
+function dbConnect()
+{
+    $host   = "localhost";
+    $uname  = "root";
+    $pass   = "";
+    $db     = "db_jawara";
+    $conn   =  mysqli_connect($host, $uname, $pass, $db);
+
+    if (!$conn) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Gagal terhubung ke database']);
+        exit;
+    }
+    return $conn;
+}
 $host    = "localhost";
 $uname    = "root";
 $pass    = "";

@@ -1,6 +1,9 @@
 <?php
 include_once 'layout/header.php';
 require 'functions/function_user.php';
+$dataUser = getData();
+$rolesData = getRoles();
+$mitraNoUser = geMitra_noUser();
 ?>
 
 <!-- Begin Page Content -->
@@ -28,19 +31,9 @@ require 'functions/function_user.php';
                     <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Pilih Kode User</label>
                     <div class="col-sm-2">
                       <select name="code_user" class="form-control form-control-sm" aria-label=".form-select-sm example">
-                        <option value="1">F1201-1</option>
-                        <option value="1">F1202-2</option>
-                        <option value="1">F1203-3</option>
-                        <option value="1">G1-01</option>
-                        <option value="1">G2-02</option>
-                        <option value="1">G3-03</option>
-                        <option value="1">G4-04</option>
-                        <option value="1">G5-05</option>
-                        <option value="1">G6-06</option>
-                        <option value="1">G7-07</option>
-                        <option value="1">G8-08</option>
-                        <option value="1">G9-09</option>
-                        <option value="1">G10-10</option>
+                        <?php foreach ($mitraNoUser as $mitra): ?>
+                          <option value="<?php echo $mitra['id_mitra']; ?>"><?php echo $mitra['id_mitra']; ?></option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
                   </div>
@@ -66,8 +59,9 @@ require 'functions/function_user.php';
                     <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Role</label>
                     <div class="col-sm-2">
                       <select name="role" class="form-control form-control-sm" aria-label=".form-select-sm example">
-                        <option value="1">Founder</option>
-                        <option value="2">Leader</option>
+                        <?php foreach ($rolesData as $role): ?>
+                          <option value="<?php echo $role['role_id']; ?>"><?php echo $role['rolename']; ?></option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
                   </div>
@@ -95,9 +89,8 @@ require 'functions/function_user.php';
             </tr>
           </thead>
           <tbody>
-            <?php $all = getData();
-            $no = 1; ?>
-            <?php foreach ($all as $data) { ?>
+            <?php $no = 1; ?>
+            <?php foreach ($dataUser as $data) { ?>
               <tr>
                 <td style="text-align: center;"><?= $no++ ?></td>
                 <td style="text-align: center;"><?= $data['code_user'] ?></td>
