@@ -25,3 +25,7 @@
 .no-data {
   height: 100px;
 }
+
+input.form-control::placeholder {
+  color: #b9b9b9;
+}

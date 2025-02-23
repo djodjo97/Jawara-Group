@@ -11,8 +11,8 @@ $data = getData($id);
     <div class="card-header py-3">
       <h6 id="title" class="m-0 font-weight-bold text-primary">Form Data</h6>
     </div>
-    <div class="card-body">
-      <form action="functions/function_mitra.php" method="POST" enctype="multipart/form-data" id="formAction">
+    <form action="functions/function_mitra.php" method="POST" enctype="multipart/form-data" id="formAction">
+      <div class="card-body">
         <div class="form-group row">
           <label for="genid" class="col-sm-2 col-form-label">Generasi</label>
           <div class="col-sm-10">
@@ -132,19 +132,18 @@ $data = getData($id);
             </div>
           </div>
         </div>
-        <div class="mt-3 d-flex justify-content-end gap-1">
-          <input type="hidden" id="inputAction" name="add">
-          <button id="btnSave" class="btn btn-primary">Simpan</button>
-          <a class="btn btn-secondary ml-2" href="mitra.php">Batal</a>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="mt-3 d-flex justify-content-between card-footer">
+        <a class="btn btn-secondary ml-2" href="mitra.php">Batal</a>
+        <button id="btnSave" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
   </div>
 </div>
 <!-- /.container-fluid -->
 
 
-<!-- Modal Generation Data-->
+<!-- Modal Data-->
 <div class="modal fade" id="fieldModal" tabindex="-1" aria-labelledby="fieldModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -177,7 +176,7 @@ $data = getData($id);
     </div>
   </div>
 </div>
-<!-- Modal Generation Data End-->
+<!-- Modal Data End-->
 
 <script src="js/origin/mitra_form.js"></script>
 
