@@ -1,5 +1,10 @@
+<?php
+require 'functions/login_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -98,12 +103,13 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="login-container nav-link">
-    <a href="index.html">
-         <img src="img/logo_login.png" alt="Jawara Group Logo" class="logo">
-    </a>
+        <a href="index.html">
+            <img src="img/logo_login.png" alt="Jawara Group Logo" class="logo">
+        </a>
         <h2>Login</h2>
         <form action="functions/login_check.php" method="POST" class="user">
             <div class="form-group">
@@ -119,4 +125,5 @@
         <a href="#" class="forgot-password">Lupa Password?</a>
     </div>
 </body>
+
 </html>

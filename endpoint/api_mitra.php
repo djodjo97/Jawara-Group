@@ -62,11 +62,9 @@ function getMitra()
     if ($dataId) {
       $stmt = $conn->prepare("SELECT * FROM tb_mitra WHERE id_mitra = ?");
       $stmt->bind_param("s", $dataId);
-    } else {
-      $query = "SELECT * FROM mitra_generation";
-      if ($orderby) {
-        $query .= " ORDER BY $orderby";
-      }
+    } else {    /* Form used: user form */
+      $query = "SELECT id_mitra, name FROM tb_mitra";
+      //if ($orderby) $query .= " ORDER BY $orderby";
       $stmt = $conn->prepare($query);
     }
   }
