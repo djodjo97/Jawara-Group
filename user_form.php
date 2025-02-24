@@ -29,7 +29,7 @@ $data  = getData($_GET['id'] ?? NULL);
         <div class="form-group row">
           <label for="name" class="col-sm-2 col-form-label">Nama</label>
           <div class="col-sm-10">
-            <input name="name" type="text" class="form-control" placeholder="Nama" value="<?= $data['name'] ?? ''; ?>" required>
+            <input name="name" type="text" class="form-control" placeholder="Nama" required value="<?= $data['name'] ?? ''; ?>">
           </div>
         </div>
         <div class="form-group row">
@@ -54,11 +54,12 @@ $data  = getData($_GET['id'] ?? NULL);
             </div>
           </div>
         </div>
+        <button type="button" id="chPwd" class="btn btn-primary" data-toggle="modal" data-target="#pwdModal">Ubah Password</button>
       </div>
       <div class="mt-3 d-flex justify-content-between card-footer">
         <!-- <input type="hidden" name="add"> -->
         <a class="btn btn-secondary ml-2" href="user.php">Kembali</a>
-        <button id="btnSave" class="btn btn-primary">Simpan</button>
+        <button type="submit" id="btnSave" class="btn btn-primary">Simpan</button>
       </div>
     </form>
   </div>
@@ -99,6 +100,47 @@ $data  = getData($_GET['id'] ?? NULL);
   </div>
 </div>
 <!-- Modal Data End-->
+
+<!-- Password Modal -->
+<div class="modal fade" id="pwdModal" tabindex="-1" aria-labelledby="pwdModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pwdModalLabel">Ubah Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="">
+        <div class="modal-body">
+          <div class="form-group row">
+            <label for="name" class="col-sm-3 col-form-label">Password</label>
+            <div class="col-sm-9">
+              <input name="pwd" type="password" class="form-control" placeholder="Password Sekarang" required value="<?= $data['pwd'] ?? ''; ?>">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="col-sm-3 col-form-label">Password Baru</label>
+            <div class="col-sm-9">
+              <input name="newPwd" type="password" class="form-control" placeholder="Password Baru" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="name" class="col-sm-3 col-form-label">Konfirmasi Password</label>
+            <div class="col-sm-9">
+              <input name="confPwd" type="password" class="form-control" placeholder="Konfirmasi Password Baru" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary" id="btnChPwd">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Password Modal End-->
 
 <script src="js/origin/user_form.js"></script>
 

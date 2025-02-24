@@ -129,56 +129,78 @@ function modalAction() {
   });
 }
 
+function formAction() {
+  $('#formAction').on('change', '.form-control', function () {
+    $(this).addClass('form-change');
+  });
+
+  $('#btnSave').on('click', function (e) {
+    e.preventDefault();
+
+    if (!$('#formAction').get(0).checkValidity()) {
+      $('#formAction').get(0).reportValidity();
+      return false;
+    }
+
+    if ($('#formAction').data('action') == "add") {
+      $('#formAction').submit();
+    } else {
+      const data = new Object();
+      let attr;
+
+      $('.form-change').each(function () {
+        attr = $(this).data('col');
+        data[attr] = $(this).val();
+      });
+      const dataId = $('.form-control[name="code"]').val();
+      fetch('endpoint/api_user.php?id=' + dataId, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(res => {
+          Swal.fire({
+            icon: "success",
+            title: "The data has been saved successfully!",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        })
+        .catch(error => {
+          console.error("Terjadi kesalahan:", error);
+        });
+    }
+  });
+}
+
+function pwdAction() {
+  $('#newPwd').
+
+    $('#formPwd').on('submit', function (e) {
+      const pwd = $("pwd").val();
+      const newPwd = $("newPwd").val();
+      const confPwd = $("confPwd").val();
+      const status = $("status");
+      e.preventDefault();
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   if (window.jQuery) {
     init();
     modalAction();
-
-    $('#formAction').on('change', '.form-control', function () {
-      $(this).addClass('form-change');
-    });
-
-    $('#btnSave').on('click', function (e) {
-      e.preventDefault();
-      if ($('#formAction').data('action') == "add") {
-        $('#formAction').submit();
-      } else {
-        const data = new Object();
-        let attr;
-
-        $('.form-change').each(function () {
-          attr = $(this).data('col');
-          data[attr] = $(this).val();
-        });
-        const dataId = $('.form-control[name="code"]').val();
-        fetch('endpoint/api_user.php?id=' + dataId, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-          })
-          .then(res => {
-            Swal.fire({
-              icon: "success",
-              title: "The data has been saved successfully!",
-              showConfirmButton: false,
-              timer: 1500
-            }).then(() => {
-              window.location.reload();
-            });
-          })
-          .catch(error => {
-            console.error("Terjadi kesalahan:", error);
-          });
-      }
-    });
+    formAction();
+    pwdAction();
   }
   else {
     console.error("jQuery belum tersedia!");

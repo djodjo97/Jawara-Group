@@ -23,7 +23,7 @@ if ($_POST) {
         // Set sesi
         $_SESSION['login'] = "yes";
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['role'] = $user['role_id'];
 
         // Arahkan berdasarkan peran
         if ($user['role'] === '1') {
