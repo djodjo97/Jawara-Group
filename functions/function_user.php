@@ -4,33 +4,42 @@ include_once 'helper.php';
 
 function getData($id = null)
 {
-  $conn = dbConnect();
-  if ($id) {
-    $stmt = $conn->prepare("SELECT * FROM tb_user WHERE code_user = ?");
-    $stmt->bind_param("s", $id);
-  } else {
-    $stmt = $conn->prepare("SELECT * FROM tb_user");
-  }
-  if ($stmt === false) die("Query Error: " . $conn->error); // Cek error jika query gagal
-  $stmt->execute();
-  $result = $stmt->get_result();
+  try {
+    $conn = dbConnect();
 
-  if ($id) $data = $result->fetch_assoc();
-  else $data = $result->fetch_all(MYSQLI_ASSOC);
-  $stmt->close();
-  $conn->close();
-  return $data;
+    if ($id) {
+      $stmt = $conn->prepare("SELECT * FROM tb_user WHERE code_user = ?");
+      if (!$stmt) throw new Exception("Query Error: " . $conn->error);
+      $stmt->bind_param("s", $id);
+      if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+      $result = $stmt->get_result();
+      $data = $result->fetch_assoc();
+      $stmt->close();
+    } else {
+      $result = $conn->query("SELECT * FROM tb_user");
+      if (!$result) throw new Exception("Query Error: " . $conn->error);
+      $data = $result->fetch_all(MYSQLI_ASSOC);
+      $result->free();
+    }
+    return $data;
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  }
 }
 
 function getMitra_noUser()
 {
-  $conn = dbConnect();
-  $stmt = $conn->query("SELECT m.* FROM tb_mitra m LEFT JOIN tb_user u ON m.id_mitra=u.code_user WHERE u.code_user is NULL "); //using query() without prepare()
-  if (!$stmt) die("Query Error: " . $conn->error); // Cek error jika query gagal
-  $res = $stmt->fetch_all(MYSQLI_ASSOC);
-  $stmt->free();      //if using query()
-  $conn->close();
-  return $res;
+  try {
+    $conn = dbConnect();
+    if (!$conn) throw new Exception("Koneksi database gagal.");
+    $result = $conn->query("SELECT m.* FROM tb_mitra m LEFT JOIN tb_user u ON m.id_mitra=u.code_user WHERE u.code_user is NULL "); //using query() without prepare()
+    if (!$result) throw new Exception("Query Error: " . $conn->error);
+    $res = $result->fetch_all(MYSQLI_ASSOC);
+    $result->free();      //if using query()
+    return $res;
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  }
 }
 
 function addData($data)
@@ -43,16 +52,6 @@ function addData($data)
   $conn->close();
   return $res;
 }
-
-// function showData($id_user)
-// {
-//   global $conn;
-//   $fixid     = mysqli_real_escape_string($conn, $id_user);
-//   $sql     = "SELECT * FROM tb_user WHERE id_user='$fixid'";
-//   $result    = mysqli_query($conn, $sql);
-//   return mysqli_fetch_all($result, MYSQLI_ASSOC);
-//   mysqli_close($conn);
-// }
 
 function deleteData($code)
 {

@@ -9,12 +9,12 @@ $data  = getData($_GET['id'] ?? NULL);
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 id="title" class="m-0 font-weight-bold text-primary">Data USer</h6>
+      <h6 id="title" class="m-0 font-weight-bold text-primary">Data User</h6>
     </div>
     <form id="formAction" action="functions/function_user.php" method="POST" enctype="multipart/form-data">
       <div class="card-body">
         <div class="form-group row">
-          <label for="code" class="col-sm-2 col-form-label">Kode User</label>
+          <label for="code" class="col-sm-2 col-form-label">Kode Mitra</label>
           <div class="col-sm-10">
             <div class="input-group option-list">
               <div class="input-group-prepend btn-option">
@@ -54,11 +54,11 @@ $data  = getData($_GET['id'] ?? NULL);
             </div>
           </div>
         </div>
-        <button type="button" id="chPwd" class="btn btn-primary" data-toggle="modal" data-target="#pwdModal">Ubah Password</button>
+        <button type="button" id="chPwd" class="btn btn-primary" data-toggle="modal" data-target="#pwdModal" style="display: none;">Ubah Password</button>
       </div>
       <div class="mt-3 d-flex justify-content-between card-footer">
-        <!-- <input type="hidden" name="add"> -->
         <a class="btn btn-secondary ml-2" href="user.php">Kembali</a>
+        <input type="hidden" name="add">
         <button type="submit" id="btnSave" class="btn btn-primary">Simpan</button>
       </div>
     </form>
@@ -111,28 +111,32 @@ $data  = getData($_GET['id'] ?? NULL);
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="">
+      <form action="functions/function_user.php" method="POST">
         <div class="modal-body">
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Password</label>
             <div class="col-sm-9">
-              <input name="pwd" type="password" class="form-control" placeholder="Password Sekarang" required value="<?= $data['pwd'] ?? ''; ?>">
+              <input name="pwd" type="password" class="form-control" placeholder="Password Sekarang" value="<?= $_SESSION['message']['pwd']['val'] ?? ''; ?>" required>
+              <div id="pwdInfo" class="small text-danger"></div>
             </div>
           </div>
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Password Baru</label>
             <div class="col-sm-9">
-              <input name="newPwd" type="password" class="form-control" placeholder="Password Baru" required>
+              <input id="newPwd" name="newPwd" type="password" class="form-control" placeholder="Password Baru" value="<?= $_SESSION['message']['newPwd']['val'] ?? ''; ?>" required>
+              <div id="newPwdInfo" class="small text-danger"></div>
             </div>
           </div>
           <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Konfirmasi Password</label>
             <div class="col-sm-9">
-              <input name="confPwd" type="password" class="form-control" placeholder="Konfirmasi Password Baru" required>
+              <input id="confPwd" name="confPwd" type="password" class="form-control" placeholder="Konfirmasi Password Baru" value="<?= $_SESSION['message']['confPwd']['val'] ?? ''; ?>" required>
+              <div id="confPwdInfo" class="small text-danger"></div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
+          <input name="chPwd" type="text" hidden readonly>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
           <button type="submit" class="btn btn-primary" id="btnChPwd">Simpan</button>
         </div>
@@ -146,4 +150,25 @@ $data  = getData($_GET['id'] ?? NULL);
 
 <?php
 include_once 'layout/footer.php';
+// Menampilkan notifikasi jika ada pesan dari login.php
+if (isset($_SESSION['message'])) {
+  $msg = $_SESSION['message'];
+  if (is_array($msg)) {
+    $scr = "<script>$('#chPwd').trigger('click');";
+    $scr .= ($msg['pwd']['text']) ? "$('#pwdInfo').text('" . $msg['pwd']['text'] . "');" : "";
+    $scr .= ($msg['newPwd']['text']) ? "$('#newPwdInfo').text('" . $msg['newPwd']['text'] . "');" : "";
+    $scr .= ($msg['confPwd']['text']) ? "$('#confPwdInfo').text('" . $msg['confPwd']['text'] . "');" : "";
+    $scr .= "</script>";
+    echo $scr;
+  } else {
+    echo "<script>Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '" . $msg . "',
+            showConfirmButton: false,
+            timer: 2500
+        });</script>";
+  }
+}
+unset($_SESSION['message']);
 ?>

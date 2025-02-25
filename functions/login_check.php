@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once 'koneksi.php';
 
 if ($_POST) {
+  require_once 'koneksi.php';
   $username = $_POST['username'];
   $password = $_POST['password'];
 
@@ -13,15 +13,13 @@ if ($_POST) {
   $stmt->execute();
   $result = $stmt->get_result();
 
+  // Bersihkan sumber daya
+  $stmt->close();
+  $conn->close();
+
   if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();   // User ditemukan
-    if ($username == "Admin") {
-      if (md5($password) != $user['password']) {
-        $_SESSION['message'] = "Username atau Password salah!";
-        header("Location: ../login.php");
-        exit();
-      }
-    } elseif (!password_verify($password, $user['password'])) {
+    if (!password_verify($password, $user['password'])) {
       $_SESSION['message'] = "Username atau Password salah!";
       header("Location: ../login.php");
       exit();
@@ -33,9 +31,9 @@ if ($_POST) {
     $_SESSION['role'] = $user['role_id'];
 
     // Arahkan berdasarkan peran
-    if ($user['role'] === '1') {
+    if ($_SESSION['role'] === 1) {
       header("Location: ../dashboard.php");
-    } elseif ($user['role'] === '2') {
+    } elseif ($user['role'] === 2) {
       header("Location: ../dashboard.php");
     } else {
       header("Location: ../dashboard.php");
@@ -43,21 +41,25 @@ if ($_POST) {
     exit();
   } else {
     // Login gagal
-    // $_SESSION['message'] = "<script>
-    //                 $.toast({
-    //                     heading: 'Login Gagal!',
-    //                     text: 'Username / Password Salah!',
-    //                     position: 'top-right',
-    //                     hideAfter: 3500,
-    //                     textAlign: 'center',
-    //                     icon: 'error'
-    //                 });
-    //             </script>";
     $_SESSION['message'] = "Username atau Password salah!";
     header("Location: ../login.php");
     exit();
   }
-  // Bersihkan sumber daya
-  $stmt->close();
-  $conn->close();
+}
+
+if (isset($_SESSION['username'])) {
+  switch ($_SESSION['role']) {
+    case 1:
+      header("Location: dashboard.php");
+      exit();
+      break;
+    case 2:
+      header("Location: dashboard.php");
+      exit();
+      break;
+    default:
+      header("Location: dashboard.php");
+      exit();
+      break;
+  }
 }

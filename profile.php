@@ -69,7 +69,7 @@ $data  = getData();
 
             <div class="tab-pane fade" id="nav-security" role="tabpanel" aria-labelledby="nav-security-tab">
 
-              <form action="functions/function_profile.php" method="POST">
+              <form id="formChangePwd" action="functions/function_profile.php" method="POST">
                 <!-- Form Group (current password)-->
                 <div class="mb-3">
                   <label class="mb-1" for="pwd">Password</label>
@@ -89,7 +89,7 @@ $data  = getData();
                   <div id="confPwdInfo" class="small text-danger"></div>
                 </div>
                 <input name="chPwd" type="text" hidden readonly>
-                <button id="btnChPwd" class="btn btn-primary" type="submit">Save</button>
+                <button id="btnChangePwd" class="btn btn-primary" type="button">Save</button>
               </form>
 
             </div>

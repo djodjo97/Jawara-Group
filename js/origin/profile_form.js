@@ -45,31 +45,46 @@ function pwdAction() {
   });
 
   $("#newPwd").on("input", function () {
-    let newPwd = $(this).val();
+    let newPwd = $(this).val().trim();
     let invalidChars = newPwd.match(/[^a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/g);
     if (invalidChars) {
       $(this).val('');
       $("#newPwdInfo").text(`( ${[...new Set(invalidChars)].join(', ')} ) tidak diizinkan!`);
       return
     }
-
     $("#newPwdInfo").text(validatePwd(newPwd));
   });
 
-  $('#confPwd').on('input', function () {
-    if ($(this).val() != $('#newPwd').val()) {
+  $('#confPwd, #newPwd').on('input', function () {
+    if ($('#confPwd').val().trim() != $('#newPwd').val().trim()) {
       $("#confPwdInfo").text("Password tidak sama!");
     } else {
       $("#confPwdInfo").text('');
     }
   });
 
-  $('#formPwd').on('submit', function (e) {
-    const pwd = $("pwd").val();
-    const newPwd = $("newPwd").val();
-    const confPwd = $("confPwd").val();
-    const status = $("status");
-    e.preventDefault();
+  $('#formChangePwd').on('submit', function (e) {
+    $('#formChangePwd .form-control').each(function (i, elem) {
+      //belum selesai
+    });
+
+    if (!$('#formChangePwd').get(0).checkValidity()) {
+      $('#formChangePwd').get(0).reportValidity();
+      return false;
+    }
+    let newPwd = $('#newPwd').val().trim();
+    if ($('#pwd').val().trim() && newPwd && $('#confPwd').val().trim() && validatePwd(newPwd) === "") {
+      $('#formChangePwd').submit();
+    }
+  });
+
+  $('#btnChangePwd').on('click', function () {
+    $('#formChangePwd').submit();
+  });
+
+  $('#formChangePwd').on('keydown', function (e) {
+    if (e.key == "Enter") $(this).submit();
+
   });
 }
 

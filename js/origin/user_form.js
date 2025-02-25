@@ -4,10 +4,12 @@ function init() {
     $('#title').text('Data User');
     $('#formAction').data('action', 'edit');
     $('#btnSave').text('Ubah');
+    $('#chPwd').show();
   } else {
     $('#title').text('Tambah User');
     $('#formAction').data('action', 'add');
     $('#btnSave').text('Simpan');
+    //$('#chPwd').hide();
   }
 
   $('.form-control[name="code"]').data('col', 'code_user');
@@ -183,24 +185,11 @@ function formAction() {
   });
 }
 
-function pwdAction() {
-  $('#newPwd').
-
-    $('#formPwd').on('submit', function (e) {
-      const pwd = $("pwd").val();
-      const newPwd = $("newPwd").val();
-      const confPwd = $("confPwd").val();
-      const status = $("status");
-      e.preventDefault();
-    });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   if (window.jQuery) {
     init();
     modalAction();
     formAction();
-    pwdAction();
   }
   else {
     console.error("jQuery belum tersedia!");

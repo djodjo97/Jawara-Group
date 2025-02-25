@@ -16,7 +16,7 @@ class Database
       $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
       $this->connection->set_charset("utf8mb4"); // Pastikan charset UTF-8 untuk keamanan
     } catch (Exception $e) {
-      $this->handleError("Db Error: " . $e->getMessage());
+      $this->handleError("Database Error: " . $e->getMessage());
     }
   }
 
@@ -34,8 +34,6 @@ class Database
       http_response_code(500);
       echo json_encode(['error' => 'Gagal terhubung ke database: ' . $errorMessage]);
     } else {
-      // return ['icon' => 'error', 'title' => 'Error!', 'text' => "SQL Error: " . $errorMessage];
-
       echo "<script>
             Swal.fire({
                 icon: 'error',
@@ -46,9 +44,15 @@ class Database
                 
             });
         </script>";
-      // echo "<script>alert(`" . $errorMessage . "`);</script>";
     }
     exit;
+  }
+
+  public function __destruct()
+  {
+    if ($this->connection) {
+      $this->connection->close();
+    }
   }
 }
 

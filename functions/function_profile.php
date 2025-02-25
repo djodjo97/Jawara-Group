@@ -43,9 +43,6 @@ function changePwd($newPwd, $id)
 {
   try {
     $conn = dbConnect();
-    if (!$conn->ping()) {
-      throw new Exception("❌ Koneksi database sudah ditutup!");
-    }
     $stmt = $conn->prepare("UPDATE tb_user SET password = ? WHERE id_user = ?");
     if (!$stmt) throw new Exception("Query Error: " . $conn->error);
     $stmt->bind_param("ss", $newPwd, $id);
@@ -142,20 +139,11 @@ if (isset($_POST['update'])) {
     exit;
   }
 
-  if ($user['username'] == "Admin") {
-    if (md5($pwd) != $user['password']) {
-      $msgPwd['pwd']['text'] = "Password salah!";
-      $_SESSION['message'] = $msgPwd;
-      header("location:../profile.php");
-      exit;
-    }
-  } else {
-    if (password_verify($pwd, $user['password'])) {
-      $msgPwd['pwd']['text'] = "Password salah!";
-      $_SESSION['message'] = $msgPwd;
-      header("location:../profile.php");
-      exit;
-    }
+  if (!password_verify($pwd, $user['password'])) {
+    $msgPwd['pwd']['text'] = "Password salah!";
+    $_SESSION['message'] = $msgPwd;
+    header("location:../profile.php");
+    exit;
   }
 
   $valid = isValidPassword($newPwd);

@@ -1,7 +1,7 @@
 <?php
 session_start();
 // NOT LOGGED IN
-if ($_SESSION['login'] != "yes") {
+if (!isset($_SESSION['username'])) {
   header("location:login.php");
 }
 ?>
