@@ -16,20 +16,46 @@ function getData()
   return $data;
 }
 
+function isUnameChange($conn, $uname)
+{
+  $conn = $conn ?? dbConnect();
+  $stmt = $conn->prepare("SELECT username FROM tb_user WHERE username = ? LIMIT 1");
+  $stmt->bind_param("s", $_SESSION['username']);
+  if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+  $result = $stmt->get_result();
+  $data = $result->fetch_assoc();
+  if ($uname !== $data['username']) return true;
+  return false;
+}
+
+function usernameAvailCheck($conn, $uname)
+{
+  $conn = $conn ?? dbConnect();
+  $stmt = $conn->prepare("SELECT 1 FROM tb_user WHERE username = ? LIMIT 1");
+  $stmt->bind_param("s", $uname);
+  if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+  $result = $stmt->get_result();
+  if ($result->num_rows > 0) return true;
+  return false;
+}
+
 function updateProfile($data)
 {
+  $conn = dbConnect();
+  $isUnameChange = isUnameChange($conn, $data['uname']);
   try {
-    $conn = dbConnect();
+    if ($isUnameChange && usernameAvailCheck($conn, $data['uname']) > 0) throw new Exception("Username tidak tersedia!");
     $stmt = $conn->prepare("UPDATE tb_user SET name = ?, username = ? where username = ?");
     if (!$stmt) throw new Exception("Query Error: " . $conn->error);
     $stmt->bind_param("sss", $data['name'], $data['uname'], $_SESSION['username']);
-    if (!$stmt->execute()) {
-      throw new Exception("Execution Error: " . $stmt->error);
-    } else {
-      $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil diubah'];
-    }
+
+    if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+    else $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil diubah!'];
+
     $stmt->close();
     $conn->close();
+
+    if ($isUnameChange) $_SESSION['username'] = $data['uname'];
   } catch (mysqli_sql_exception $e) {
     // Tangkap error MySQLi dan tampilkan pesan yang lebih informatif
     $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "SQL Error: " . $e->getMessage()];
@@ -98,10 +124,9 @@ function isValidPassword($pwd)
 
   // Cek pola tiga karakter yang berulang
   $length = strlen($pwd);
-  for ($i = 0; $i < $length - 2; $i++) {
-    $pattern = substr($pwd, $i, 3);
-    if (substr_count($pwd, $pattern) > 1) {
-      return ['error' => '7', 'msg' => "Tidak boleh ada pola tiga karakter yang berulang dalam password!"];
+  for ($i = 0; $i < $length - 3; $i++) {
+    if (substr($pwd, $i, 3) === substr($pwd, $i + 3, 3)) {
+      return ['error' => '7', 'msg' => "Tidak boleh ada <b>pola tiga karakter</b> berdekatan yang berulang dalam password!"];
     }
   }
   return true;
@@ -140,28 +165,33 @@ if (isset($_POST['update'])) {
   }
 
   if (!password_verify($pwd, $user['password'])) {
+    $msgPwd['pwd']['val'] = $msgPwd['nePwd']['val'] = "";
     $msgPwd['pwd']['text'] = "Password salah!";
     $_SESSION['message'] = $msgPwd;
     header("location:../profile.php");
     exit;
   }
 
-  $valid = isValidPassword($newPwd);
-
-  if ($valid !== true) {
-    $msgPwd['newPwd']['text'] = "Password tidak Diizinkan!";
+  if (isValidPassword($newPwd) !== true) {
+    $msgPwd['newPwd']['text'] = "Password tidak diizinkan!";
     $_SESSION['message'] = $msgPwd;
     header("location:../profile.php");
     exit;
   }
-
-  if ($newPwd != $confPwd) {
+  if ($newPwd !== $confPwd) {
+    $msgPwd['confPwd']['val'] = "";
     $msgPwd['confPwd']['text'] = "Password tidak sama!";
     $_SESSION['message'] = $msgPwd;
     header("location:../profile.php");
     exit;
   }
-
+  if ($pwd === $newPwd) {
+    $msgPwd['newPwd']['val'] = "";
+    $msgPwd['newPwd']['text'] = "Gunakan password yang berbeda!";
+    $_SESSION['message'] = $msgPwd;
+    header("location:../profile.php");
+    exit;
+  }
   $hashPwd = password_hash($newPwd, PASSWORD_ARGON2ID);
   $res = changePwd($hashPwd, $user['id_user']);
   $_SESSION['message'] = $res;

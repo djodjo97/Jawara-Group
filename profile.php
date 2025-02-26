@@ -36,7 +36,7 @@ $data  = getData();
 
           <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-              <form method="POST" action="functions/function_profile.php">
+              <form id="formChangeProfile" method="POST" action="functions/function_profile.php">
                 <!-- Form Group (username)-->
                 <div class="form-group">
                   <label class="form-label mb-1" for="uname">Username</label>
@@ -61,7 +61,7 @@ $data  = getData();
 
                 <!-- Save changes button-->
                 <input name="update" readonly hidden>
-                <button class="btn btn-primary mt-2" type="submit">Save changes</button>
+                <button id="btnChangeProfile" class="btn btn-primary mt-2 submit-btn" type="button">Save changes</button>
               </form>
             </div>
 
@@ -89,7 +89,7 @@ $data  = getData();
                   <div id="confPwdInfo" class="small text-danger"></div>
                 </div>
                 <input name="chPwd" type="text" hidden readonly>
-                <button id="btnChangePwd" class="btn btn-primary" type="button">Save</button>
+                <button id="btnChangePwd" class="btn btn-primary submit-btn" type="button">Save</button>
               </form>
 
             </div>
@@ -100,7 +100,7 @@ $data  = getData();
   </div>
 </div>
 
-<script src="js/origin/profile_form.js"></script>
+<script src="js/origin/profile.js"></script>
 
 <?php
 include_once 'layout/footer.php';
@@ -112,6 +112,8 @@ if (isset($_SESSION['message'])) {
     $scr .= ($msg['pwd']['text']) ? "$('#pwdInfo').text('" . $msg['pwd']['text'] . "');" : "";
     $scr .= ($msg['newPwd']['text']) ? "$('#newPwdInfo').text('" . $msg['newPwd']['text'] . "');" : "";
     $scr .= ($msg['confPwd']['text']) ? "$('#confPwdInfo').text('" . $msg['confPwd']['text'] . "');" : "";
+    $scr .= ($msg['pwd']['text']) === "Password salah!" ? "$('#pwd').addClass('border-danger');" : "";
+    $scr .= ($msg['newPwd']['text']) === "Gunakan password yang berbeda!" ? "$('#newPwd').addClass('border-danger');" : "";
     $scr .= "</script>";
     echo $scr;
   } else {
