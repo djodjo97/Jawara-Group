@@ -16,44 +16,48 @@ switch ($method) {
     response(405, "Method Not Allowed");
 }
 
-function response($status, $message, $data = null)
+function response($response, $data = null)
 {
-  http_response_code($status);
-  echo json_encode(["status" => $status, "message" => $message, "data" => $data]);
+  http_response_code($response['status']);
+  foreach (["status", "icon", "title", "msg"] as $key) array_key_exists($key, $response) && $response[$key] !== null && $response[$key] !== '' && $responSend[$key === "msg" ? "message" : $key] = $response[$key];
+  $responSend['data'] = $data;
+  echo json_encode($responSend);
   exit();
 }
 
 function getRoles()
 {
-  global $conn;
-  //$input = json_decode(file_get_contents('php://input'), true);
-  $dataId = $_GET["id"] ?? null;
+  try {
+    $conn = dbConnect();
+    //$input = json_decode(file_get_contents('php://input'), true);
+    $dataId = $_GET["id"] ?? null;
 
-  if ($dataId) {
-    $stmt = $conn->prepare("SELECT * FROM roles WHERE role_id = ?");
-    $stmt->bind_param("s", $dataId);
-  } else {
-    $stmt = $conn->prepare("SELECT * FROM roles");
-  }
-
-  if ($stmt) {
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result) {
-      if ($dataId) $data = $result->fetch_assoc();
-      else $data = $result->fetch_all(MYSQLI_ASSOC);
-
-      response(200, "Success", $data);
+    if ($dataId) {
+      $stmt = $conn->prepare("SELECT * FROM roles WHERE role_id = ?");
+      $stmt->bind_param("s", $dataId);
     } else {
-      response(500, "Gagal mengambil data!");
+      $stmt = $conn->prepare("SELECT * FROM roles");
     }
-  } else {
-    response(500, "Gagal menyiapkan query!");
-  }
 
-  $stmt->close();
-  $conn->close();
+    if ($stmt) {
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      if ($result) {
+        if ($dataId) $data = $result->fetch_assoc();
+        else $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        response(["status" => 200], $data);
+      } else {
+        response(500, "Gagal mengambil data!");
+      }
+    } else {
+      response(500, "Gagal menyiapkan query!");
+    }
+    $stmt->close();
+  } catch (Exception $e) {
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
+  }
 }
 
 function updateRoles()

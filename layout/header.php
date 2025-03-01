@@ -1,7 +1,7 @@
 <?php
 session_start();
 // NOT LOGGED IN
-if ($_SESSION['login'] != "yes") {
+if (!isset($_SESSION['username'])) {
   header("location:login.php");
 }
 ?>
@@ -24,12 +24,43 @@ if ($_SESSION['login'] != "yes") {
   <link href="css/font.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/toast.css">
   <link rel="stylesheet" href="css/style-admin.css">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <!-- <script src="js/demo/chart-area-demo.js"></script>
+            <script src="js/demo/chart-pie-demo.js"></script> -->
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/toast.js"></script>
+  <?php
+  // if (isset($_SESSION['message'])) {
+  //     unset($_SESSION["message"]);
+  // }
+  ?>
+  <script src="js/bootstrap-select.js"></script>
+  <script src="js/select2.js"></script>
+
+  <script src="vendor/sweetalert2/sweetalert2.min.js"></script>
 
 </head>
 
@@ -147,6 +178,10 @@ if ($_SESSION['login'] != "yes") {
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="profile.php">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="functions/logout.php" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
