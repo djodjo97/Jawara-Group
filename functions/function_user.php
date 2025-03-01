@@ -6,9 +6,8 @@ function getData($id = null)
 {
   try {
     $conn = dbConnect();
-
     if ($id) {
-      $stmt = $conn->prepare("SELECT * FROM tb_user WHERE code_user = ?");
+      $stmt = $conn->prepare("SELECT u.*, r.rolename, m.name mitra_name FROM tb_user u JOIN roles r ON u.role_id = r.role_id JOIN tb_mitra m ON u.code_user = m.id_mitra WHERE u.code_user = ?");
       if (!$stmt) throw new Exception("Query Error: " . $conn->error);
       $stmt->bind_param("s", $id);
       if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
@@ -27,65 +26,80 @@ function getData($id = null)
   }
 }
 
-function getMitra_noUser()
+function generateRandomPassword()
 {
-  try {
-    $conn = dbConnect();
-    if (!$conn) throw new Exception("Koneksi database gagal.");
-    $result = $conn->query("SELECT m.* FROM tb_mitra m LEFT JOIN tb_user u ON m.id_mitra=u.code_user WHERE u.code_user is NULL "); //using query() without prepare()
-    if (!$result) throw new Exception("Query Error: " . $conn->error);
-    $res = $result->fetch_all(MYSQLI_ASSOC);
-    $result->free();      //if using query()
-    return $res;
-  } catch (Exception $e) {
-    return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+  $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $digits = '0123456789';
+  $specials = '!@#$%^&*()_+{}[]:;<>,.?~\\-';
+  $length = 8;
+
+  // Ambil 1 karakter dari masing-masing kategori
+  $password = $lowercase[rand(0, strlen($lowercase) - 1)] .
+    $uppercase[rand(0, strlen($uppercase) - 1)] .
+    $digits[rand(0, strlen($digits) - 1)] .
+    $specials[rand(0, strlen($specials) - 1)];
+
+  // Gabungkan semua karakter yang diizinkan
+  $all = $lowercase . $uppercase . $digits . $specials;
+  for ($i = 4; $i < $length; $i++) {
+    $password .= $all[rand(0, strlen($all) - 1)];
   }
+
+  // Acak urutan karakter
+  return str_shuffle($password);
 }
 
 function addData($data)
 {
-  $conn = dbConnect();
-  $stmt = $conn->prepare("INSERT INTO tb_user (code_user, name, username, role)  VALUES (?, ?, ?)");
-  $stmt->bind_param("sssi", $data['code'], $data['name'], $data['username'], $data['role']);
-  $res = $stmt->execute();
-  $stmt->close();
-  $conn->close();
-  return $res;
+  try {
+    $conn = dbConnect();
+    $stmt = $conn->prepare("SELECT 1 from tb_user where username = ? LIMIT 1");
+    $stmt->bind_param("s", $data['username']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) throw new Exception("Username tidak tersedia!");
+
+    $pwd = generateRandomPassword();
+    $hashPwd = password_hash($pwd, PASSWORD_ARGON2ID);
+    $stmt = $conn->prepare("INSERT INTO tb_user (code_user, name, username, role_id, password)  VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssis", $data['code'], $data['name'], $data['username'], $data['role'], $hashPwd);
+    $stmt->execute();
+    $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Password berhasil diubah', 'data' => ['password' => $pwd]];
+    $stmt->close();
+  } catch (Exception $e) {
+    $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  }
+  return $msg;
 }
 
 function deleteData($code)
 {
   $conn = dbConnect();
-  $stmt = $conn->prepare("SELECT * FROM tb_user WHERE code_user = ?");
+  $stmt = $conn->prepare("DELETE FROM tb_user WHERE code_user = ?");
   $stmt->bind_param("s", $code);
-  if ($stmt === false) die("Query Error: " . $conn->error);
+  if (!$stmt) die("Query Error: " . $conn->error);
   $res = $stmt->execute();
   $stmt->close();
-  $conn->close();
-  return $res;
+  if ($res) return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil dihapus!'];
+  else return ['icon' => 'error', 'title' => 'Error!', 'text' => 'Terjadi kesalahan: Eksekusi gagal!'];
 }
 
 if (isset($_POST['add'])) {
   $dataInput = [
     'code'      => $_POST['code'],
     'name'      => $_POST['name'],
-    'username'  => $_POST['username'],
+    'username'  => $_POST['uname'],
     'role'      => $_POST['role']
   ];
   $add  = addData($dataInput);
   session_start();
-  unset($_SESSION["message"]);
-  if ($add) {
-    $_SESSION['message'] = $added;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
-  header("location:../user.php");
+  $_SESSION['message'] = $add;
+  header("location:../user_form.php?id=" . $dataInput['code']);
 } elseif (isset($_GET['hapus'])) {
   $code    = $_GET['hapus'];
   $delete = deleteData($code);
   session_start();
-  unset($_SESSION["message"]);
-  $_SESSION['message'] = $delete ? $deleted : $failed;
+  $_SESSION['message'] = $delete;
   header("location:../user.php");
 }

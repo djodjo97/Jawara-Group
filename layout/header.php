@@ -31,7 +31,6 @@ if (!isset($_SESSION['username'])) {
   <link rel="stylesheet" href="css/toast.css">
   <link rel="stylesheet" href="css/style-admin.css">
 
-
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -52,7 +51,6 @@ if (!isset($_SESSION['username'])) {
 
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/toast.js"></script>
   <?php
   // if (isset($_SESSION['message'])) {

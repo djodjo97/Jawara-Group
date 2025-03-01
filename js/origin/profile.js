@@ -35,7 +35,7 @@ function validatePwd(pwd) {
   else if (!reRules.lower.test(pwd)) $res = "Setidaknya mengandung satu huruf kecil";
   else if (!reRules.upper.test(pwd)) $res = "Setidaknya mengandung satu huruf kapital";
   else if (!reRules.digit.test(pwd)) $res = "Setidaknya mengandung satu angka";
-  else if (!reRules.special.test(pwd)) $res = "Setidaknya mengandung ?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]";
+  else if (!reRules.special.test(pwd)) $res = "Setidaknya mengandung ?=.*!@#$%^&*()_+{}\[\]:;<>,.?~\\-";
   else if (reRules.noRepeat.test(pwd)) $res = "Tidak boleh ada tiga karakter berulang berturut-turut";
   else if (hasRepeatedPattern(pwd)) $res = `Tidak boleh ada <b>pola tiga karakter</b> berdekatan yang berulang dalam password`;
 
@@ -109,7 +109,5 @@ $(document).ready(function () {
       $('#formChangePwd').submit();
     }
   });
-
-  //$('#formChangePwd').on('keydown', e => e.key == "Enter" && $('#btnChangePwd').trigger('click') || true);
 });
 

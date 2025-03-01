@@ -53,4 +53,16 @@ $dataUser = getData();
 
 <?php
 include_once 'layout/footer.php';
+// Menampilkan notifikasi jika ada pesan dari login.php
+if (isset($_SESSION['message'])) {
+  $msg = $_SESSION['message'];
+  echo "<script>Swal.fire({
+            icon: '" . $msg['icon'] . "',
+            title: '" . $msg['title'] . "',
+            text: `" . $msg['text'] . "`,
+            showConfirmButton: false,
+            timer: 2500
+        });</script>";
+  unset($_SESSION['message']);
+}
 ?>

@@ -12,7 +12,6 @@ function getData()
   $result = $stmt->get_result();
   $data = $result->fetch_assoc();
   $stmt->close();
-  // $conn->close();
   return $data;
 }
 
@@ -53,7 +52,6 @@ function updateProfile($data)
     else $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil diubah!'];
 
     $stmt->close();
-    $conn->close();
 
     if ($isUnameChange) $_SESSION['username'] = $data['uname'];
   } catch (mysqli_sql_exception $e) {
@@ -79,7 +77,6 @@ function changePwd($newPwd, $id)
       $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Password berhasil diubah'];
     }
     $stmt->close();
-    $conn->close();
   } catch (Exception $e) {
     $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
   }
@@ -108,7 +105,7 @@ function isValidPassword($pwd)
 
   // Cek minimal satu karakter spesial
   if (!preg_match('/[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/', $pwd)) {
-    return ['error' => '4', 'msg' => "Password harus mengandung minimal satu karakter spesial (!@#$%^&*()_+{}[]:;<>,.?~\\/-)"];
+    return ['error' => '4', 'msg' => "Password harus mengandung minimal satu karakter spesial !@#$%^&*()_+{}[]:;<>,.?~\\/-"];
   }
 
   // Cek karakter tidak diizinkan
