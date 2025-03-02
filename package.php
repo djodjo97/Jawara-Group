@@ -28,79 +28,7 @@ require 'functions/function_package.php';
     </div>
     <div class="card-body">
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">Tambah Data Produk</button>
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Produk</h5>
-              </div>
-              <div class="modal-body">
-                <form action="functions/function_package.php" method="POST">
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kode Paket</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="package_code" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Nama Paket</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="package_name" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kategori Produk</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="category_code" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="smell_type" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis Kelamin</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="gender" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Harga</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="price" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Komisi Seller</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="commission" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kurir</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="ship_code" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Deskripsi</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="description" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <input type="hidden" name="add">
-                    <button class="btn btn-primary btn-sm">Simpan</button>
-                    <a class="btn btn-outline-secondary btn-sm" href="package.php">Batal</a>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data Produk</button>
       </div>
       <br>
       <div class="table-responsive">
@@ -142,6 +70,93 @@ require 'functions/function_package.php';
   </div>
 </div>
 <!-- /.container-fluid -->
+
+
+<!-- Modal Product -->
+<div class="modal fade" id="modalProduct" tabindex="-1" aria-labelledby="modalProductLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductLabel">Tambah Data Produk</h5>
+        <button type="button" class="close modal-close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="functions/function_package.php" method="POST">
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kode Paket</label>
+            <div class="col-sm-10">
+              <input type="text" name="package_code" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Nama Paket</label>
+            <div class="col-sm-10">
+              <input type="text" name="package_name" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kategori Produk</label>
+            <div class="col-sm-10">
+              <input type="text" name="category_code" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis</label>
+            <div class="col-sm-10">
+              <input type="text" name="smell_type" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis Kelamin</label>
+            <div class="col-sm-10">
+              <input type="text" name="gender" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Harga</label>
+            <div class="col-sm-10">
+              <input type="text" name="price" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Komisi Seller</label>
+            <div class="col-sm-10">
+              <input type="text" name="commission" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kurir</label>
+            <div class="col-sm-10">
+              <input type="text" name="ship_code" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Deskripsi</label>
+            <div class="col-sm-10">
+              <input type="text" name="description" class="form-control form-control-sm" id="inputEmail3" require>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" name="add">
+            <button class="btn btn-primary btn-sm">Simpan</button>
+            <a class="btn btn-outline-secondary btn-sm" href="package.php">Batal</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.Modal Product -->
+
+<script>
+  $(document).ready(function() {
+    $('#btnAdd').click(function() {
+      $('#modalProduct').modal('show');
+    });
+  });
+</script>
 
 <?php
 include_once 'layout/footer.php';

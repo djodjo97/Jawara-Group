@@ -17,7 +17,7 @@ require 'functions/function_generation.php';
         </div>
         <div class="card-body">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="button" id="btnAdd" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalGeneration">Tambah Data</button>
+            <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data</button>
           </div>
           <br />
           <div class="table-responsive">
@@ -66,6 +66,9 @@ require 'functions/function_generation.php';
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Tambah Group</h5>
+          <button type="button" class="close modal-close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <form action="functions/function_generation.php" method="POST" id="formAction">
@@ -89,8 +92,8 @@ require 'functions/function_generation.php';
             </div>
             <div class="modal-footer">
               <input type="hidden" id="inputAction" name="add">
-              <button type="submit" class="btn btn-primary btn-sm" id="btnSave">Simpan</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="btnSave">Simpan</button>
+              <button type="button" class="btn btn-secondary modal-close">Close</button>
             </div>
           </form>
         </div>

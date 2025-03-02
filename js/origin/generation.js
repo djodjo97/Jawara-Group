@@ -4,6 +4,7 @@ $(document).ready(function () {
   $('.form-control[name="description"]').data('col', 'description');
 
   $('#btnAdd').click(function () {
+    $('#modalGeneration').modal('show');
     $('.form-control').removeClass('row-change');
     $('#btnSave').text('Tambah');
     $('#inputAction').prop('name', 'add');
@@ -33,13 +34,13 @@ $(document).ready(function () {
         return response.text();
       })
       .then(res => {
-        var myModal = new bootstrap.Modal($('#modalGeneration'), true);
-        myModal.show();
+        res = JSON.parse(res);
+        let data = res.data;
+
+        $('#modalGeneration').modal('show');
         $('#btnSave').text('Edit');
         $('#inputAction').prop('name', 'edit');
 
-        res = JSON.parse(res);
-        let data = res.data;
         const idgen = $('#inputIdgen input[name="idgen"]');
         idgen.prop('disabled', true);
 
@@ -50,6 +51,10 @@ $(document).ready(function () {
       .catch(error => {
         console.error("Terjadi kesalahan:", error);
       });
+  });
+
+  $('#modalGeneration button.modal-close').click(function () {
+    $('#modalGeneration').modal('hide');
   });
 
   $('#modalGeneration').on('change', '.form-control', function () {

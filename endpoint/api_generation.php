@@ -13,7 +13,7 @@ switch ($method) {
     updateGeneration();
     break;
   default:
-    response(405, "Method Not Allowed");
+    response(["status" => 405, "msg" => "Method Not Allowed"]);
 }
 
 function response($response, $data = null)
@@ -32,7 +32,7 @@ function getGeneration()
     $dataId = $_GET["id"] ?? null;
     $orderby = $_GET["order"] ?? null;
     if ($dataId) {
-      $stmt = $conn->prepare("SELdECT * FROM mitra_generation WHERE id_generation = ?");
+      $stmt = $conn->prepare("SELECT * FROM mitra_generation WHERE id_generation = ?");
       $stmt->bind_param("s", $dataId);
     } else {
       $orderby = in_array($orderby, ["id_generation", "seq"]) ? $orderby : "id_generation";
