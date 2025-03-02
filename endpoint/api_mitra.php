@@ -13,7 +13,7 @@ switch ($method) {
     updateData();
     break;
   default:
-    response(405, "Method Not Allowed");
+    response(["status" => 405, "msg" => "Method Not Allowed"]);
 }
 
 function response($response, $data = null)
@@ -37,7 +37,7 @@ function getUpper($conn, $getData)
     $genData = $result->fetch_assoc();
     $genIdParam = $genData['seq'] - $upId;
     if ($genIdParam < 0) {
-      response(200, "Success", []);
+      response(["status" => 200, "title" => "Succes"], []);
     } else {
       $stmt = $conn->prepare("SELECT id_mitra, name FROM tb_mitra where gen_id = (SELECT id_generation FROM mitra_generation WHERE seq = ?)");
       $stmt->bind_param("s", $genIdParam);
@@ -90,11 +90,7 @@ function getMitra()
     }
     $stmt->close();
   } catch (Exception $e) {
-    return response(500, [
-      'icon' => 'error',
-      'title' => 'Error!',
-      'text' => "Terjadi kesalahan: " . $e->getMessage()
-    ]);
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
   }
 }
 
@@ -104,9 +100,7 @@ function updateData()
   $input = json_decode(file_get_contents("php://input"), true);
   $id = $_GET["id"] ?? null;
 
-  if (!$id) {
-    response(400, "Bad Request: ID are required");
-  }
+  if (!$id) response(["status" => 400, "icon" => "error", "title" => "Error!", "msg" => "Bad Request: ID are required"]);
 
   $setParts = [];
   $params = [];

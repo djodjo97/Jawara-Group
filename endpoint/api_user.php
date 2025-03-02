@@ -12,13 +12,13 @@ switch ($method) {
   case "GET":
     // if ($_GET["action"] == "update") getMitra($_GET["id"]);
     if ($_GET["action"] == "reset-sandi") passwordReset($_GET["id"]);
-    elseif (!$_GET["action"]) response(400, "Bad Request: ID are required");
+    elseif (!$_GET["action"]) response(["status" => 400, "msg" => "Bad Request: ID are required"]);
     break;
   case "POST":
     unameCheck();
     break;
   default:
-    response(405, "Method Not Allowed");
+    response(["status" => 405, "msg" => "Method Not Allowed"]);
 }
 
 function response($response, $data = null)
@@ -41,9 +41,10 @@ function unameCheck()
     $stmt->bind_param("s", $input['uname']);
     if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
     $result = $stmt->get_result();
-    if ($result->num_rows > 0) throw new Exception("Username tidak tersedia!");
+    if ($result->num_rows > 0) response(["status" => 200, "icon" => "error", "title" => "Error!", "msg" => "Username tidak tersedia!"]);
+    response(["status" => 200, "msg" => ""]);
   } catch (Exception $e) {
-    response(500, "Error: " . $e->getMessage());
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
   }
 }
 
@@ -129,16 +130,15 @@ function passwordReset($id = null)
 {
   try {
     $conn = dbConnect();
-    if (!$id) response(400, "Bad Request: ID are required");
+    if (!$id) response(["status" => 400, "icon" => "success", "title" => "Success!", "msg" => "Bad Request: ID are required!"]);
     $newPwd = generateRandomPassword();
     $hashPwd = password_hash($newPwd, PASSWORD_ARGON2ID);
 
     $stmt = $conn->prepare("UPDATE tb_user SET password = ? WHERE code_user = ?");
     $stmt->bind_param("ss", $hashPwd, $id);
     if ($stmt->execute()) response(["status" => 200, "msg" => "Password has been reset!"], ['password' => $newPwd]);
-
-    else response(500, "Internal Server Error");
+    else response(["status" => 500, "icon" => "success", "title" => "Success!", "msg" => "Internal Server Error"]);
   } catch (Exception $e) {
-    response(500, "Error: " . $e->getMessage());
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
   }
 }

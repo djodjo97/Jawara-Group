@@ -148,37 +148,41 @@ function modalAction() {
   });
 }
 
+function checkUsernameAvailable() {
+  let uname = $('#uname').val();
+  if (!uname) return;
+  fetch('endpoint/api_user.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uname: uname })
+  }).then(response => {
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    return response.text();
+  }).then(res => {
+    res = JSON.parse(res);
+    if (res['message']) {
+      $('#unameInfo').text(res['message']);
+      $('#uname').get(0).setCustomValidity(res['message']);
+    } else {
+      $('#unameInfo').text('');
+      $('#uname').get(0).setCustomValidity('');
+    }
+  }).catch(error => {
+    console.error("Terjadi kesalahan:", error);
+  });
+}
+
 function formAction() {
   $('#formAction').on('change', '.form-control', function () {
     $(this).addClass('form-change');
   });
 
+  $('#uname').on('input', function () {
+    $('#uname').get(0).setCustomValidity('');
+  });
+
   $('#uname').on('change', function () {
-    let uname = $(this).val();
-    fetch('endpoint/api_user.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ uname: uname })
-    }).then(response => {
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      return response.text();
-    }).then(res => {
-      if (res['icon'] == "error") {
-        Swal.fire({
-          icon: res['icon'],
-          title: res['title'],
-          text: res['text'],
-          showConfirmButton: false,
-          timer: 1500
-        }).then(() => {
-          $('#unameInfo').val(res['message']);
-        });
-      }
-    }).catch(error => {
-      console.error("Terjadi kesalahan:", error);
-    })
+    checkUsernameAvailable();
   });
 
   $('#btnSave').on('click', function (e) {

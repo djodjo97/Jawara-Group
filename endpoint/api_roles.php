@@ -13,7 +13,7 @@ switch ($method) {
     updateRoles();
     break;
   default:
-    response(405, "Method Not Allowed");
+    response(["status" => 405, "msg" => "Method Not Allowed"]);
 }
 
 function response($response, $data = null)
@@ -46,13 +46,12 @@ function getRoles()
       if ($result) {
         if ($dataId) $data = $result->fetch_assoc();
         else $data = $result->fetch_all(MYSQLI_ASSOC);
-
         response(["status" => 200], $data);
       } else {
-        response(500, "Gagal mengambil data!");
+        response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Gagal mengambil data!"]);
       }
     } else {
-      response(500, "Gagal menyiapkan query!");
+      response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Gagal menyiapkan query!"]);
     }
     $stmt->close();
   } catch (Exception $e) {
@@ -66,9 +65,7 @@ function updateRoles()
   $input = json_decode(file_get_contents("php://input"), true);
   $id = $_GET["id"] ?? null;
 
-  if (!$id) {
-    response(400, "Bad Request: ID are required");
-  }
+  if (!$id) response(["status" => 400, "icon" => "success", "title" => "Success!", "msg" => "Bad Request: ID are required!"]);
 
   $setParts = [];
   $params = [];
@@ -106,9 +103,9 @@ function updateRoles()
   $stmt->bind_param($types, ...$params);
 
   if ($stmt->execute()) {
-    response(200, "Product Updated");
+    response(["status" => 200, "icon" => "success", "title" => "Success!", "msg" => "Product Updated!"]);
   } else {
-    response(500, "Internal Server Error");
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Internal Server Error"]);
   }
 
   $stmt->close();
