@@ -3,14 +3,28 @@
 require_once 'koneksi.php';
 include_once 'helper.php';
 
-function getData()
+function getData($id = null)
 {
-  global $conn;
-  $sql     = "SELECT * FROM packages";
-  $result    = mysqli_query($conn, $sql);
-  return mysqli_fetch_all($result, MYSQLI_ASSOC);
-  mysqli_free_result($result);
-  mysqli_close($conn);
+  try {
+    $conn = dbConnect();
+    if ($id) {
+      $stmt = $conn->prepare("SELECT * FROM packages WHERE package_code = ?");
+      if (!$stmt) throw new Exception("Query Error: " . $conn->error);
+      $stmt->bind_param("s", $id);
+      if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+      $result = $stmt->get_result();
+      $data = $result->fetch_assoc();
+      $stmt->close();
+    } else {
+      $result = $conn->query("SELECT * FROM packages");
+      if (!$result) throw new Exception("Query Error: " . $conn->error);
+      $data = $result->fetch_all(MYSQLI_ASSOC);
+      $result->free();
+    }
+    return $data;
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  }
 }
 
 function addData($dataInput)
@@ -57,16 +71,6 @@ function addData($dataInput)
       $conn->close();
     }
   }
-}
-
-function showData($package_code)
-{
-  global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $package_code);
-  $sql     = "SELECT * FROM packages WHERE package_code='$fixid'";
-  $result    = mysqli_query($conn, $sql);
-  return mysqli_fetch_all($result, MYSQLI_ASSOC);
-  mysqli_close($conn);
 }
 
 function editData($package_code, $package_name, $category_code, $smell_type, $gender, $price, $commission, $ship_code, $description)

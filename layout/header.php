@@ -93,8 +93,11 @@ if (!isset($_SESSION['username'])) {
       $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
       $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
-      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
+
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Produk</span></a>';
+      $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
+      $menuType = '<a class="collapse-item" href="produt_type.php">Jenis Produk</a>';
 
 
       if ($role == 1) {
@@ -117,11 +120,24 @@ if (!isset($_SESSION['username'])) {
         echo    '<hr class="sidebar-divider">';
 
         // Heading
-        echo    '<div class="sidebar-heading">INPUT PRODUK</div>';
+        echo    '<div class="sidebar-heading">PRODUK</div>';
 
         // Nav Item - Output Produk
         echo    '<li class="nav-item">
                             ' . $menuPackage . '
+                        </li>';
+
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#confProduct" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="confProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuCategory . '
+                                    ' . $menuType . '
+                                </div>
+                            </div>
                         </li>';
       }
 
