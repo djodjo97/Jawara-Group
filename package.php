@@ -28,7 +28,8 @@ require 'functions/function_package.php';
     </div>
     <div class="card-body">
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data Produk</button>
+        <!-- <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data Produk</button> -->
+        <a type="button" class="btn c-btn-primary btn-sm" href="package_form.php">Tambah Data</a>
       </div>
       <br>
       <div class="table-responsive">

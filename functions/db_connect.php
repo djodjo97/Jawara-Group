@@ -12,6 +12,12 @@ class Database
   private function __construct()
   {
     try {
+      // $this->connection = new PDO("mysql:host=$this->host;dbname=$this->database", $this->username, $this->password);
+      // $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      // //opsional, set default fetch mode
+      // $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+      // $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
       $dsn = "mysql:host={$this->host};dbname={$this->database};charset=utf8mb4";
       $this->connection = new PDO($dsn, $this->username, $this->password, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -31,11 +37,40 @@ class Database
     return self::$instance->connection;
   }
 
+  public function getConnection()
+  {
+    return $this->connection;
+  }
+
   private function handleError(PDOException $e)
   {
-    $errorMessage = "Kesalahan database: " . $e->getMessage();
-    http_response_code(500);
-    echo json_encode(["status" => 500, "message" => $errorMessage]);
+    $errorCode = (int) $e->getCode(); // Pastikan error code dalam bentuk integer
+    $errorMessage = match ($errorCode) {
+      1045 => "Akses ditolak!", // Akses ke database ditolak! Periksa username dan password.
+      1049 => "Kesalahan database!", // Database tidak ditemukan! Pastikan database sudah dibuat.
+      1064 => "Query Error!", // Kesalahan sintaks SQL!/ Periksa query Anda.
+      1146 => "Kesalahan database!", // Tabel yang diminta tidak ditemukan!
+      default => "Kesalahan database: " . $e->getMessage(),
+    };
+    if (php_sapi_name() == "cli" || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+      http_response_code(500);
+      echo json_encode([
+        "status" => 500,
+        "icon" => "error",
+        "title" => "Error!",
+        "message" => 'Gagal terhubung ke database: ' . $errorMessage
+      ]);
+    } else {
+      echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Database Error!',
+                text: `" . addslashes($errorMessage) . "`,
+                showConfirmButton: true
+            });
+            console.error(`$e`);
+        </script>";
+    }
     exit;
   }
 
