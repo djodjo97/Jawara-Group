@@ -95,7 +95,7 @@ if (!isset($_SESSION['username'])) {
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
 
-      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Produk</span></a>';
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Paket</span></a>';
       $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
       $menuType = '<a class="collapse-item" href="produt_type.php">Jenis Produk</a>';
 
