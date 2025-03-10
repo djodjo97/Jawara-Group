@@ -1,7 +1,7 @@
 <?php
 include_once 'layout/header.php';
 require 'functions/function_package.php';
-$package_code   = $_GET['package_code'] ?? '';
+$package_code = $_GET['id'] ?? '';
 $data  = getData($package_code);
 ?>
 
@@ -12,7 +12,7 @@ $data  = getData($package_code);
     <div class="card-header py-3">
       <h6 id="title" class="m-0 font-weight-bold text-primary">Data Paket</h6>
     </div>
-    <form action="functions/function_package.php" method="POST">
+    <form id="formAction" action="functions/function_package.php" method="POST">
       <div class="card-body">
         <div class="form-group row">
           <label for="code" class="col-sm-2 col-form-label">Kode Paket</label>
@@ -33,20 +33,27 @@ $data  = getData($package_code);
               <div class="input-group-prepend btn-option">
                 <button class="btn btn-primary" type="button" id="dataOption_category"><i class="fas fa-caret-down"></i></button>
               </div>
-              <input id="catCode" name="catCode" type="text" class="form-control" value="<?php echo $data['category_code'] ?? ''; ?>" readonly hidden>
-              <input id="category" name="category" type="text" class="form-control" placeholder="Kategori" value="<?= $data['category'] ?? ''; ?>" required>
+              <input id="catCode" name="catCode" type="text" class="form-control" value="<?= $data['category_code'] ?? ''; ?>" readonly hidden>
+              <input id="category" name="category" type="text" class="form-control" placeholder="Kategori" value="<?= $data['category_name'] ?? ''; ?>" required>
             </div>
           </div>
           <div class="col-sm-4 form-group">
             <label for="type" class="form-label">Jenis</label>
-            <input id="type" name="type" type="text" class="form-control" placeholder="Jenis Aroma" value="<?= $data['smell_type'] ?? ''; ?>" required>
+            <div class="input-group option-list">
+              <div class="input-group-prepend btn-option">
+                <button class="btn btn-primary" type="button" id="dataOption_type"><i class="fas fa-caret-down"></i></button>
+              </div>
+              <input id="type" name="type" type="text" class="form-control" value="<?= $data['smell_type'] ?? ''; ?>" readonly hidden>
+              <input id="smell_name" name="smell_name" type="text" class="form-control" placeholder="Jenis Aroma" value="<?= $data['type_name'] ?? ''; ?>" required>
+            </div>
           </div>
           <div class="col-sm-4 form-group">
             <label for="gender" class="form-label">Gender</label>
-            <select name="gender" id="gender" class="form-control" value="<?= $data['gender'] ?? ''; ?>" required>
+            <select name="gender" id="gender" class="form-control" required>
               <option disabled selected>--Pilih--</option>
-              <option value="M">Pria</option>
-              <option value="F">Wanita</option>
+              <option <?= $data['gender'] == "M" ? "selected" : "" ?> value="M">Pria</option>
+              <option <?= $data['gender'] == "F" ? "selected" : "" ?> value="F">Wanita</option>
+              <option <?= $data['gender'] == "U" ? "selected" : "" ?> value="U">Unisex</option>
             </select>
           </div>
         </div>
@@ -86,7 +93,7 @@ $data  = getData($package_code);
         </div>
       </div>
       <div class="mt-3 d-flex justify-content-between card-footer">
-        <input type="hidden" name="edit">
+        <input type="text" name="add" hidden readonly>
         <a class="btn btn-secondary ml-2" href="package.php">Batal</a>
         <button id="btnSave" class="btn btn-primary">Simpan</button>
       </div>

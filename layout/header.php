@@ -86,33 +86,53 @@ if (!isset($_SESSION['username'])) {
           <i class="fas fa-fw fa-home"></i>
           <span>Home</span></a>
       </li>
-      <?php
+      <hr class="sidebar-divider">
 
+      <?php
       $role = $_SESSION['role'];
 
-      $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
-      $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
-      $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
-      $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
+      $menuUsers = '<a class="nav-link" href="user.php"><i class="fas fa-fw fa-users"></i>          <span>User</span></a>';
+      $menuRole = '<a class="collapse-item" href="role.php">Role</a>';
 
-      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Paket</span></a>';
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i>          <span>Paket</span></a>';
       $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
       $menuType = '<a class="collapse-item" href="product-type.php">Jenis Produk</a>';
 
+      $menuMitra = '<a class="nav-link" href="mitra.php"><i class="fas fa-fw fa-people-arrows"></i>          <span>Mitra</span></a>';
+      $menuGenMitra = '<a class="collapse-item" href="generation.php">Generasi Mitra</a>';
+
 
       if ($role == 1) {
+        // Heading
+        echo '<div class="sidebar-heading">users</div>';
+        // Nav Item - Mitra Produk
+        echo    '<li class="nav-item">' . $menuUsers . '</li>';
+
         //Nav Item - Data Master
         echo    '<li class="nav-item">
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#datamaster" aria-expanded="true" aria-controls="datauser">
-                                <i class="fas fa-fw fa-database"></i>
-                                    <span>Data Master</span>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataUsers" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
                             </a>
-                            <div id="datamaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div id="dataUsers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                                 <div class="bg-white py-2 collapse-inner rounded">
-                                    ' . $menuMitra . '
-                                    ' . $menuGenMitra . '
-                                    ' . $menuUser . '
                                     ' . $menuRole . '
+                                </div>
+                            </div>
+                        </li>';
+        echo    '<hr class="sidebar-divider">';
+        echo    '<div class="sidebar-heading">MITRA</div>';
+
+        // Nav Item - Mitra
+        echo    '<li class="nav-item">' . $menuMitra . '</li>';
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataMitra" aria-expanded="true" aria-controls="dataMitra">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="dataMitra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuGenMitra . '
                                 </div>
                             </div>
                         </li>';

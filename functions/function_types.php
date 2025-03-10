@@ -49,7 +49,7 @@ function removeData($code)
     $conn = dbConnect();
     $stmt = $conn->prepare("DELETE FROM package_type WHERE type_id = ?");
     $stmt->bind_param("s", $code);
-    $res = $stmt->execute();
+    $stmt->execute();
     $stmt->close();
     return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil dihapus!'];
   } catch (mysqli_sql_exception $e) {

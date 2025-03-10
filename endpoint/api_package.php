@@ -7,10 +7,10 @@ $method = $_SERVER["REQUEST_METHOD"];
 
 switch ($method) {
   case "GET":
-    get_type();
+    getPackage();
     break;
   case "PATCH":
-    updateType();
+    updatePackage();
     break;
   default:
     response(["status" => 405, "msg" => "Method Not Allowed"]);
@@ -25,22 +25,18 @@ function response($response, $data = null)
   exit();
 }
 
-function get_type()
+function getPackage()
 {
   try {
     $conn = dbConnect();
     //$input = json_decode(file_get_contents('php://input'), true);
     $dataId = $_GET["id"] ?? null;
-    $group = $_GET["group"] ?? null;
 
     if ($dataId) {
-      $stmt = $conn->prepare("SELECT * FROM package_type WHERE type_id = ?");
+      $stmt = $conn->prepare("SELECT * FROM packages WHERE package_code = ?");
       $stmt->bind_param("s", $dataId);
-    } elseif ($group) {
-      $stmt = $conn->prepare("SELECT * FROM package_type WHERE type_group = ?");
-      $stmt->bind_param("s", $group);
     } else {
-      $stmt = $conn->prepare("SELECT * FROM package_type");
+      $stmt = $conn->prepare("SELECT * FROM packages");
     }
 
     if ($stmt) {
@@ -63,7 +59,7 @@ function get_type()
   }
 }
 
-function updateType()
+function updatePackage()
 {
   try {
     $conn = dbConnect();
@@ -100,7 +96,7 @@ function updateType()
     }
 
     $setQuery = implode(", ", $setParts);
-    $stmt = $conn->prepare("UPDATE package_type SET $setQuery WHERE type_id = ?");
+    $stmt = $conn->prepare("UPDATE packages SET $setQuery WHERE package_code = ?");
 
     $params[] = $id;
     $types .= 's';

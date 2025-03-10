@@ -4,6 +4,12 @@ function init() {
     $('#title').text('Data Paket');
     $('#formAction').data('action', 'edit');
     $('#btnSave').text('Ubah');
+    let number = parseFloat($('#price').val());
+    let formatted = number.toLocaleString("id-ID", { minimumFractionDigits: 2 });
+    $('#price').val(formatted);
+    number = parseFloat($('#comm').val());
+    formatted = number.toLocaleString("id-ID", { minimumFractionDigits: 2 });
+    $('#comm').val(formatted);
   } else {
     $('#title').text('Tambah Paket');
     $('#formAction').data('action', 'add');
@@ -12,12 +18,69 @@ function init() {
 
   $('.form-control[name="code"]').data('col', 'package_code');
   $('.form-control[name="name"]').data('col', 'package_name');
-  $('.form-control[name="category"]').data('col', 'category_code');
+  $('.form-control[name="catCode"]').data('col', 'category_code');
   $('.form-control[name="type"]').data('col', 'smell_type');
   $('.form-control[name="gender"]').data('col', 'gender');
   $('.form-control[name="price"]').data('col', 'price');
   $('.form-control[name="comm"]').data('col', 'commission');
   $('.form-control[name="description"]').data('col', 'description');
+}
+
+function formAction() {
+  $('#formAction').on('change', '.form-control', function () {
+    $(this).addClass('form-change');
+  });
+
+  $('#btnSave').on('click', function (e) {
+    e.preventDefault();
+
+    if (!$('#formAction').get(0).checkValidity()) {
+      $('#formAction').get(0).reportValidity();
+      return false;
+    }
+
+    if ($('#formAction').data('action') == "add") {
+      $('#formAction').submit();
+    } else {
+      const data = new Object();
+      let col;
+
+      $('.form-change').each(function () {
+        col = $(this).data('col');
+        if ($(this).data('type') == 'currency') {
+          // console.log($(this).val(), parseFloat(($(this).val()).replaceAll('.', '').replace(',', '.')));
+          data[col] = parseFloat(($(this).val()).replaceAll('.', '').replace(',', '.'));
+        } else {
+          data[col] = $(this).val();
+        }
+      });
+      const dataId = $('#code').val();
+      fetch('endpoint/api_package.php?id=' + dataId, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(res => {
+          Swal.fire({
+            icon: "success",
+            title: "The data has been saved successfully!",
+            showConfirmButton: false,
+            timer: 1500
+          }).then(() => {
+            window.location.reload();
+          });
+        })
+        .catch(error => {
+          console.error("Terjadi kesalahan:", error);
+        });
+    }
+  });
 }
 
 function currencyOnBlur(e) {
@@ -190,20 +253,20 @@ function modalAction() {
     //$('#catCode').trigger('change');
   });
 
-  //modal role display
+  //modal category display
   $('#dataOption_category').on('click', function () {
     $('#fieldModal').modal('show');
     $('#fieldData').DataTable().destroy();
     $('#fieldData thead tr').empty().append(`<th></th><th></th><th></th>`)
     $('#fieldData thead tr th').eq(0).text('ID');
-    $('#fieldData thead tr th').eq(1).text('Category');
+    $('#fieldData thead tr th').eq(1).text('Kategori');
 
     $('#modalSpinner').show();
     var table = $('#fieldData').DataTable({
       autoWidth: false,
       columnDefs: [
-        { targets: 0, width: "10%" },  // Kolom pertama (index 0) dengan lebar 50px
-        { targets: 2, width: "10%" }   // Kolom ketiga dengan lebar otomatis
+        { targets: 0, width: "10%" },  // Kolom pertama (index 0) dengan lebar 10%
+        { targets: 2, width: "10%" }
       ]
     });
     table.clear().draw();
@@ -238,6 +301,53 @@ function modalAction() {
         console.error("Terjadi kesalahan:", error);
       });
   });
+
+  //modal type display
+  $('#dataOption_type').on('click', function () {
+    $('#fieldModal').modal('show');
+    $('#fieldData').DataTable().destroy();
+    $('#fieldData thead tr').empty().append(`<th></th><th></th><th></th>`)
+    $('#fieldData thead tr th').eq(0).text('ID');
+    $('#fieldData thead tr th').eq(1).text('Jenis');
+
+    $('#modalSpinner').show();
+    var table = $('#fieldData').DataTable({
+      autoWidth: false,
+      columnDefs: [
+        { targets: 0, width: "10%" },
+        { targets: 2, width: "10%" }
+      ]
+    });
+    table.clear().draw();
+    fetch('endpoint/api_types.php?group=smell', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); }
+        return response.text();
+      })
+      .then(res => {
+        const response = JSON.parse(res);
+        if (response['data'].length > 0) {
+          $.each(response['data'], (i, v) => {
+            let rowNode = table.row.add([
+              v['type_id'],
+              v['type_name'],
+              `<button type="button" class="btn btn-success btn-sm dataopt-change">Pilih</button>`
+            ]).draw().node();
+            $(rowNode).find('td').eq(0).addClass('row-data change-data').data({ "val": v['type_id'], 'target': 'type' });
+            $(rowNode).find('td').eq(1).addClass('row-data').data({ "val": v['type_name'], 'target': 'smell_name' });
+          });
+        } else {
+          $('.dataTables_empty').append(viewEmptyData());
+        }
+        $('#modalSpinner').hide();
+      })
+      .catch(error => {
+        console.error("Terjadi kesalahan:", error);
+      });
+  });
 }
 
 function viewEmptyData(elemOpen = '', elemClose = '') {
@@ -251,4 +361,5 @@ $(document).ready(function () {
   init();
   eventCurrency();
   modalAction();
+  formAction();
 });
