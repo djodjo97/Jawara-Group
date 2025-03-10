@@ -1,6 +1,8 @@
 <?php
 include_once 'layout/header.php';
 require 'functions/function_package.php';
+$packages = getData();
+$no = 1;
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -23,7 +25,7 @@ require 'functions/function_package.php';
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 style="font-size : 18px;" class="m-0 font-weight-bold text-dark">
-        <center>DATA PRODUK</center>
+        <center>Data Paket</center>
       </h6>
     </div>
     <div class="card-body">
@@ -42,26 +44,22 @@ require 'functions/function_package.php';
               <th style="text-align: center;">Jenis</th>
               <th style="text-align: center;">Jenis Kelamin</th>
               <th style="text-align: center;">Harga</th>
-              <th style="text-align: center;">Komisi Seler</th>
-              <th style="text-align: center;">Kurir Pengiriman</th>
+              <th style="text-align: center;">Komisi Seller</th>
               <th style="text-align: center;">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <?php $all = getData();
-            $no = 1; ?>
-            <?php foreach ($all as $data) { ?>
+            <?php foreach ($packages as $data) { ?>
               <tr>
-                <td style="text-align: center;"><?= $no++; ?></td>
+                <td style="text-align: center;"><?= $data['package_code'] ?></td>
                 <td style="text-align: center;"><?= $data['package_name'] ?></td>
-                <td style="text-align: center;"><?= $data['category_code'] ?></td>
-                <td style="text-align: center;"><?= $data['smell_type'] ?></td>
-                <td style="text-align: center;"><?= $data['gender'] ?></td>
-                <td style="text-align: center;"><?= $data['price'] ?></td>
-                <td style="text-align: center;"><?= $data['commission'] ?></td>
-                <td style="text-align: center;"><?= $data['ship_code'] ?></td>
-                <td style="text-align: center;"><a href="<?= 'package_form.php?package_code=' . $data['package_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
-                  &nbsp;<a href="<?= 'functions/function_package.php?hapus=' . $data['package_code']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
+                <td style="text-align: center;"><?= $data['category_name'] ?></td>
+                <td style="text-align: center;"><?= $data['type_name'] ?></td>
+                <td style="text-align: center;"><?= $data['gender_name'] ?></td>
+                <td style="text-align: center;"><?= number_format($data['price'], 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><?= number_format($data['commission'], 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><a href="<?= 'package_form.php?id=' . $data['package_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
+                  &nbsp;<a href="<?= 'functions/function_package.php?remove=' . $data['package_code']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
               </tr>
             <?php } ?>
           </tbody>
@@ -72,93 +70,17 @@ require 'functions/function_package.php';
 </div>
 <!-- /.container-fluid -->
 
-
-<!-- Modal Product -->
-<div class="modal fade" id="modalProduct" tabindex="-1" aria-labelledby="modalProductLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalProductLabel">Tambah Data Produk</h5>
-        <button type="button" class="close modal-close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="functions/function_package.php" method="POST">
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kode Paket</label>
-            <div class="col-sm-10">
-              <input type="text" name="package_code" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Nama Paket</label>
-            <div class="col-sm-10">
-              <input type="text" name="package_name" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kategori Produk</label>
-            <div class="col-sm-10">
-              <input type="text" name="category_code" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis</label>
-            <div class="col-sm-10">
-              <input type="text" name="smell_type" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Jenis Kelamin</label>
-            <div class="col-sm-10">
-              <input type="text" name="gender" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Harga</label>
-            <div class="col-sm-10">
-              <input type="text" name="price" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Komisi Seller</label>
-            <div class="col-sm-10">
-              <input type="text" name="commission" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Kurir</label>
-            <div class="col-sm-10">
-              <input type="text" name="ship_code" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Deskripsi</label>
-            <div class="col-sm-10">
-              <input type="text" name="description" class="form-control form-control-sm" id="inputEmail3" require>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" name="add">
-            <button class="btn btn-primary btn-sm">Simpan</button>
-            <a class="btn btn-outline-secondary btn-sm" href="package.php">Batal</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- /.Modal Product -->
-
-<script>
-  $(document).ready(function() {
-    $('#btnAdd').click(function() {
-      $('#modalProduct').modal('show');
-    });
-  });
-</script>
-
 <?php
 include_once 'layout/footer.php';
+if (isset($_SESSION['message'])) {
+  $msg = $_SESSION['message'];
+  echo "<script>Swal.fire({
+            icon: '" . $msg['icon'] . "',
+            title: '" . $msg['title'] . "',
+            text: `" . $msg['text'] . "`,
+            showConfirmButton: false,
+            timer: 2500
+        });</script>";
+  unset($_SESSION['message']);
+}
 ?>

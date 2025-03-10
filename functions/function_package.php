@@ -1,14 +1,12 @@
 <?php
-
 require_once 'koneksi.php';
-include_once 'helper.php';
 
 function getData($id = null)
 {
   try {
     $conn = dbConnect();
     if ($id) {
-      $stmt = $conn->prepare("SELECT * FROM packages WHERE package_code = ?");
+      $stmt = $conn->prepare("SELECT p.*, c.category_name, t.type_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code LEFT JOIN package_type t ON p.smell_type=t.type_id WHERE p.package_code = ?");
       if (!$stmt) throw new Exception("Query Error: " . $conn->error);
       $stmt->bind_param("s", $id);
       if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
@@ -16,7 +14,13 @@ function getData($id = null)
       $data = $result->fetch_assoc();
       $stmt->close();
     } else {
-      $result = $conn->query("SELECT * FROM packages");
+      $result = $conn->query("SELECT p.*,
+      CASE 
+        WHEN p.gender='M' THEN 'Pria'
+        WHEN p.gender='F' THEN 'Wanita' 
+        ELSE 'Unisex'
+      END gender_name,
+       c.category_name, t.type_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code LEFT JOIN package_type t ON p.smell_type=t.type_id");
       if (!$result) throw new Exception("Query Error: " . $conn->error);
       $data = $result->fetch_all(MYSQLI_ASSOC);
       $result->free();
@@ -30,12 +34,7 @@ function getData($id = null)
 function addData($dataInput)
 {
   try {
-    global $conn;
-    // $sql     = "INSERT INTO packages (package_code, package_name, category_code, smell_type, gender, price, commission, ship_code, description) 
-    //                 VALUES ('$package_code', '$package_name', '$category_code', '$smell_type', '$gender', '$price', '$commission', '$ship_code', '$description')";
-    // $result    = mysqli_query($conn, $sql);
-    // mysqli_close($conn);
-
+    $conn = dbConnect();
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     $columns = implode(", ", array_keys($dataInput));
@@ -46,7 +45,7 @@ function addData($dataInput)
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sssisddss";
+    $typeString = "sssisdds";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];
@@ -56,58 +55,47 @@ function addData($dataInput)
 
     call_user_func_array([$stmt, 'bind_param'], $refs);
     $stmt->execute();
-    return true;
+    $stmt->close();
+    $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil ditambahkan!'];
   } catch (mysqli_sql_exception $e) {
     error_log("Database Error: " . $e->getMessage());
-
-    // Tampilkan pesan error umum ke user
-    return;
-  } finally {
-    // Pastikan statement dan koneksi ditutup
-    if (isset($stmt) && $stmt !== false) {
-      $stmt->close();
-    }
-    if (isset($conn) && $conn !== false) {
-      $conn->close();
-    }
+    //return;
+    $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Database Error: " . $e->getMessage()];
+  } catch (Exception $e) {
+    $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
   }
+  return $msg;
 }
 
-function editData($package_code, $package_name, $category_code, $smell_type, $gender, $price, $commission, $ship_code, $description)
+function removeData($code)
 {
-  global $conn;
-  $fixid     = mysqli_real_escape_string($conn, $package_code);
-  $sql     = "UPDATE packages SET package_code='$package_code', package_name='$package_name', category_code='$category_code',  smell_type='$smell_type', gender='$gender', price='$price', commission='$commission', ship_code='$ship_code', description='$description'
-                    WHERE package_code='$fixid'";
-  $result    = mysqli_query($conn, $sql);
-  mysqli_close($conn);
-  return ($result) ? true : false;
-}
-
-function deleteData($package_code)
-{
-  global $conn;
-  $sql     = "DELETE FROM packages WHERE package_code='$package_code'";
-  $result    = mysqli_query($conn, $sql);
-  return ($result) ? true : false;
-  mysqli_close($conn);
+  try {
+    $conn = dbConnect();
+    $stmt = $conn->prepare("DELETE FROM packages WHERE package_code = ?");
+    $stmt->bind_param("s", $code);
+    $stmt->execute();
+    $stmt->close();
+    return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil dihapus!'];
+  } catch (mysqli_sql_exception $e) {
+    error_log("Database Error: " . $e->getMessage());
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => 'Proses gagal! '];
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => 'Terjadi kesalahan: ' . $e->getMessage()];
+  }
 }
 
 if (isset($_POST['add'])) {
   $dataInput = [
-    'package_code'                          => $_POST['package_code'],
-    'package_name'                          => $_POST['package_name'],
-    'category_code'                         => $_POST['category_code'],
-    'smell_type'                            => $_POST['smell_type'],
-    'gender'                                => $_POST['gender'],
-    'price'                                 => $_POST['price'],
-    'commission'                            => $_POST['commission'],
-    'ship_code'                             => $_POST['ship_code'],
-    'description'                           => $_POST['description']
+    'package_code'  => $_POST['code'],
+    'package_name'  => $_POST['name'],
+    'category_code' => $_POST['catCode'],
+    'smell_type'    => $_POST['type'],
+    'gender'        => $_POST['gender'],
+    'price'         => str_replace(",", ".", str_replace(".", "", $_POST['price'])),
+    'commission'    => str_replace(",", ".", str_replace(".", "", $_POST['comm'])),
+    'description'   => $_POST['description']
   ];
   $add = addData($dataInput);
-  var_dump($add);
-  die;
   session_start();
   unset($_SESSION["message"]);
   if ($add) {
@@ -116,35 +104,10 @@ if (isset($_POST['add'])) {
     $_SESSION['message'] = $failed;
   }
   header("location:../package.php");
-} elseif (isset($_POST['edit'])) {
-  $package_code                   = mysqli_real_escape_string($conn, $_POST['package_code']);
-  $package_name                   = mysqli_real_escape_string($conn, $_POST['package_name']);
-  $category_code                  = mysqli_real_escape_string($conn, $_POST['category_code']);
-  $smell_type                     = mysqli_real_escape_string($conn, $_POST['smell_type']);
-  $gender                         = mysqli_real_escape_string($conn, $_POST['gender']);
-  $price                          = mysqli_real_escape_string($conn, $_POST['price']);
-  $commission                     = mysqli_real_escape_string($conn, $_POST['commission']);
-  $ship_code                      = mysqli_real_escape_string($conn, ($_POST['ship_code']));
-  $description                    = mysqli_real_escape_string($conn, $_POST['description']);
-
-  $edit                           = editData($package_code, $package_name, $category_code, $smell_type,  $gender, $price, $commission, $ship_code, $description);
+} elseif (isset($_GET['remove'])) {
+  $code = $_GET['remove'];
+  $remove = removeData($code);
   session_start();
-  unset($_SESSION["message"]);
-  if ($edit) {
-    $_SESSION['message'] = $edited;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
-  header("location:../package.php");
-} elseif (isset($_GET['hapus'])) {
-  $package_code    = mysqli_real_escape_string($conn, $_GET['hapus']);
-  $delete = deleteData($package_code);
-  session_start();
-  unset($_SESSION["message"]);
-  if ($delete) {
-    $_SESSION['message'] = $deleted;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
+  $_SESSION['message'] = $remove;
   header("location:../package.php");
 }
