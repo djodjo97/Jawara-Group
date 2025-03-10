@@ -97,7 +97,7 @@ if (!isset($_SESSION['username'])) {
 
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i><span>Data Paket</span></a>';
       $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
-      $menuType = '<a class="collapse-item" href="produt_type.php">Jenis Produk</a>';
+      $menuType = '<a class="collapse-item" href="product-type.php">Jenis Produk</a>';
 
 
       if ($role == 1) {
