@@ -1,6 +1,6 @@
 $(document).ready(function () {
-  $('.form-control[name="code"]').data('col', 'category_code');
-  $('.form-control[name="name"]').data('col', 'category_name');
+  $('.form-control[name="code"]').data('col', 'ship_code');
+  $('.form-control[name="name"]').data('col', 'ship_name');
 
   $('#modalField button.modal-close').click(function () {
     $('#modalField').modal('hide');
@@ -27,7 +27,7 @@ $(document).ready(function () {
     const dataId = $(this).data('id');
     window.genId = dataId;
 
-    fetch('endpoint/api_category.php?id=' + dataId, {
+    fetch('endpoint/api_courier.php?id=' + dataId, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -45,8 +45,8 @@ $(document).ready(function () {
         const idgen = $('#code');
         idgen.prop('disabled', true);
 
-        idgen.val(data['category_code']);
-        $('#name').val(data['category_name']);
+        idgen.val(data['ship_code']);
+        $('#name').val(data['ship_name']);
       })
       .catch(error => {
         console.error("Terjadi kesalahan:", error);
@@ -64,7 +64,7 @@ $(document).ready(function () {
         data[attr] = $(this).val();
       });
       const dataId = $('#code').val();
-      fetch('endpoint/api_category.php?id=' + dataId, {
+      fetch('endpoint/api_courier.php?id=' + dataId, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

@@ -94,12 +94,15 @@ if (!isset($_SESSION['username'])) {
       $menuUsers = '<a class="nav-link" href="user.php"><i class="fas fa-fw fa-users"></i>          <span>User</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Role</a>';
 
+      $menuMitra = '<a class="nav-link" href="mitra.php"><i class="fas fa-fw fa-handshake"></i>          <span>Mitra</span></a>';
+      $menuGenMitra = '<a class="collapse-item" href="generation.php">Generasi Mitra</a>';
+
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i>          <span>Paket</span></a>';
       $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
       $menuType = '<a class="collapse-item" href="product-type.php">Jenis Produk</a>';
 
-      $menuMitra = '<a class="nav-link" href="mitra.php"><i class="fas fa-fw fa-people-arrows"></i>          <span>Mitra</span></a>';
-      $menuGenMitra = '<a class="collapse-item" href="generation.php">Generasi Mitra</a>';
+      $menuTransaksi = '<a class="nav-link" href="sales.php"><i class="fas fa-fw fa-store-alt"></i>          <span>Transaksi</span></a>';
+      $menuEkspedisi = '<a class="collapse-item" href="courier.php">Jasa Ekspedisi</a>';
 
 
       if ($role == 1) {
@@ -156,6 +159,24 @@ if (!isset($_SESSION['username'])) {
                                 <div class="bg-white py-2 collapse-inner rounded">
                                     ' . $menuCategory . '
                                     ' . $menuType . '
+                                </div>
+                            </div>
+                        </li>';
+
+        // Heading
+        echo    '<div class="sidebar-heading">Transaksi</div>';
+
+        // Nav Item - Output Produk
+        echo    '<li class="nav-item">                            ' . $menuTransaksi . '</li>';
+
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#confTrx" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="confTrx" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuEkspedisi . '
                                 </div>
                             </div>
                         </li>';
