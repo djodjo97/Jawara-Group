@@ -31,6 +31,8 @@ if (!isset($_SESSION['username'])) {
   <link rel="stylesheet" href="css/toast.css">
   <link rel="stylesheet" href="css/style-admin.css">
 
+  <link href="vendor/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -52,15 +54,14 @@ if (!isset($_SESSION['username'])) {
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
   <script src="js/toast.js"></script>
-  <?php
-  // if (isset($_SESSION['message'])) {
-  //     unset($_SESSION["message"]);
-  // }
-  ?>
+
   <script src="js/bootstrap-select.js"></script>
   <script src="js/select2.js"></script>
 
   <script src="vendor/sweetalert2/sweetalert2.min.js"></script>
+
+  <script src="vendor/moment/moment.js"></script>
+  <script src="vendor/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
 
 </head>
 

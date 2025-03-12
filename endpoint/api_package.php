@@ -33,7 +33,7 @@ function getPackage()
     $dataId = $_GET["id"] ?? null;
 
     if ($dataId) {
-      $stmt = $conn->prepare("SELECT * FROM packages WHERE package_code = ?");
+      $stmt = $conn->prepare("SELECT package_code, package_name, price FROM packages WHERE package_code = ?");
       $stmt->bind_param("s", $dataId);
     } else {
       $stmt = $conn->prepare("SELECT * FROM packages");
