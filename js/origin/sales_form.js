@@ -17,12 +17,14 @@ function init() {
   }
 
   $('#datetimepicker').datetimepicker({
-    format: 'L'
+    format: 'DD-MM-YYYY'
   });
 
   $('.form-control[name="code"]').data('col', 'docid');
   $('.form-control[name="txndate"]').data('col', 'docdate');
+  $('.form-control[name="mitra"]').data('col', 'mitra_id');
   $('.form-control[name="package"]').data('col', 'package_code');
+  $('.form-control[name="type"]').data('col', 'package_type');
   $('.form-control[name="qty"]').data('col', 'qyt');
   $('.form-control[name="package_desc"]').data('col', 'package_desc');
   $('.form-control[name="ship"]').data('col', 'ship_code');
@@ -35,6 +37,11 @@ function init() {
 function formAction() {
   $('#formAction').on('change', '.form-control', function () {
     $(this).addClass('form-change');
+  });
+
+  $('#catCode').on('change', function () {
+    if ($(this).val() == 'HB') $('#field-type').hide();
+    else $('#field-type').show();
   });
 
   $('#btnSave').on('click', function (e) {
@@ -61,7 +68,7 @@ function formAction() {
         }
       });
       const dataId = $('#code').val();
-      fetch('endpoint/api_package.php?id=' + dataId, {
+      fetch('endpoint/api_sales.php?id=' + dataId, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -263,6 +270,8 @@ function modalAction() {
 
   //modal category display
   $('#dataOption_category').on('click', function () {
+    $('#category').removeClass('border border-danger');
+
     $('#fieldModal').modal('show');
     $('#fieldData').DataTable().destroy();
     $('#fieldData thead tr').empty().append(`<th></th> <th></th> <th></th>`)
@@ -312,6 +321,11 @@ function modalAction() {
 
   //modal package display
   $('#dataOption_package').on('click', function () {
+    const catCode = $('#catCode').val();
+    if (!catCode) {
+      $('#category').addClass('border border-danger');
+      return false;
+    }
     $('#fieldModal').modal('show');
     $('#fieldData').DataTable().destroy();
     $('#fieldData thead tr').empty().append(`<th></th><th></th><th></th><th></th>`);
@@ -331,7 +345,7 @@ function modalAction() {
       ]
     });
     table.clear().draw();
-    fetch('endpoint/api_package.php', {
+    fetch('endpoint/api_package.php?category=' + catCode, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -410,6 +424,102 @@ function modalAction() {
         $('#modalSpinner').hide();
       })
       .catch(error => { console.error("Terjadi kesalahan:", error); });
+  });
+
+  //modal mitra display
+  $('#dataOption_mitra').on('click', function () {
+    $('#fieldModal').modal('show');
+    $('#fieldData').DataTable().destroy();
+    $('#fieldData thead tr').empty().append(`<th></th> <th></th> <th></th>`)
+    $('#fieldData thead tr th').eq(0).text('ID');
+    $('#fieldData thead tr th').eq(1).text('Name');
+    $('#fieldData tbody').empty();
+
+    $('#modalSpinner').show();
+    var table = $('#fieldData').DataTable({
+      autoWidth: false,
+      columns: [
+        { data: 'id_mitra', width: "10%" },
+        { data: 'mitra_name' },
+        { data: 'button', width: "10%", orderable: false }
+      ]
+    });
+    table.clear().draw();
+    fetch('endpoint/api_mitra.php', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); }
+        return response.text();
+      })
+      .then(res => {
+        const response = JSON.parse(res);
+        if (response['data'].length > 0) {
+          $.each(response['data'], (i, v) => {
+            let rowNode = table.row.add({
+              id_mitra: v['id_mitra'],
+              mitra_name: v['name'],
+              button: `<button type="button" class="btn btn-success btn-sm dataopt-change">Pilih</button>`
+            }).draw().node();
+            $(rowNode).find('td').eq(0).addClass('row-data change-data').data({ "val": v['id_mitra'], 'target': 'mitra' });
+            $(rowNode).find('td').eq(1).addClass('row-data').data({ "val": v['name'], 'target': 'mitraName' });
+          });
+        } else {
+          $('.dataTables_empty').append(viewEmptyData());
+        }
+        $('#modalSpinner').hide();
+      })
+      .catch(error => { console.error("Terjadi kesalahan:", error); });
+  });
+
+  //modal type display
+  $('#dataOption_type').on('click', function () {
+    $('#fieldModal').modal('show');
+    $('#fieldData').DataTable().destroy();
+    $('#fieldData thead tr').empty().append(`<th></th><th></th><th></th>`)
+    $('#fieldData thead tr th').eq(0).text('ID');
+    $('#fieldData thead tr th').eq(1).text('Jenis');
+    $('#fieldData tbody').empty();
+
+    $('#modalSpinner').show();
+    var table = $('#fieldData').DataTable({
+      autoWidth: false,
+      columns: [
+        { data: 'type_id', width: "10%" },
+        { data: 'type_name' },
+        { data: 'button', width: "10%", orderable: false }
+      ]
+    });
+    table.clear().draw();
+    fetch('endpoint/api_types.php?group=smell', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(response => {
+        if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); }
+        return response.text();
+      })
+      .then(res => {
+        const response = JSON.parse(res);
+        if (response['data'].length > 0) {
+          $.each(response['data'], (i, v) => {
+            let rowNode = table.row.add({
+              type_id: v['type_id'],
+              type_name: v['type_name'],
+              button: `<button type="button" class="btn btn-success btn-sm dataopt-change">Pilih</button>`
+            }).draw().node();
+            $(rowNode).find('td').eq(0).addClass('row-data change-data').data({ "val": v['type_id'], 'target': 'type' });
+            $(rowNode).find('td').eq(1).addClass('row-data').data({ "val": v['type_name'], 'target': 'smell_name' });
+          });
+        } else {
+          $('.dataTables_empty').append(viewEmptyData());
+        }
+        $('#modalSpinner').hide();
+      })
+      .catch(error => {
+        console.error("Terjadi kesalahan:", error);
+      });
   });
 }
 

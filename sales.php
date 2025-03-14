@@ -38,6 +38,7 @@ $no = 1;
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
+              <th style="text-align: center; display:none;">ID</th>
               <th style="text-align: center;">ID</th>
               <th style="text-align: center;">Tanggal</th>
               <th style="text-align: center;">Paket</th>
@@ -52,16 +53,17 @@ $no = 1;
           <tbody>
             <?php foreach ($sales as $data) { ?>
               <tr>
+                <td style="text-align: center;display:none;"><?= $data['id'] ?></td>
                 <td style="text-align: center;"><?= $data['docid'] ?></td>
-                <td style="text-align: center;"><?= $data['docdate'] ?></td>
+                <td style="text-align: center;"><?= date('d-m-Y', strtotime($data['docdate'])) ?></td>
                 <td style="text-align: center;"><?= $data['package_name'] ?></td>
                 <td style="text-align: center;"><?= $data['qty'] ?></td>
                 <td style="text-align: center;"><?= $data['ship_code'] ?></td>
-                <td style="text-align: center;"><?= number_format($data['ship_amount'], 2, ',', '.'); ?></td>
-                <td style="text-align: center;"><?= number_format($data['amount'], 2, ',', '.'); ?></td>
-                <td style="text-align: center;"><?= number_format($data['total'], 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><?= number_format($data['ship_amount'] ?? 0, 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><?= number_format($data['amount'] ?? 0, 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><?= number_format($data['total'] ?? 0, 2, ',', '.'); ?></td>
                 <td style="text-align: center;"><a href="<?= 'sales_form.php?id=' . $data['docid']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
-                  &nbsp;<a href="<?= 'functions/function_sales.php?remove=' . $data['docid']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
+                  &nbsp;<a href="<?= 'functions/function_sales.php?remove=' . $data['id']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
               </tr>
             <?php } ?>
           </tbody>

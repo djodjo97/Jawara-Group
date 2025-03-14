@@ -33,13 +33,13 @@ function addData($dataInput)
 
     $columns = implode(", ", array_keys($dataInput));
     $placeholders = implode(", ", array_fill(0, count($dataInput), "?"));
-    $sql     = "INSERT INTO packages ($columns) VALUES ($placeholders)";
+    $sql = "INSERT INTO sales_order ($columns, docid) VALUES ($placeholders, CONCAT('S', LPAD((SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'db_jawara' AND TABLE_NAME = 'sales_order'), 5, '0')))";
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sssisdds";
+    $typeString = "sssssissddsssss";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];
@@ -65,7 +65,7 @@ function removeData($code)
 {
   try {
     $conn = dbConnect();
-    $stmt = $conn->prepare("DELETE FROM packages WHERE package_code = ?");
+    $stmt = $conn->prepare("DELETE FROM sales_order WHERE id = ?");
     $stmt->bind_param("s", $code);
     $stmt->execute();
     $stmt->close();
@@ -79,24 +79,32 @@ function removeData($code)
 }
 
 if (isset($_POST['add'])) {
+  $dateTime = DateTime::createFromFormat('d-m-Y', $_POST['txndate']);
+  $dateTime->setTime(0, 0, 0);
+  if (!$dateTime) die("Format tanggal salah!");
+  $formattedDate = $dateTime->format('Y-m-d H:i:s');
+
   $dataInput = [
-    'package_code'  => $_POST['code'],
-    'package_name'  => $_POST['name'],
-    'category_code' => $_POST['catCode'],
-    'smell_type'    => $_POST['type'],
-    'gender'        => $_POST['gender'],
-    'price'         => str_replace(",", ".", str_replace(".", "", $_POST['price'])),
-    'commission'    => str_replace(",", ".", str_replace(".", "", $_POST['comm'])),
-    'description'   => $_POST['description']
+    'docdate'           => $formattedDate,
+    'mitra_id'          => $_POST['mitra'],
+    'category_code'     => $_POST['catCode'],
+    'package_code'      => $_POST['package'],
+    'package_desc'      => $_POST['package_desc'] ?? NULL,
+    'package_type'      => $_POST['type'],
+    'qty'               => $_POST['qty'],
+    'ship_code'         => $_POST['ship'],
+    'tracking_number'   => $_POST['ship_num'],
+    'ship_amount'       => str_replace(",", ".", str_replace(".", "", $_POST['price'])),
+    'amount'            => str_replace(",", ".", str_replace(".", "", $_POST['ongkir'])),
+    'leader_id'         => $leaderid ?? NULL,
+    'upperid_i'         => $upperid_i ?? NULL,
+    'upperid_ii'        => $upperid_ii ?? NULL,
+    'upperid_iii'       => $upperid_iii ?? NULL,
+    'description'       => $_POST['description']
   ];
   $add = addData($dataInput);
   session_start();
-  unset($_SESSION["message"]);
-  if ($add) {
-    $_SESSION['message'] = $added;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
+  $_SESSION['message'] = $add;
   header("location:../sales.php");
 } elseif (isset($_GET['remove'])) {
   $code = $_GET['remove'];

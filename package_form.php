@@ -2,7 +2,7 @@
 include_once 'layout/header.php';
 require 'functions/function_package.php';
 $package_code = $_GET['id'] ?? '';
-$data  = getData($package_code);
+$data = $package_code ? getData($package_code) : NULL;
 ?>
 
 <!-- Begin Page Content -->
@@ -27,7 +27,7 @@ $data  = getData($package_code);
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-4 form-group">
+          <div class="col-sm-6 form-group">
             <label for="category" class="form-label">Kategori</label>
             <div class="input-group option-list">
               <div class="input-group-prepend btn-option">
@@ -37,17 +37,7 @@ $data  = getData($package_code);
               <input id="category" name="category" type="text" class="form-control" placeholder="Kategori" value="<?= $data['category_name'] ?? ''; ?>" required>
             </div>
           </div>
-          <div class="col-sm-4 form-group">
-            <label for="type" class="form-label">Jenis</label>
-            <div class="input-group option-list">
-              <div class="input-group-prepend btn-option">
-                <button class="btn btn-primary" type="button" id="dataOption_type"><i class="fas fa-caret-down"></i></button>
-              </div>
-              <input id="type" name="type" type="text" class="form-control" value="<?= $data['smell_type'] ?? ''; ?>" readonly hidden>
-              <input id="smell_name" name="smell_name" type="text" class="form-control" placeholder="Jenis Aroma" value="<?= $data['type_name'] ?? ''; ?>" required>
-            </div>
-          </div>
-          <div class="col-sm-4 form-group">
+          <div class="col-sm-6 form-group">
             <label for="gender" class="form-label">Gender</label>
             <select name="gender" id="gender" class="form-control" required>
               <option disabled selected>--Pilih--</option>

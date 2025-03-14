@@ -2,15 +2,11 @@
 header('Content-Type: application/json');
 
 require_once '../functions/koneksi.php';
-
 $method = $_SERVER["REQUEST_METHOD"];
 
 switch ($method) {
-  case "GET":
-    getPackage();
-    break;
   case "PATCH":
-    updatePackage();
+    updateSales();
     break;
   default:
     response(["status" => 405, "msg" => "Method Not Allowed"]);
@@ -25,47 +21,9 @@ function response($response, $data = null)
   exit();
 }
 
-function getPackage()
-{
-  try {
-    $conn = dbConnect();
-    //$input = json_decode(file_get_contents('php://input'), true);
-    $dataId = $_GET["id"] ?? null;
+// copy getSales from api_package function getPackage
 
-    if ($dataId) {
-      $stmt = $conn->prepare("SELECT package_code, package_name, price FROM packages WHERE package_code = ?");
-      $stmt->bind_param("s", $dataId);
-    } else {
-      $category = $_GET["category"] ?? null;
-      if ($category) {
-        $stmt = $conn->prepare("SELECT * FROM packages WHERE category_code = ?");
-        $stmt->bind_param("s", $category);
-      } else {
-        $stmt = $conn->prepare("SELECT * FROM packages");
-      }
-    }
-
-    if ($stmt) {
-      $stmt->execute();
-      $result = $stmt->get_result();
-
-      if ($result) {
-        if ($dataId) $data = $result->fetch_assoc();
-        else $data = $result->fetch_all(MYSQLI_ASSOC);
-        response(["status" => 200], $data);
-      } else {
-        response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Gagal mengambil data!"]);
-      }
-    } else {
-      response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Gagal menyiapkan query!"]);
-    }
-    $stmt->close();
-  } catch (Exception $e) {
-    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
-  }
-}
-
-function updatePackage()
+function updateSales()
 {
   try {
     $conn = dbConnect();
@@ -102,7 +60,7 @@ function updatePackage()
     }
 
     $setQuery = implode(", ", $setParts);
-    $stmt = $conn->prepare("UPDATE packages SET $setQuery WHERE package_code = ?");
+    $stmt = $conn->prepare("UPDATE sales_order SET $setQuery WHERE docid = ?");
 
     $params[] = $id;
     $types .= 's';

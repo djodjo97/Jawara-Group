@@ -41,7 +41,6 @@ $no = 1;
               <th style="text-align: center;">Kode Paket</th>
               <th style="text-align: center;">Nama Paket</th>
               <th style="text-align: center;">Kategori Paket</th>
-              <th style="text-align: center;">Jenis</th>
               <th style="text-align: center;">Jenis Kelamin</th>
               <th style="text-align: center;">Harga</th>
               <th style="text-align: center;">Komisi Seller</th>
@@ -54,7 +53,6 @@ $no = 1;
                 <td style="text-align: center;"><?= $data['package_code'] ?></td>
                 <td style="text-align: center;"><?= $data['package_name'] ?></td>
                 <td style="text-align: center;"><?= $data['category_name'] ?></td>
-                <td style="text-align: center;"><?= $data['type_name'] ?></td>
                 <td style="text-align: center;"><?= $data['gender_name'] ?></td>
                 <td style="text-align: center;"><?= number_format($data['price'], 2, ',', '.'); ?></td>
                 <td style="text-align: center;"><?= number_format($data['commission'], 2, ',', '.'); ?></td>

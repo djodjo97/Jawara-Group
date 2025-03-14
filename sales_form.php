@@ -17,13 +17,12 @@ $data  = getData($docid);
         <div class="form-group row">
           <label for="code" class="col-sm-2 col-form-label">ID</label>
           <div class="col-sm-10">
-            <input id="code" name="code" type="text" class="form-control" placeholder="Document ID" value="<?= $data['docid'] ?? ''; ?>" required>
+            <input id="code" name="code" type="text" class="form-control" placeholder="Document ID" value="<?= $data['docid'] ?? ''; ?>" required disabled>
           </div>
         </div>
         <div class="form-group row">
           <label for="txndate" class="col-sm-2 col-form-label">Tanggal</label>
           <div class="col-sm-10">
-
             <div class="input-group date" id="datetimepicker" data-target-input="nearest">
               <input id="txndate" name="txndate" type="text" class="form-control datetimepicker-input" placeholder="Tanggal" value="<?= $data['docdate'] ?? ''; ?>" required data-target="#datetimepicker">
               <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
@@ -32,36 +31,58 @@ $data  = getData($docid);
             </div>
           </div>
         </div>
+        <div class="form-group row">
+          <label for="mitra" class="col-sm-2 col-form-label">Mitra</label>
+          <div class="col-sm-10">
+            <div class="input-group option-list">
+              <div class="input-group-prepend btn-option">
+                <button class="btn btn-primary" type="button" id="dataOption_mitra"><i class="fas fa-caret-down"></i></button>
+              </div>
+              <input id="mitra" name="mitra" type="text" class="form-control" value="<?= $data['mitra_id'] ?? ''; ?>" readonly hidden>
+              <input id="mitraName" type="text" class="form-control opt-value" placeholder="Mitra" value="<?= $data['mitra_name'] ?? ''; ?>" required>
+            </div>
+          </div>
+        </div>
 
         <div class="row">
-          <div class="col-sm-4 form-group">
+          <div class="col-sm-6 form-group">
             <label for="category" class="form-label">Kategori</label>
             <div class="input-group option-list">
               <div class="input-group-prepend btn-option">
                 <button class="btn btn-primary" type="button" id="dataOption_category"><i class="fas fa-caret-down"></i></button>
               </div>
               <input id="catCode" name="catCode" type="text" class="form-control" value="<?= $data['category_code'] ?? ''; ?>" readonly hidden>
-              <input id="category" name="category" type="text" class="form-control opt-value" placeholder="Kategori" value="<?= $data['category_name'] ?? ''; ?>" required>
+              <input id="category" type="text" class="form-control opt-value" placeholder="Kategori" value="<?= $data['category_name'] ?? ''; ?>" required autocomplete="off">
             </div>
           </div>
-          <div class="col-sm-4 form-group">
+          <div class="col-sm-6 form-group">
             <label for="package" class="form-label">Paket</label>
             <div class="input-group option-list">
               <div class="input-group-prepend btn-option">
                 <button class="btn btn-primary" type="button" id="dataOption_package"><i class="fas fa-caret-down"></i></button>
               </div>
               <input id="package" name="package" type="text" class="form-control" value="<?= $data['package_code'] ?? ''; ?>" readonly hidden>
-              <input id="packageName" name="package_name" type="text" class="form-control opt-value" placeholder="Paket" value="<?= $data['package_name'] ?? ''; ?>" required>
+              <input id="packageName" name="package_name" type="text" class="form-control opt-value" placeholder="Paket" value="<?= $data['package_name'] ?? ''; ?>" required autocomplete="off">
             </div>
           </div>
-          <div class="col-sm-4 form-group">
+        </div>
+        <div class="row">
+          <div id="field-type" class="col-sm-6 form-group">
+            <label for="type" class="form-label">Jenis</label>
+            <div class="input-group option-list">
+              <div class="input-group-prepend btn-option">
+                <button class="btn btn-primary" type="button" id="dataOption_type"><i class="fas fa-caret-down"></i></button>
+              </div>
+              <input id="type" name="type" type="text" class="form-control" value="<?= $data['type'] ?? ''; ?>" readonly hidden>
+              <input id="smell_name" type="text" class="form-control" placeholder="Jenis Aroma" value="<?= $data['type_name'] ?? ''; ?>" required autocomplete="off">
+            </div>
+          </div>
+          <div class="col-sm-6 form-group">
             <label for="qty" class="form-label">Qty</label>
             <input id="qty" name="qty" type="text" class="form-control" placeholder="Quantity" value="<?= $data['qty'] ?? ''; ?>" required>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="packageDesc" class="col-sm-2 col-form-label">Deskripsi Paket</label>
-          <div class="col-sm-10">
+          <div class="col-sm-6 form-group">
+            <label for="packageDesc" class="form-label">Deskripsi Paket</label>
             <textarea id="packageDesc" name="package_desc" class="form-control" disabled><?= $data['package_desc'] ?? ''; ?></textarea>
           </div>
         </div>
@@ -73,7 +94,7 @@ $data  = getData($docid);
                 <button class="btn btn-primary" type="button" id="dataOption_courier"><i class="fas fa-caret-down"></i></button>
               </div>
               <input id="ship" name="ship" type="text" class="form-control" value="<?= $data['ship_code'] ?? ''; ?>" readonly hidden>
-              <input id="shipName" name="ship_name" type="text" class="form-control opt-value" placeholder="Pengiriman" value="<?= $data['ship_name'] ?? ''; ?>" required>
+              <input id="shipName" type="text" class="form-control opt-value" placeholder="Pengiriman" value="<?= $data['ship_name'] ?? ''; ?>" required autocomplete="off">
             </div>
           </div>
           <div class="col-sm-6 form-group">

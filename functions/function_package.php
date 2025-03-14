@@ -6,7 +6,7 @@ function getData($id = null)
   try {
     $conn = dbConnect();
     if ($id) {
-      $stmt = $conn->prepare("SELECT p.*, c.category_name, t.type_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code LEFT JOIN package_type t ON p.smell_type=t.type_id WHERE p.package_code = ?");
+      $stmt = $conn->prepare("SELECT p.*, c.category_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code WHERE p.package_code = ?");
       if (!$stmt) throw new Exception("Query Error: " . $conn->error);
       $stmt->bind_param("s", $id);
       if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
@@ -20,7 +20,7 @@ function getData($id = null)
         WHEN p.gender='F' THEN 'Wanita' 
         ELSE 'Unisex'
       END gender_name,
-       c.category_name, t.type_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code LEFT JOIN package_type t ON p.smell_type=t.type_id");
+       c.category_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code");
       if (!$result) throw new Exception("Query Error: " . $conn->error);
       $data = $result->fetch_all(MYSQLI_ASSOC);
       $result->free();
@@ -89,7 +89,6 @@ if (isset($_POST['add'])) {
     'package_code'  => $_POST['code'],
     'package_name'  => $_POST['name'],
     'category_code' => $_POST['catCode'],
-    'smell_type'    => $_POST['type'],
     'gender'        => $_POST['gender'],
     'price'         => str_replace(",", ".", str_replace(".", "", $_POST['price'])),
     'commission'    => str_replace(",", ".", str_replace(".", "", $_POST['comm'])),

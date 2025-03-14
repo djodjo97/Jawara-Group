@@ -19,7 +19,6 @@ function init() {
   $('.form-control[name="code"]').data('col', 'package_code');
   $('.form-control[name="name"]').data('col', 'package_name');
   $('.form-control[name="catCode"]').data('col', 'category_code');
-  $('.form-control[name="type"]').data('col', 'smell_type');
   $('.form-control[name="gender"]').data('col', 'gender');
   $('.form-control[name="price"]').data('col', 'price');
   $('.form-control[name="comm"]').data('col', 'commission');
@@ -291,53 +290,6 @@ function modalAction() {
             ]).draw().node();
             $(rowNode).find('td').eq(0).addClass('row-data change-data').data({ "val": v['category_code'], 'target': 'catCode' });
             $(rowNode).find('td').eq(1).addClass('row-data').data({ "val": v['category_name'], 'target': 'category' });
-          });
-        } else {
-          $('.dataTables_empty').append(viewEmptyData());
-        }
-        $('#modalSpinner').hide();
-      })
-      .catch(error => {
-        console.error("Terjadi kesalahan:", error);
-      });
-  });
-
-  //modal type display
-  $('#dataOption_type').on('click', function () {
-    $('#fieldModal').modal('show');
-    $('#fieldData').DataTable().destroy();
-    $('#fieldData thead tr').empty().append(`<th></th><th></th><th></th>`)
-    $('#fieldData thead tr th').eq(0).text('ID');
-    $('#fieldData thead tr th').eq(1).text('Jenis');
-
-    $('#modalSpinner').show();
-    var table = $('#fieldData').DataTable({
-      autoWidth: false,
-      columnDefs: [
-        { targets: 0, width: "10%" },
-        { targets: 2, width: "10%" }
-      ]
-    });
-    table.clear().draw();
-    fetch('endpoint/api_types.php?group=smell', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(response => {
-        if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); }
-        return response.text();
-      })
-      .then(res => {
-        const response = JSON.parse(res);
-        if (response['data'].length > 0) {
-          $.each(response['data'], (i, v) => {
-            let rowNode = table.row.add([
-              v['type_id'],
-              v['type_name'],
-              `<button type="button" class="btn btn-success btn-sm dataopt-change">Pilih</button>`
-            ]).draw().node();
-            $(rowNode).find('td').eq(0).addClass('row-data change-data').data({ "val": v['type_id'], 'target': 'type' });
-            $(rowNode).find('td').eq(1).addClass('row-data').data({ "val": v['type_name'], 'target': 'smell_name' });
           });
         } else {
           $('.dataTables_empty').append(viewEmptyData());
