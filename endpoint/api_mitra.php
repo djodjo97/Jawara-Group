@@ -73,6 +73,9 @@ function getMitra()
     //$input = json_decode(file_get_contents('php://input'), true);
     if ($purpose == "data-code") $stmt = getUpper($conn, $_GET);
     elseif ($purpose == "update-user") $stmt = getMitra_noUser($conn, $_GET);
+    else {
+      $stmt = $conn->prepare("SELECT id_mitra, name FROM tb_mitra");
+    }
 
     if ($stmt) {
       if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
