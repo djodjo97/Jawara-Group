@@ -1,6 +1,8 @@
 <?php
 include_once 'layout/header.php';
 require 'functions/function_package.php';
+$packages = getData();
+$no = 1;
 ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -23,11 +25,12 @@ require 'functions/function_package.php';
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 style="font-size : 18px;" class="m-0 font-weight-bold text-dark">
-        <center>DATA PRODUK</center>
+        <center>Data Paket</center>
       </h6>
     </div>
     <div class="card-body">
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+<<<<<<< HEAD
         <button type="button" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">Tambah Data Produk</button>
         <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
@@ -101,6 +104,10 @@ require 'functions/function_package.php';
             </div>
           </div>
         </div>
+=======
+        <!-- <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data Produk</button> -->
+        <a type="button" class="btn c-btn-primary btn-sm" href="package_form.php">Tambah Data</a>
+>>>>>>> mabro
       </div>
       <br>
       <div class="table-responsive">
@@ -110,19 +117,21 @@ require 'functions/function_package.php';
               <th style="text-align: center;">Kategori Produk</th>
               <th style="text-align: center;">Kode Produk</th>
               <th style="text-align: center;">Nama Paket</th>
+<<<<<<< HEAD
               <th style="text-align: center;">Jenis</th>
+=======
+              <th style="text-align: center;">Kategori Paket</th>
+>>>>>>> mabro
               <th style="text-align: center;">Jenis Kelamin</th>
               <th style="text-align: center;">Harga</th>
-              <th style="text-align: center;">Komisi Seler</th>
-              <th style="text-align: center;">Kurir Pengiriman</th>
+              <th style="text-align: center;">Komisi Seller</th>
               <th style="text-align: center;">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            <?php $all = getData();
-            $no = 1; ?>
-            <?php foreach ($all as $data) { ?>
+            <?php foreach ($packages as $data) { ?>
               <tr>
+<<<<<<< HEAD
                 <td style="text-align: center;"><?= $no++; ?></td>
                 <td style="text-align: center;"><?= $data['category_product'] ?></td>
                 <td style="text-align: center;"><?= $data['category_code'] ?></td>
@@ -134,6 +143,16 @@ require 'functions/function_package.php';
                 <td style="text-align: center;"><?= $data['ship_code'] ?></td>
                 <td style="text-align: center;"><a href="<?= 'package_form.php?category_product=' . $data['category_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
                   &nbsp;<a href="<?= 'functions/function_package.php?hapus=' . $data['package_code']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
+=======
+                <td style="text-align: center;"><?= $data['package_code'] ?></td>
+                <td style="text-align: center;"><?= $data['package_name'] ?></td>
+                <td style="text-align: center;"><?= $data['category_name'] ?></td>
+                <td style="text-align: center;"><?= $data['gender_name'] ?></td>
+                <td style="text-align: center;"><?= number_format($data['price'], 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><?= number_format($data['commission'], 2, ',', '.'); ?></td>
+                <td style="text-align: center;"><a href="<?= 'package_form.php?id=' . $data['package_code']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
+                  &nbsp;<a href="<?= 'functions/function_package.php?remove=' . $data['package_code']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
+>>>>>>> mabro
               </tr>
             <?php } ?>
           </tbody>
@@ -146,4 +165,15 @@ require 'functions/function_package.php';
 
 <?php
 include_once 'layout/footer.php';
+if (isset($_SESSION['message'])) {
+  $msg = $_SESSION['message'];
+  echo "<script>Swal.fire({
+            icon: '" . $msg['icon'] . "',
+            title: '" . $msg['title'] . "',
+            text: `" . $msg['text'] . "`,
+            showConfirmButton: false,
+            timer: 2500
+        });</script>";
+  unset($_SESSION['message']);
+}
 ?>

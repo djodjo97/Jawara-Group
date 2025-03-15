@@ -1,27 +1,40 @@
 <?php
-
 require_once 'koneksi.php';
-include_once 'helper.php';
 
-function getData()
+function getData($id = null)
 {
-  global $conn;
-  $sql     = "SELECT * FROM packages";
-  $result    = mysqli_query($conn, $sql);
-  return mysqli_fetch_all($result, MYSQLI_ASSOC);
-  mysqli_free_result($result);
-  mysqli_close($conn);
+  try {
+    $conn = dbConnect();
+    if ($id) {
+      $stmt = $conn->prepare("SELECT p.*, c.category_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code WHERE p.package_code = ?");
+      if (!$stmt) throw new Exception("Query Error: " . $conn->error);
+      $stmt->bind_param("s", $id);
+      if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
+      $result = $stmt->get_result();
+      $data = $result->fetch_assoc();
+      $stmt->close();
+    } else {
+      $result = $conn->query("SELECT p.*,
+      CASE 
+        WHEN p.gender='M' THEN 'Pria'
+        WHEN p.gender='F' THEN 'Wanita' 
+        ELSE 'Unisex'
+      END gender_name,
+       c.category_name FROM packages p LEFT JOIN package_category c ON p.category_code=c.category_code");
+      if (!$result) throw new Exception("Query Error: " . $conn->error);
+      $data = $result->fetch_all(MYSQLI_ASSOC);
+      $result->free();
+    }
+    return $data;
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+  }
 }
 
 function addData($dataInput)
 {
   try {
-    global $conn;
-    // $sql     = "INSERT INTO packages (package_code, package_name, category_code, smell_type, gender, price, commission, ship_code, description) 
-    //                 VALUES ('$package_code', '$package_name', '$category_code', '$smell_type', '$gender', '$price', '$commission', '$ship_code', '$description')";
-    // $result    = mysqli_query($conn, $sql);
-    // mysqli_close($conn);
-
+    $conn = dbConnect();
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     $columns = implode(", ", array_keys($dataInput));
@@ -32,7 +45,7 @@ function addData($dataInput)
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sssisddss";
+    $typeString = "sssisdds";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];
@@ -42,23 +55,19 @@ function addData($dataInput)
 
     call_user_func_array([$stmt, 'bind_param'], $refs);
     $stmt->execute();
-    return true;
+    $stmt->close();
+    $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil ditambahkan!'];
   } catch (mysqli_sql_exception $e) {
     error_log("Database Error: " . $e->getMessage());
-
-    // Tampilkan pesan error umum ke user
-    return;
-  } finally {
-    // Pastikan statement dan koneksi ditutup
-    if (isset($stmt) && $stmt !== false) {
-      $stmt->close();
-    }
-    if (isset($conn) && $conn !== false) {
-      $conn->close();
-    }
+    //return;
+    $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Database Error: " . $e->getMessage()];
+  } catch (Exception $e) {
+    $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
   }
+  return $msg;
 }
 
+<<<<<<< HEAD
 function showData($category_product)
 {
   global $conn;
@@ -87,10 +96,28 @@ function deleteData($package_code)
   $result    = mysqli_query($conn, $sql);
   return ($result) ? true : false;
   mysqli_close($conn);
+=======
+function removeData($code)
+{
+  try {
+    $conn = dbConnect();
+    $stmt = $conn->prepare("DELETE FROM packages WHERE package_code = ?");
+    $stmt->bind_param("s", $code);
+    $stmt->execute();
+    $stmt->close();
+    return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil dihapus!'];
+  } catch (mysqli_sql_exception $e) {
+    error_log("Database Error: " . $e->getMessage());
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => 'Proses gagal! '];
+  } catch (Exception $e) {
+    return ['icon' => 'error', 'title' => 'Error!', 'text' => 'Terjadi kesalahan: ' . $e->getMessage()];
+  }
+>>>>>>> mabro
 }
 
 if (isset($_POST['add'])) {
   $dataInput = [
+<<<<<<< HEAD
     'category_product'                      => $_POST['category_product'],
     'category_code'                         => $_POST['category_code'],
     'category_name'                         => $_POST['category_name'],
@@ -100,10 +127,17 @@ if (isset($_POST['add'])) {
     'commission'                            => $_POST['commission'],
     'ship_code'                             => $_POST['ship_code'],
     'description'                           => $_POST['description']
+=======
+    'package_code'  => $_POST['code'],
+    'package_name'  => $_POST['name'],
+    'category_code' => $_POST['catCode'],
+    'gender'        => $_POST['gender'],
+    'price'         => str_replace(",", ".", str_replace(".", "", $_POST['price'])),
+    'commission'    => str_replace(",", ".", str_replace(".", "", $_POST['comm'])),
+    'description'   => $_POST['description']
+>>>>>>> mabro
   ];
   $add = addData($dataInput);
-  var_dump($add);
-  die;
   session_start();
   unset($_SESSION["message"]);
   if ($add) {
@@ -112,6 +146,7 @@ if (isset($_POST['add'])) {
     $_SESSION['message'] = $failed;
   }
   header("location:../package.php");
+<<<<<<< HEAD
 } elseif (isset($_POST['edit'])) {
   $category_product               = mysqli_real_escape_string($conn, $_POST['category_product']);
   $category_code                  = mysqli_real_escape_string($conn, $_POST['category_code']);
@@ -124,23 +159,12 @@ if (isset($_POST['add'])) {
   $description                    = mysqli_real_escape_string($conn, $_POST['description']);
 
   $edit                           = editData($category_product, $category_code, $category_name, $smell_type,  $gender, $price, $commission, $ship_code, $description);
+=======
+} elseif (isset($_GET['remove'])) {
+  $code = $_GET['remove'];
+  $remove = removeData($code);
+>>>>>>> mabro
   session_start();
-  unset($_SESSION["message"]);
-  if ($edit) {
-    $_SESSION['message'] = $edited;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
-  header("location:../package.php");
-} elseif (isset($_GET['hapus'])) {
-  $package_code    = mysqli_real_escape_string($conn, $_GET['hapus']);
-  $delete = deleteData($package_code);
-  session_start();
-  unset($_SESSION["message"]);
-  if ($delete) {
-    $_SESSION['message'] = $deleted;
-  } else {
-    $_SESSION['message'] = $failed;
-  }
+  $_SESSION['message'] = $remove;
   header("location:../package.php");
 }

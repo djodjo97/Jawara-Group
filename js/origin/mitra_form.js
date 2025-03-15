@@ -22,13 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (params.get('id')) {
       $('#title').text('Data Mitra');
       $('#formAction').data('action', 'edit');
-      $('#inputAction').prop('name', 'edit');
       $('#btnSave').text('Ubah');
       $('.form-control[name="idmitra"').prop('readonly', true);
     } else {
       $('#title').text('Pendaftaran Mitra');
       $('#formAction').data('action', 'add');
-      $('#inputAction').prop('name', 'add');
       $('#btnSave').text('Simpan');
       $('.form-control[name="idmitra"').prop('readonly', false);
     }

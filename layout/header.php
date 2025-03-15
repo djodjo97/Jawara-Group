@@ -1,7 +1,7 @@
 <?php
 session_start();
 // NOT LOGGED IN
-if ($_SESSION['login'] != "yes") {
+if (!isset($_SESSION['username'])) {
   header("location:login.php");
 }
 ?>
@@ -24,12 +24,44 @@ if ($_SESSION['login'] != "yes") {
   <link href="css/font.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin-2.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
   <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/toast.css">
   <link rel="stylesheet" href="css/style-admin.css">
+
+  <link href="vendor/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <!-- <script src="js/demo/chart-area-demo.js"></script>
+            <script src="js/demo/chart-pie-demo.js"></script> -->
+
+  <!-- Page level plugins -->
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
+  <script src="js/toast.js"></script>
+
+  <script src="js/bootstrap-select.js"></script>
+  <script src="js/select2.js"></script>
+
+  <script src="vendor/sweetalert2/sweetalert2.min.js"></script>
+
+  <script src="vendor/moment/moment.js"></script>
+  <script src="vendor/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js"></script>
 
 </head>
 
@@ -55,46 +87,111 @@ if ($_SESSION['login'] != "yes") {
           <i class="fas fa-fw fa-home"></i>
           <span>Home</span></a>
       </li>
-      <?php
+      <hr class="sidebar-divider">
 
+      <?php
       $role = $_SESSION['role'];
 
+<<<<<<< HEAD
       $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
       $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
       $menuCategory = '<a class="nav-link" href="category.php"><i class="fas fa-fw fa-upload"></i><span>Data Kategori Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
+=======
+      $menuUsers = '<a class="nav-link" href="user.php"><i class="fas fa-fw fa-users"></i>          <span>User</span></a>';
+      $menuRole = '<a class="collapse-item" href="role.php">Role</a>';
+
+      $menuMitra = '<a class="nav-link" href="mitra.php"><i class="fas fa-fw fa-handshake"></i>          <span>Mitra</span></a>';
+      $menuGenMitra = '<a class="collapse-item" href="generation.php">Generasi Mitra</a>';
+
+      $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-cubes"></i>          <span>Paket</span></a>';
+      $menuCategory = '<a class="collapse-item" href="category.php">Kategori Produk</a>';
+      $menuType = '<a class="collapse-item" href="product-type.php">Jenis Produk</a>';
+
+      $menuTransaksi = '<a class="nav-link" href="sales.php"><i class="fas fa-fw fa-store-alt"></i>          <span>Transaksi</span></a>';
+      $menuEkspedisi = '<a class="collapse-item" href="courier.php">Jasa Ekspedisi</a>';
+>>>>>>> mabro
 
 
       if ($role == 1) {
+        // Heading
+        echo '<div class="sidebar-heading">users</div>';
+        // Nav Item - Mitra Produk
+        echo    '<li class="nav-item">' . $menuUsers . '</li>';
+
         //Nav Item - Data Master
         echo    '<li class="nav-item">
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#datamaster" aria-expanded="true" aria-controls="datauser">
-                                <i class="fas fa-fw fa-database"></i>
-                                    <span>Data Master</span>
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataUsers" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
                             </a>
-                            <div id="datamaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div id="dataUsers" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                                 <div class="bg-white py-2 collapse-inner rounded">
-                                    ' . $menuMitra . '
-                                    ' . $menuGenMitra . '
-                                    ' . $menuUser . '
                                     ' . $menuRole . '
                                 </div>
                             </div>
                         </li>';
-                         // Divider
-                echo    '<hr class="sidebar-divider">';
+        echo    '<hr class="sidebar-divider">';
+        echo    '<div class="sidebar-heading">MITRA</div>';
 
-                // Heading
-                echo    '<div class="sidebar-heading">INPUT PRODUK</div>';
+        // Nav Item - Mitra
+        echo    '<li class="nav-item">' . $menuMitra . '</li>';
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#dataMitra" aria-expanded="true" aria-controls="dataMitra">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="dataMitra" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuGenMitra . '
+                                </div>
+                            </div>
+                        </li>';
+        // Divider
+        echo    '<hr class="sidebar-divider">';
 
-                // Nav Item - Output Produk
-                echo    '<li class="nav-item">
+        // Heading
+        echo    '<div class="sidebar-heading">PRODUK</div>';
+
+        // Nav Item - Output Produk
+        echo    '<li class="nav-item">
                             ' . $menuPackage . '
                             ' . $menuCategory . '
                         </li>';
-            }
+
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#confProduct" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="confProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuCategory . '
+                                    ' . $menuType . '
+                                </div>
+                            </div>
+                        </li>';
+
+        // Heading
+        echo    '<div class="sidebar-heading">Transaksi</div>';
+
+        // Nav Item - Output Produk
+        echo    '<li class="nav-item">                            ' . $menuTransaksi . '</li>';
+
+        echo    '<li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#confTrx" aria-expanded="true" aria-controls="datauser">
+                                <i class="fas fa-fw fa-cogs"></i>
+                                    <span>Konfigurasi</span>
+                            </a>
+                            <div id="confTrx" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    ' . $menuEkspedisi . '
+                                </div>
+                            </div>
+                        </li>';
+      }
 
       if ($role == 2) {
         //Nav Item - Data Master
@@ -149,6 +246,10 @@ if ($_SESSION['login'] != "yes") {
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="profile.php">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="functions/logout.php" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

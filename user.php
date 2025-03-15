@@ -1,6 +1,7 @@
 <?php
 include_once 'layout/header.php';
 require 'functions/function_user.php';
+$dataUser = getData();
 ?>
 
 <!-- Begin Page Content -->
@@ -15,72 +16,7 @@ require 'functions/function_user.php';
     </div>
     <div class="card-body">
       <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal1">Tambah Data</button>
-        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data</h5>
-              </div>
-              <div class="modal-body">
-                <form action="functions/function_user.php" method="POST">
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Pilih Kode User</label>
-                    <div class="col-sm-2">
-                      <select name="code_user" class="form-control form-control-sm" aria-label=".form-select-sm example">
-                        <option value="1">F1201-1</option>
-                        <option value="1">F1202-2</option>
-                        <option value="1">F1203-3</option>
-                        <option value="1">G1-01</option>
-                        <option value="1">G2-02</option>
-                        <option value="1">G3-03</option>
-                        <option value="1">G4-04</option>
-                        <option value="1">G5-05</option>
-                        <option value="1">G6-06</option>
-                        <option value="1">G7-07</option>
-                        <option value="1">G8-08</option>
-                        <option value="1">G9-09</option>
-                        <option value="1">G10-10</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Nama</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="name" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Username</label>
-                    <div class="col-sm-10">
-                      <input type="text" name="username" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Password</label>
-                    <div class="col-sm-10">
-                      <input type="password" name="password" class="form-control form-control-sm" id="inputEmail3" require>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label col-form-label-sm">Role</label>
-                    <div class="col-sm-2">
-                      <select name="role" class="form-control form-control-sm" aria-label=".form-select-sm example">
-                        <option value="1">Founder</option>
-                        <option value="2">Leader</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <input type="hidden" name="add">
-                    <button class="btn btn-primary btn-sm">Simpan</button>
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        <a type="button" class="btn c-btn-primary btn-sm" href="user_form.php">Tambah Data</a>
       </div>
       <br>
       <div class="table-responsive">
@@ -95,16 +31,15 @@ require 'functions/function_user.php';
             </tr>
           </thead>
           <tbody>
-            <?php $all = getData();
-            $no = 1; ?>
-            <?php foreach ($all as $data) { ?>
+            <?php $no = 1; ?>
+            <?php foreach ($dataUser as $data) { ?>
               <tr>
                 <td style="text-align: center;"><?= $no++ ?></td>
                 <td style="text-align: center;"><?= $data['code_user'] ?></td>
                 <td style="text-align: center;"><?= $data['name'] ?></td>
                 <td style="text-align: center;"><?= $data['username'] ?></td>
-                <td style="text-align: center;"><a href="<?= 'user_form.php?id_user=' . $data['id_user']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
-                  &nbsp;<a href="<?= 'functions/function_user.php?hapus=' . $data['id_user']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
+                <td style="text-align: center;"><a href="<?= 'user_form.php?id=' . $data['code_user']; ?>" class="btn btn-info btn-circle btn-sm"><i class="fas fa-pen"></i></a>
+                  &nbsp;<a href="<?= 'functions/function_user.php?hapus=' . $data['code_user']; ?>" onclick="return confirm('Are you sure ?')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td>
               </tr>
             <?php } ?>
           </tbody>
@@ -115,6 +50,19 @@ require 'functions/function_user.php';
 </div>
 <!-- /.container-fluid -->
 
+
 <?php
 include_once 'layout/footer.php';
+// Menampilkan notifikasi jika ada pesan dari login.php
+if (isset($_SESSION['message'])) {
+  $msg = $_SESSION['message'];
+  echo "<script>Swal.fire({
+            icon: '" . $msg['icon'] . "',
+            title: '" . $msg['title'] . "',
+            text: `" . $msg['text'] . "`,
+            showConfirmButton: false,
+            timer: 2500
+        });</script>";
+  unset($_SESSION['message']);
+}
 ?>

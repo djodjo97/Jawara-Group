@@ -17,7 +17,7 @@ require 'functions/function_generation.php';
         </div>
         <div class="card-body">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="button" id="btnAdd" class="btn c-btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalGeneration">Tambah Data</button>
+            <button type="button" id="btnAdd" class="btn c-btn-primary">Tambah Data</button>
           </div>
           <br />
           <div class="table-responsive">
@@ -66,6 +66,9 @@ require 'functions/function_generation.php';
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Tambah Group</h5>
+          <button type="button" class="close modal-close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <form action="functions/function_generation.php" method="POST" id="formAction">
@@ -89,8 +92,8 @@ require 'functions/function_generation.php';
             </div>
             <div class="modal-footer">
               <input type="hidden" id="inputAction" name="add">
-              <button type="submit" class="btn btn-primary btn-sm" id="btnSave">Simpan</button>
-              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="btnSave">Simpan</button>
+              <button type="button" class="btn btn-secondary modal-close">Close</button>
             </div>
           </form>
         </div>
@@ -101,119 +104,7 @@ require 'functions/function_generation.php';
 </div>
 <!-- /.container-fluid -->
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    if (window.jQuery) {
-      $('.form-control[name="idgen"]').data('col', 'id_generation');
-      $('.form-control[name="seq"]').data('col', 'seq');
-      $('.form-control[name="description"]').data('col', 'description');
-
-      $('#btnSave').on('click', function(e) {
-        e.preventDefault(); // Mencegah aksi default tombol
-
-        if ($('#inputAction[name="add"]').length) {
-          $('#formAction').submit();
-        } else {
-          const data = new Object();
-          let attr;
-          $('.row-change').each(function() {
-            attr = $(this).data('col');
-            data[attr] = $(this).val();
-          });
-          const dataId = $('.form-control[name="idgen"]').val();
-          fetch('endpoint/api_generation.php?id=' + dataId, {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              return response.text();
-            })
-            .then(res => {
-              Swal.fire({
-                icon: "success",
-                title: "The data has been saved successfully!",
-                showConfirmButton: false,
-                timer: 1500
-              }).then(() => {
-                window.location.reload();
-              });
-            })
-            .catch(error => {
-              console.error("Terjadi kesalahan:", error);
-            });
-
-        }
-      });
-
-      $('#modalGeneration').on('change', '.form-control', function() {
-        $(this).addClass('row-change');
-      });
-
-      $('#btnAdd').click(function() {
-        $('.form-control').removeClass('row-change');
-        $('#btnSave').text('Tambah');
-        $('#inputAction').prop('name', 'add');
-
-        $('#inputIdgen input[name="idgen"]').prop('disabled', false);
-        $('#modalGeneration .form-control').each(function() {
-          $(this).val('');
-        });
-      });
-
-      //get mitra detail
-      $(document).on('click', '.edit-gen', function(e) {
-        $('.form-control').removeClass('row-change');
-        const dataId = $(this).data('id');
-        window.genId = dataId;
-
-        fetch('endpoint/api_generation.php?id=' + dataId, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-          })
-          .then(res => {
-            var myModal = new bootstrap.Modal($('#modalGeneration'), true);
-            myModal.show();
-            $('#btnSave').text('Edit');
-            $('#inputAction').prop('name', 'edit');
-
-            res = JSON.parse(res);
-            let data = res.data;
-            const idgen = $('#inputIdgen input[name="idgen"]');
-            idgen.prop('disabled', true);
-
-            idgen.val(data['id_generation']);
-            $('#inputSeq input[name="seq"]').val(data['seq']);
-            $('#inputDesc textarea[name="description"]').val(data['description']);
-          })
-          .catch(error => {
-            console.error("Terjadi kesalahan:", error);
-            //console.error("Terjadi kesalahan! Silakan coba lagi.");
-          });
-      });
-
-      $('.edit-gen').each(function() {
-        $(this).click(function(e) {});
-      });
-
-    } else {
-      console.error("jQuery belum tersedia!");
-    }
-  });
-</script>
+<script src="js/origin/generation.js"></script>
 
 <?php
 include_once 'layout/footer.php';
