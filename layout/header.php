@@ -92,14 +92,13 @@ if (!isset($_SESSION['username'])) {
       <?php
       $role = $_SESSION['role'];
 
-<<<<<<< HEAD
+
       $menuUser = '<a class="collapse-item" href="user.php">Data User</a>';
       $menuMitra = '<a class="collapse-item" href="mitra.php">Data Mitra</a>';
       $menuGenMitra = '<a class="collapse-item" href="generation.php">Data Generasi Mitra</a>';
       $menuPackage = '<a class="nav-link" href="package.php"><i class="fas fa-fw fa-upload"></i><span>Data Produk</span></a>';
       $menuCategory = '<a class="nav-link" href="category.php"><i class="fas fa-fw fa-upload"></i><span>Data Kategori Produk</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Data Role</a>';
-=======
       $menuUsers = '<a class="nav-link" href="user.php"><i class="fas fa-fw fa-users"></i>          <span>User</span></a>';
       $menuRole = '<a class="collapse-item" href="role.php">Role</a>';
 
@@ -112,7 +111,7 @@ if (!isset($_SESSION['username'])) {
 
       $menuTransaksi = '<a class="nav-link" href="sales.php"><i class="fas fa-fw fa-store-alt"></i>          <span>Transaksi</span></a>';
       $menuEkspedisi = '<a class="collapse-item" href="courier.php">Jasa Ekspedisi</a>';
->>>>>>> mabro
+
 
 
       if ($role == 1) {
