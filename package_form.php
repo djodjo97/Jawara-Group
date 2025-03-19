@@ -41,9 +41,9 @@ $data = $package_code ? getData($package_code) : NULL;
             <label for="gender" class="form-label">Gender</label>
             <select name="gender" id="gender" class="form-control" required>
               <option disabled selected>--Pilih--</option>
-              <option <?= $data['gender'] == "M" ? "selected" : "" ?> value="M">Pria</option>
-              <option <?= $data['gender'] == "F" ? "selected" : "" ?> value="F">Wanita</option>
-              <option <?= $data['gender'] == "U" ? "selected" : "" ?> value="U">Unisex</option>
+              <option <?= $data && $data['gender'] == "M" ? "selected" : "" ?> value="M">Pria</option>
+              <option <?= $data && $data['gender'] == "F" ? "selected" : "" ?> value="F">Wanita</option>
+              <option <?= $data && $data['gender'] == "U" ? "selected" : "" ?> value="U">Unisex</option>
             </select>
           </div>
         </div>
