@@ -133,10 +133,10 @@ $data  = getData($docid);
         </div>
       </div>
       <div class="mt-3 d-flex justify-content-between card-footer">
-        <input type="text" name="add" hidden readonly>
         <a class="btn btn-secondary ml-2" href="package.php">Batal</a>
-        <button id="btnSave" class="btn btn-primary">Simpan</button>
+        <button id="btnSave" type="submit" name="save" class="btn btn-primary">Simpan</button>
       </div>
+
     </form>
   </div>
 </div>

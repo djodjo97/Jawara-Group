@@ -8,15 +8,16 @@ $no = 1;
 <div class="container-fluid">
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
-    <div style="font-size : 11px;" class="card-body">
+    <div class="card-body" style="font-size: 11px;">
       <div class="table-responsive">
-        <h6><i style="color : red; font-weight: bold;">Pastikan Format Deskripsi Produk Sesuai !!!</i></h6>
-        <h7><i>Download Disini untuk Melihat Format Data Produk</i></h7>&emsp;<button onclick="JavaScript:window.location.href='download.php?file=Example Summary.xlsx';" style="font-size: 12px;" class="btn btn-primary btn-sm"> Download</button><br />
+        <h6 style="color: green; font-weight: bold;">Download Excel Data Transaksi</h6>
+        <button onclick="window.location.href='export_excel_sales.php'" style="font-size: 12px;" class="btn btn-primary btn-sm">
+          Download
+        </button>
       </div>
     </div>
   </div>
-</div>
-<!-- /.container-fluid -->
+  <!-- /.container-fluid -->
 
 <!-- Begin Page Content -->
 <div class="container-fluid">

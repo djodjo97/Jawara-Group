@@ -529,6 +529,9 @@ function viewEmptyData(elemOpen = '', elemClose = '') {
     <div>Data tidak ditemukan!</div>
     </div>${elemClose}`;
 }
+document.getElementById("formAction").addEventListener("submit", function () {
+  document.getElementById("btnSave").disabled = true;
+});
 
 $(document).ready(function () {
   init();
