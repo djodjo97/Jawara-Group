@@ -39,7 +39,7 @@ function addData($dataInput)
       die("Error prepare statement: " . $conn->error);
     }
     //$typeString = str_repeat("s", count($dataInput));
-    $typeString = "sssssissddsssss";
+    $typeString = "sssssiissddsssss";
     $params = array_values($dataInput);
     $args = array_merge([$typeString], $params);
     $refs = [];
