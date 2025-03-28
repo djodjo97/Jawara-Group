@@ -8,6 +8,7 @@ $method = $_SERVER["REQUEST_METHOD"];
 switch ($method) {
   case "GET":
     getCategories();
+
     break;
   case "PATCH":
     updateCategory();
@@ -57,10 +58,12 @@ function getCategories()
   } catch (Exception $e) {
     response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
   }
+
 }
 
 function updateCategory()
 {
+
   $conn = dbConnect();
   $input = json_decode(file_get_contents("php://input"), true);
   $id = $_GET["id"] ?? null;

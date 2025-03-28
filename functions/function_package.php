@@ -112,3 +112,16 @@ if (isset($_POST['add'])) {
     header("location:../package.php");
     exit();
 }
+function getCategoryProducts()
+{
+    global $conn;
+    $stmt = $conn->query("SELECT * FROM package_category");
+
+    if (!$stmt) {
+        die("Query Error: " . $conn->error);
+    }
+
+    $res = $stmt->fetch_all(MYSQLI_ASSOC);
+    $stmt->free_result();
+    return $res;
+}

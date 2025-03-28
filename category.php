@@ -1,3 +1,4 @@
+
 <?php
 include_once 'layout/header.php';
 require 'functions/function_category.php';
