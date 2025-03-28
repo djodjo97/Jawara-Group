@@ -122,7 +122,7 @@ require 'functions/login_check.php';
       </div>
       <button type="submit" class="login-btn">Login</button>
     </form>
-    <a href="#" class="forgot-password">Lupa Password?</a>
+    <a href="form_forgot_password.php" class="forgot-password">Lupa Password?</a>
   </div>
 
   <script src="vendor/sweetalert2/sweetalert2.min.js"></script>
