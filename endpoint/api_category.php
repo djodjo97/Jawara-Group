@@ -7,59 +7,12 @@ $method = $_SERVER["REQUEST_METHOD"];
 
 switch ($method) {
   case "GET":
-<<<<<<< HEAD
-    getCategory();
-=======
     getCategories();
->>>>>>> mabro
     break;
   case "PATCH":
     updateCategory();
     break;
   default:
-<<<<<<< HEAD
-    response(405, "Method Not Allowed");
-}
-
-function response($status, $message, $data = null)
-{
-  http_response_code($status);
-  echo json_encode(["status" => $status, "message" => $message, "data" => $data]);
-  exit();
-}
-
-function getCategory()
-{
-  global $conn;
-  //$input = json_decode(file_get_contents('php://input'), true);
-  $dataId = $_GET["id"] ?? null;
-
-  if ($dataId) {
-    $stmt = $conn->prepare("SELECT * FROM  package_category WHERE category_product = ?");
-    $stmt->bind_param("s", $dataId);
-  } else {
-    $stmt = $conn->prepare("SELECT * FROM package_category");
-  }
-
-  if ($stmt) {
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result) {
-      if ($dataId) $data = $result->fetch_assoc();
-      else $data = $result->fetch_all(MYSQLI_ASSOC);
-
-      response(200, "Success", $data);
-    } else {
-      response(500, "Gagal mengambil data!");
-    }
-  } else {
-    response(500, "Gagal menyiapkan query!");
-  }
-
-  $stmt->close();
-  $conn->close();
-=======
     response(["status" => 405, "msg" => "Method Not Allowed"]);
 }
 
@@ -104,26 +57,15 @@ function getCategories()
   } catch (Exception $e) {
     response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Terjadi kesalahan: " . $e->getMessage()]);
   }
->>>>>>> mabro
 }
 
 function updateCategory()
 {
-<<<<<<< HEAD
-  global $conn;
-  $input = json_decode(file_get_contents("php://input"), true);
-  $id = $_GET["id"] ?? null;
-
-  if (!$id) {
-    response(400, "Bad Request: ID are required");
-  }
-=======
   $conn = dbConnect();
   $input = json_decode(file_get_contents("php://input"), true);
   $id = $_GET["id"] ?? null;
 
   if (!$id) response(["status" => 400, "icon" => "success", "title" => "Success!", "msg" => "Bad Request: ID are required!"]);
->>>>>>> mabro
 
   $setParts = [];
   $params = [];
@@ -153,11 +95,7 @@ function updateCategory()
   }
 
   $setQuery = implode(", ", $setParts);
-<<<<<<< HEAD
-  $stmt = $conn->prepare("UPDATE package_category SET $setQuery WHERE category_product = ?");
-=======
   $stmt = $conn->prepare("UPDATE package_category SET $setQuery WHERE category_code = ?");
->>>>>>> mabro
 
   $params[] = $id;
   $types .= 's';
@@ -165,15 +103,9 @@ function updateCategory()
   $stmt->bind_param($types, ...$params);
 
   if ($stmt->execute()) {
-<<<<<<< HEAD
     response(200, "Product Updated");
   } else {
     response(500, "Internal Server Error");
-=======
-    response(["status" => 200, "icon" => "success", "title" => "Success!", "msg" => "Product Updated!"]);
-  } else {
-    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Internal Server Error"]);
->>>>>>> mabro
   }
 
   $stmt->close();
