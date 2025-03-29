@@ -103,9 +103,9 @@ function updateCategory()
   $stmt->bind_param($types, ...$params);
 
   if ($stmt->execute()) {
-    response(200, "Product Updated");
+    response(["status" => 200, "icon" => "success", "title" => "Success!", "msg" => "Product Updated!"]);
   } else {
-    response(500, "Internal Server Error");
+    response(["status" => 500, "icon" => "error", "title" => "Error!", "msg" => "Internal Server Error"]);
   }
 
   $stmt->close();

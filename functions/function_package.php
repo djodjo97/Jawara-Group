@@ -44,7 +44,7 @@ function addData($dataInput)
         $columns = implode(", ", array_keys($dataInput));
         $placeholders = implode(", ", array_fill(0, count($dataInput), "?"));
         $sql = "INSERT INTO packages ($columns) VALUES ($placeholders)";
-        
+
         $stmt = $conn->prepare($sql);
         if (!$stmt) throw new Exception("Error prepare statement: " . $conn->error);
 
@@ -58,13 +58,14 @@ function addData($dataInput)
         $stmt->execute();
         $stmt->close();
 
-        return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil ditambahkan!'];
+        $msg = ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil ditambahkan!'];
     } catch (mysqli_sql_exception $e) {
         error_log("Database Error: " . $e->getMessage());
-        return ['icon' => 'error', 'title' => 'Error!', 'text' => "Database Error: " . $e->getMessage()];
+        $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Database Error: " . $e->getMessage()];
     } catch (Exception $e) {
-        return ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
+        $msg = ['icon' => 'error', 'title' => 'Error!', 'text' => "Terjadi kesalahan: " . $e->getMessage()];
     }
+    return $msg;
 }
 
 function removeData($code)
@@ -76,7 +77,7 @@ function removeData($code)
         $stmt->bind_param("s", $code);
         if (!$stmt->execute()) throw new Exception("Execution Error: " . $stmt->error);
         $stmt->close();
-        
+
         return ['icon' => 'success', 'title' => 'Success!', 'text' => 'Data berhasil dihapus!'];
     } catch (mysqli_sql_exception $e) {
         error_log("Database Error: " . $e->getMessage());
@@ -111,17 +112,4 @@ if (isset($_POST['add'])) {
 
     header("location:../package.php");
     exit();
-}
-function getCategoryProducts()
-{
-    global $conn;
-    $stmt = $conn->query("SELECT * FROM package_category");
-
-    if (!$stmt) {
-        die("Query Error: " . $conn->error);
-    }
-
-    $res = $stmt->fetch_all(MYSQLI_ASSOC);
-    $stmt->free_result();
-    return $res;
 }
